@@ -10,6 +10,7 @@ HEADAER_STYLE = {
     "display":"flex",
     "justifyContent":"right",
     "alignItems":"center",
+    "borderBottom":"1px solid #2B454E",
 }
 
 header = html.Div(html.Div([

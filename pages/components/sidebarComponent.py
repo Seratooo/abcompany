@@ -29,7 +29,8 @@ sidebar = html.Div(
                   'justifyContent':'Space-between',
                    'boxShadow': 'rgba(0, 0, 0, 0.05) -3px 3px 5px',
                    "paddingLeft":"17px",
-                   "paddingTop":"15px"
+                   "paddingTop":"15px",
+                   "borderBottom":"1px solid #2B454E",
         }),
         html.P(
             "Menu", style={'fontFamily':'Nunito','fontWeight':'700', 'fontSize':'1.2rem', 'padding':'17px'}
@@ -44,7 +45,7 @@ sidebar = html.Div(
                     variant="subtle",
                     children=[
                         dmc.NavLink(label="Resumo", style={'color':'rgb(98 98 98)'}, href="/dashboard"),
-                        dmc.NavLink(label="Vendas", style={'color':'rgb(98 98 98)'}, href="/dashboard?vendas"),
+                        dmc.NavLink(label="Vendas", style={'color':'rgb(98 98 98)'}, href="/dashboard?sales"),
                         dmc.NavLink(label="Ganhos", style={'color':'rgb(98 98 98)'}, href="/dashboard?page-2"),
                         dmc.NavLink(label="Obstáculos", style={'color':'rgb(98 98 98)'}),
                     ],
