@@ -1,0 +1,2 @@
+recursive-include abcompany/** *.js *.css *.json *.html
+prune tests

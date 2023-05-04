@@ -1,0 +1,13 @@
+Package: abcompany
+Title: Predition System
+Version: 1.0.0
+Description: Predition System
+Depends: R (>= 3.0.2)
+Imports: 
+Suggests: 
+License: MIT + file LICENSE
+URL: https://github.com/Seratooo/abcompany
+BugReports: https://github.com/Seratooo/abcompany/issues
+Encoding: UTF-8
+LazyData: true
+KeepSource: true

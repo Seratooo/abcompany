@@ -1,0 +1,48 @@
+{
+  "name": "abcompany",
+  "version": "1.0.0",
+  "description": "Predition System",
+  "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Seratooo/abcompany.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Seratooo/abcompany/issues"
+  },
+  "homepage": "https://github.com/Seratooo/abcompany",
+  "scripts": {
+    "build:js::dev": "webpack --mode development",
+    "build:js": "webpack",
+    "build:backends": "dash-generate-components ./src/ts/components abcompany -p package-info.json --r-prefix '' --jl-prefix '' --ignore \\.test\\.",
+    "build": "npm run build:js && npm run build:backends",
+    "watch": "npm run build:js::dev -- --watch"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.39",
+    "@types/styled-system": "^5.1.16",
+    "@types/styled-system__css": "^5.0.17",
+    "css-loader": "^6.7.1",
+    "npm-run-all": "^4.1.5",
+    "ramda": "^0.28.0",
+    "react": "16.13.0",
+    "react-docgen": "^5.4.0",
+    "react-dom": "16.13.0",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.7.4",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "peerDependencies": {
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0"
+  },
+  "author": "Abubacar Correia <abubacar.paulo.correia@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@styled-system/css": "^5.1.5"
+  }
+}
