@@ -57,8 +57,8 @@ sidebar = html.Div(
                     opened=False,
                     variant="subtle",
                     children=[
-                        dmc.NavLink(label="Carregar ficheiro", style={'color':'rgb(98 98 98)'}),
-                        dmc.NavLink(label="Analisar ficheiros", style={'color':'rgb(98 98 98)'}),
+                        dmc.NavLink(label="Carregar ficheiro", style={'color':'rgb(98 98 98)'}, href="/dashboard?uploadFile"),
+                        dmc.NavLink(label="Analisar ficheiros", style={'color':'rgb(98 98 98)'}, href="/dashboard?analyzeFile"),
                     ],
                 ),
                 dmc.NavLink(
@@ -85,8 +85,8 @@ sidebar = html.Div(
                     opened=False,
                     variant="subtle",
                     children=[
-                        dmc.NavLink(label="Nova previsão", style={'color':'rgb(98 98 98)'}),
-                        dmc.NavLink(label="Previsões anteriores", style={'color':'rgb(98 98 98)'}),
+                        dmc.NavLink(label="Nova previsão", style={'color':'rgb(98 98 98)'}, href="/dashboard?forecast"),
+                        dmc.NavLink(label="Previsões anteriores", style={'color':'rgb(98 98 98)'}, href="/dashboard?pastPredictions"),
                     ],
                 ),
                 dmc.NavLink(

@@ -1,6 +1,6 @@
 import dash
 from dash import Input, Output, dcc, html, callback
-from subpages import resumePage, salesPage
+from subpages import resumePage, salesPage, uploadPage, analyzeFilesPage, forecastPage, pastPredictionsPages
 from data import configs
 from components import headerComponent, sidebarComponent, containerComponent
 dash.register_page(__name__,  suppress_callback_exceptions=True)
@@ -22,6 +22,10 @@ layout = html.Div([dcc.Location(id='url', refresh=False), sidebar, DashboardWrap
 #PAGES
 ResumePage = resumePage.resume 
 SalesPage = salesPage.sales 
+UploadPage = uploadPage.upload
+AnalyzeFilePage = analyzeFilesPage.analyzeFiles
+ForecastPage = forecastPage.forecast
+PastPredictionsPage = pastPredictionsPages.pastPredictions
 
 @callback(
           Output("page-content", "children"), 
@@ -32,8 +36,14 @@ def render_page_content(pathname, search):
         return ResumePage
     elif  link == "/dashboard?sales":
         return SalesPage
-    elif  link == "/dashboard?page-2":
-        return html.P("This is the content of back page 2!")
+    elif  link == "/dashboard?uploadFile":
+        return UploadPage
+    elif  link == "/dashboard?analyzeFile":
+        return AnalyzeFilePage
+    elif  link == "/dashboard?forecast":
+        return ForecastPage
+    elif  link == "/dashboard?pastPredictions":
+        return PastPredictionsPage
     # If the user tries to reach a different page, return a 404 message
     return html.Div(
         [
