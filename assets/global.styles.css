@@ -1,0 +1,16 @@
+#save-button .mantine-Button-label{
+  font-size: 1.5rem;
+}
+
+#save-button .mantine-Button-icon{
+  font-size: 3rem;
+}
+
+#save-button{
+  background-color: #2B454E;
+}
+
+#data-output2{
+  font-size: 1.2rem;
+  font-family: 'Nunito';
+}

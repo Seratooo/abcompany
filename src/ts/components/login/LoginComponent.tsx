@@ -1,7 +1,6 @@
 import React from "react";
 import { DashComponentProps } from "../../props";
 import './styles.css'
-import { borderRadius, color } from "styled-system";
 /**
  * Component description
  */
