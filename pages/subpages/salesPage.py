@@ -1,11 +1,17 @@
-from dash import html, dcc, callback, Output, Input
-from data import configs
+from dash import html, dcc, callback, Output, Input, State
+from api.clientApp import GetAllCollectionNames
+from data.configs import getDatabase
 import plotly.graph_objects as go
 import dash_mantine_components as dmc
 
 
-sales_train_all_df = configs.getDatabase()
+sales_train_all_df = getDatabase()
+DatasetsNames = GetAllCollectionNames()
+PanelMultiSelectOptions = [DatasetsNames[0]]
+
 sales = html.Div([
+    dcc.Interval(id='interval_db', interval=86400000 * 7, n_intervals=0),
+    dcc.Store(id='dataset-sales-storage', storage_type='local'),
     html.Div([
             html.Div(
                 html.Div([
@@ -15,8 +21,8 @@ sales = html.Div([
                         dmc.MultiSelect(
                         label="",
                         placeholder="Select all you like!",
-                        id="framework-multi-select",
-                        value=["ng", "vue"],
+                        id="panelSales-dataset-multi-select",
+                        value=PanelMultiSelectOptions,
                         data=[
                             {"value": "react", "label": "React"},
                             {"value": "ng", "label": "data 2015-2020"},
@@ -82,7 +88,7 @@ sales = html.Div([
           Output("graph8", "figure"),
           Output("graph9", "figure"),
           Output("graph10", "figure"),
-          Input("framework-multi-select", "value")
+          Input("panelSales-dataset-multi-select", "value")
           )
 def select_value(value):
     d6 = sales_train_all_df[sales_train_all_df['Promo']==1]
@@ -140,3 +146,31 @@ def select_value(value):
     fig7.update_layout(height=230)
     fig8.update_layout(height=230)
     return fig6, fig7, fig8, fig9, fig10
+
+
+
+@callback(Output('panelSales-dataset-multi-select', component_property='value'),
+          Output('panelSales-dataset-multi-select', component_property='data'),
+                Input('interval_db', component_property='n_intervals'),
+              )
+def SetDataValuesOnCompont(interval_db):
+    value = PanelMultiSelectOptions
+    return value, DatasetValues()[1]
+
+
+def DatasetValues():
+    data = []
+    for name in DatasetsNames:
+        data.append({"value": f"{name}", "label": f"{name}"})
+    return DatasetsNames, data
+
+
+@callback(
+    Output('dataset-sales-storage', 'data', allow_duplicate=True),
+    Input("panelSales-dataset-multi-select", "value"),
+    prevent_initial_call=True
+)
+def save_param_panelOption(value):
+    global PanelMultiSelectOptions
+    PanelMultiSelectOptions = value
+    return PanelMultiSelectOptions

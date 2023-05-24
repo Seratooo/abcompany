@@ -1,6 +1,5 @@
 from dash import html, Output, Input, callback, dash_table, State, dcc
 import dash_mantine_components as dmc
-from collections import OrderedDict
 import pandas as pd
 
 from api.externalFactors import GetHolidaysByYear, GetInflationByYear, GetWeatherByYear
@@ -117,34 +116,27 @@ externalFactorsPage = html.Div([
 @callback(Output("holiday-multi-select", "value"),
           Output("weather-multi-select", "value"),
           Output("inflation-multi-select", "value"),
-              Input('interval_db', component_property='n_intervals'),
-              State('holiday-selected-value-storage', 'data'),
-              State('weather-selected-value-storage', 'data'),
-              State('inflation-selected-value-storage', 'data'),
+              Input('interval_db', component_property='n_intervals')
               )
-def LoadPage(n_intervals,dataHoliday, dataWeather, dataInflation):
-    return dataHoliday, dataWeather, dataInflation
+def LoadPage(n_intervals):
+    return HolidayMultiSelectOptions, WeatherMultiSelectOptions, InflationMultiSelectOptions
 
 ### --- Holiday --- ###
 @callback(
     Output('holiday-selected-value-storage', 'data'),
     Input("holiday-multi-select", "value"),
-    State('holiday-selected-value-storage', 'data'),
     prevent_initial_call=True
 )
-def save_param(value, data):
-    data = value
+def save_param_holiday(value):
     global HolidayMultiSelectOptions
-    HolidayMultiSelectOptions = data
-    # print('value: ',value)
-    return data
+    HolidayMultiSelectOptions = value
+    return HolidayMultiSelectOptions
 
 @callback(
     Output("holiday-multi-selected-value", "children"), 
-    Input("holiday-multi-select", "value"),
-    State('holiday-selected-value-storage', 'data')
+    Input("holiday-multi-select", "value")
 )
-def select_value(value, dataStorage):
+def select_value_holiday(value):
     # if(len(dataStorage) > 0):
     value = HolidayMultiSelectOptions
     HolidayPD = pd.DataFrame()
@@ -166,21 +158,18 @@ def select_value(value, dataStorage):
 @callback(
     Output('weather-selected-value-storage', 'data'),
     Input("weather-multi-select", "value"),
-    State('weather-selected-value-storage', 'data'),
     prevent_initial_call=True
 )
-def save_param_weather(value, data):
-    data = value
+def save_param_weather(value): 
     global WeatherMultiSelectOptions
-    WeatherMultiSelectOptions = data
-    return data
+    WeatherMultiSelectOptions = value
+    return WeatherMultiSelectOptions
 
 @callback(
     Output("weather-multi-selected-value", "children"), 
-    Input("weather-multi-select", "value"),
-    State('weather-selected-value-storage', 'data')
+    Input("weather-multi-select", "value")
 )
-def select_value_weather(value, dataStorage):
+def select_value_weather(value):
     value = WeatherMultiSelectOptions
     WeatherPD = pd.DataFrame()
     for year in value:
@@ -201,21 +190,18 @@ def select_value_weather(value, dataStorage):
 @callback(
     Output('inflation-selected-value-storage', 'data'),
     Input("inflation-multi-select", "value"),
-    State('inflation-selected-value-storage', 'data'),
     prevent_initial_call=True
 )
-def save_param_inflation(value, data):
-    data = value
+def save_param_inflation(value):
     global InflationMultiSelectOptions
-    InflationMultiSelectOptions = data
-    return data
+    InflationMultiSelectOptions = value
+    return InflationMultiSelectOptions
 
 @callback(
     Output("inflation-multi-selected-value", "children"), 
-    Input("inflation-multi-select", "value"),
-    State('inflation-selected-value-storage', 'data')
+    Input("inflation-multi-select", "value")
 )
-def select_value_inflation(value, dataStorage):
+def select_value_inflation(value):
     value = InflationMultiSelectOptions
     InflationPD = pd.DataFrame()
     for year in value:

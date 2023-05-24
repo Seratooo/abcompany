@@ -1,13 +1,11 @@
-from dash import html
 from api.clientApp import GetAllCollectionNames, GetCollectionByName
-from dash import dcc, callback, Output, Input, State, clientside_callback
-from dash import Dash, dash_table
-from collections import OrderedDict
+from dash import dcc, callback, Output, Input, State, html, Dash, dash_table
 import pandas as pd
 
 names = GetAllCollectionNames()
 analyzeFiles = html.Div([
     dcc.Interval(id='interval_db', interval=86400000 * 7, n_intervals=0),
+    dcc.Store(id='datasets-names-storage', storage_type='local'),
     html.Div([
             html.Div(
                 html.Div([
@@ -45,17 +43,6 @@ for name in names:
         def datasetDisplay(n_clicks, children):
             return GetTableByCollectionName(children)
         
-        # clientside_callback(
-        #     """
-        #     function(n_clicks, children) {
-        #         return children;
-        #     }
-        #     """,
-        #     Output('dataset-display', 'children', allow_duplicate=True),
-        #     Input(name, 'n_clicks'),
-        #     Input(name, 'children'),
-        #     prevent_initial_call=True
-        # )
 
 
 def GetTableByCollectionName(Name):
