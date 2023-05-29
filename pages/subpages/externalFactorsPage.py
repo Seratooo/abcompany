@@ -106,10 +106,10 @@ externalFactorsPage = html.Div([
                 dmc.TabsPanel(WeatherTab, value="weather", style={"padding":"10px"}),
                 dmc.TabsPanel(InflationTab, value="inflation", style={"padding":"10px"}),
             ],
-            color="red",
+            color="green",
             orientation="vertical",
         ),
-    ], style={"padding":"5rem", "height":"100vh"}),
+    ], style={"padding":"5rem", "height":"100vh", "background":"#f0f0f0","overflow":"scroll","marginBottom":"30px"}),
 ])
 
 

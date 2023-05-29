@@ -58,14 +58,15 @@ sidebar = html.Div(
                     variant="subtle",
                     children=[
                         dmc.NavLink(label="Carregar ficheiro", style={'color':'rgb(98 98 98)'}, href="/dashboard?uploadFile"),
-                        dmc.NavLink(label="Analisar ficheiros", style={'color':'rgb(98 98 98)'}, href="/dashboard?analyzeFile"),
+                        dmc.NavLink(label="Meus ficheiros", style={'color':'rgb(98 98 98)'}, href="/dashboard?analyzeFile"),
                     ],
                 ),
                 dmc.NavLink(
-                    label="Estatísticas",
+                    label="AED",
                     icon=get_icon(icon="gis:statistic-map"),
                     childrenOffset=28,
                     variant="subtle",
+                    href="/dashboard?AED"
                 ),
                 dmc.NavLink(
                     label="Fatores",

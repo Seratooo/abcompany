@@ -13,7 +13,7 @@ sys.path.append("api")
 
 
 
-app = dash.Dash(__name__, use_pages=True, suppress_callback_exceptions=True)
+app = dash.Dash(__name__, use_pages=True, suppress_callback_exceptions=True, update_title='Carregando...')
 
 app.layout = html.Div([
     # abcompany.ExampleComponent(id='component'),
