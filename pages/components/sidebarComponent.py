@@ -46,8 +46,8 @@ sidebar = html.Div(
                     children=[
                         dmc.NavLink(label="Resumo", style={'color':'rgb(98 98 98)'}, href="/dashboard"),
                         dmc.NavLink(label="Vendas", style={'color':'rgb(98 98 98)'}, href="/dashboard?sales"),
-                        dmc.NavLink(label="Ganhos", style={'color':'rgb(98 98 98)'}, href="/dashboard?page-2"),
-                        dmc.NavLink(label="Obstáculos", style={'color':'rgb(98 98 98)'}),
+                        #dmc.NavLink(label="Ganhos", style={'color':'rgb(98 98 98)'}, href="/dashboard?page-2"),
+                        #dmc.NavLink(label="Obstáculos", style={'color':'rgb(98 98 98)'}),
                     ],
                 ),
                 dmc.NavLink(
@@ -76,8 +76,7 @@ sidebar = html.Div(
                     variant="subtle",
                     children=[
                         dmc.NavLink(label="Externos", style={'color':'rgb(98 98 98)'}, href="/dashboard?externalFactors"),
-                        dmc.NavLink(label="Internos", style={'color':'rgb(98 98 98)'},),
-                        dmc.NavLink(label="Gráficos", style={'color':'rgb(98 98 98)'}),
+                        dmc.NavLink(label="Internos", style={'color':'rgb(98 98 98)'},)
                     ],
                 ),
                 dmc.NavLink(
@@ -98,15 +97,16 @@ sidebar = html.Div(
                     variant="subtle",
                 ),
                 dmc.NavLink(
-                    label="Tarefas",
+                    label="Registos",
                     icon=get_icon(icon="mingcute:task-2-fill"),
                     childrenOffset=28,
                     opened=False,
                     variant="subtle",
                     styles={"icon":{"postion": 'absolute'}},
                     children=[
-                        dmc.NavLink(label="Criar Tarefa", style={'color':'rgb(98 98 98)'}),
-                        dmc.NavLink(label="Limpar o Quadro", style={'color':'rgb(98 98 98)'}),
+                        dmc.NavLink(label="Registar Tarefas", style={'color':'rgb(98 98 98)'}),
+                        dmc.NavLink(label="Registar Promoções", style={'color':'rgb(98 98 98)'}),
+                       # dmc.NavLink(label="Limpar o Quadro", style={'color':'rgb(98 98 98)'}),
                     ],
                 ),
             ],
