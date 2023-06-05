@@ -276,3 +276,23 @@
 .cell-table td div{
   font-size: 1.1rem;
 }
+
+
+
+
+.aed-page-class > div{
+  width: 100%;
+}
+
+
+#predition-componets{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+#predition-componets #forecast-btn {
+  font-size: 3.2rem;
+  font-family: 'Nunito';
+  background-color: #2B454E;
+}
