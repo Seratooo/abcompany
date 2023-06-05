@@ -24,8 +24,9 @@ def getDatabase():
 
 
 def sales_predition(store_id, sales_df, holidays, periods):
-    sales_df = sales_df[sales_df['Store'] == store_id]
+    # sales_df = sales_df[sales_df['Store'] == store_id]
     sales_df = sales_df[['Date', 'Sales']].rename(columns = {'Date': 'ds', 'Sales':'y'})
+    sales_df['ds'] = pd.to_datetime(sales_df['ds'])
     sales_df = sales_df.sort_values(by = 'ds')
     
     model = Prophet(holidays=holidays)
