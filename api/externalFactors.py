@@ -11,11 +11,12 @@ LuandaPoint = Point(-8.838333, 13.234444, 70)
 def GetHolidaysByYear(Year):
     df = pd.DataFrame(holidays.AO(years=Year).items())
     df.rename(columns={0: 'ds'}, inplace=True)
-    df.rename(columns={1: 'holidays'}, inplace=True)
+    df.rename(columns={1: 'holiday'}, inplace=True)
     df['ds'] = pd.to_datetime(df['ds'])
-    df.set_index('ds', inplace=True)
+    df_st = df.copy()
+    df_st['holiday'] = 'state_holiday'
     df.sort_values('ds', inplace=True)
-    return df
+    return df_st, df
 
 
 def GetWeatherByYear(Year):
