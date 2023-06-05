@@ -1,14 +1,13 @@
 from dash import html, dcc, callback, Output, Input, State
 import plotly.express as px
-from api.clientApp import GetAllCollectionNames
+from api.clientApp import GetAllCollectionNames, GetCollectionByName
 from data.configs import getDatabase
 import plotly.graph_objects as go
 import dash_mantine_components as dmc
+import pandas as pd
 
-sales_train_all_df = getDatabase()
 DatasetsNames = GetAllCollectionNames()
 PanelMultiSelectOptions = [DatasetsNames[0]]
-
 resume = html.Div([
     dcc.Interval(id='interval_db', interval=86400000 * 7, n_intervals=0),
     dcc.Store(id='dataset-names-storage', storage_type='local'),
@@ -65,6 +64,8 @@ resume = html.Div([
           Input("panel-dataset-multi-select", "value")
           )
 def select_value(value):
+    sales_train_all_df = getColections(value)
+
     fig1 = go.Figure() 
     fig1.add_trace(go.Indicator(
             title = {"text": f"<span style='font-size:150%'>Período de Análise </span><br><span style='font-size:70%'>entre o ano de:</span><br><span>{sales_train_all_df['Year'].min()} - {sales_train_all_df['Year'].max()}</span>"},
@@ -103,7 +104,8 @@ def select_value(value):
 
 
     df4 = sales_train_all_df[sales_train_all_df.columns[1:6]].head(10)
-
+    df4.drop('Unnamed: 0', axis=1, inplace=True)
+    
     fig4 = go.Figure()
     fig4.add_trace(
         go.Table(
@@ -147,7 +149,7 @@ def SetDataValuesOnCompont(interval_db):
 def DatasetValues():
     data = []
     for name in DatasetsNames:
-        data.append({"value": f"{name}", "label": f"{name}"})
+        data.append({"value": f"{name}", "label": f"{name.split('-')[0]}"})
     return DatasetsNames, data
 
 
@@ -160,3 +162,16 @@ def save_param_panelOption(value):
     global PanelMultiSelectOptions
     PanelMultiSelectOptions = value
     return PanelMultiSelectOptions
+
+
+
+
+def getColections(Names):
+    df_PD = pd.DataFrame()
+    for name in Names:
+        df_PD =pd.concat((df_PD, pd.DataFrame(GetCollectionByName(name))))
+    
+    df_PD['Year'] = pd.DatetimeIndex(df_PD['Date']).year
+    df_PD['Month'] = pd.DatetimeIndex(df_PD['Date']).month
+    df_PD['Day'] = pd.DatetimeIndex(df_PD['Date']).day
+    return df_PD

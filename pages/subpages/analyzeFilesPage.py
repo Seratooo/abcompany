@@ -1,10 +1,14 @@
 from api.clientApp import GetAllCollectionNames, GetCollectionByName
-from dash import dcc, callback, Output, Input, State, html, Dash, dash_table
+from dash import dcc, callback, Output, Input, State, html, Dash, dash_table, clientside_callback
+import dash_mantine_components as dmc
+import plotly.graph_objects as go
 import pandas as pd
 
 names = GetAllCollectionNames()
+DatasetsNames = GetAllCollectionNames()
+PanelMultiSelectOptions = DatasetsNames[0]
+
 analyzeFiles = html.Div([
-    dcc.Interval(id='interval_db', interval=86400000 * 7, n_intervals=0),
     dcc.Store(id='datasets-names-storage', storage_type='local'),
     html.Div([
             html.Div(
@@ -16,48 +20,64 @@ analyzeFiles = html.Div([
                 ])
             )
         ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
+        dmc.Select(
+                    label="",
+                    placeholder="Select one",
+                    id="dataset-select",
+                    value=f"{PanelMultiSelectOptions}",
+                    data=[],
+                    style={"width": 200, "marginBottom": 10},
+                ),
     html.Div([
-    html.Div(
-    id="datasets-names",
-    style={"display":"flex", "gap":"10px", "alignItems":"center", "paddingLeft":"3rem"}),
-    html.Div( id="dataset-display", style={"background":"#c4c4c4","width":"30rem","height":"76vh"})
+        html.Div( id="dataset-display", style={"background":"#c4c4c4","width":"100%"})
 ], style={"display":"flex", "gap":"10px", "justifyContent":"space-between","alignItems":"center", "height":"76vh", "background":"#F0F0F0"}),
 ])
 
-
-@callback(Output('datasets-names', component_property='children'),
-              Input('interval_db', component_property='n_intervals')
+@callback(Output('dataset-select', 'value'),
+          Output('dataset-select', 'data'),
+                Input('dataset-select', 'id'),
               )
-def datasetsLoads(n_intervals):
-   elements = []
-   for name in names:
-       elements.append(html.P(f"{name}",id=name,n_clicks=0,style={"font":"1.8rem Nunito","background":"#c4c4c4", "padding":"3rem"}))
-   return elements
+def SetDataValuesOnCompont(_):
+    value = PanelMultiSelectOptions
+    return value, DatasetValues()[1]
 
-for name in names:
-        @callback(Output('dataset-display', component_property='children', allow_duplicate=True ),
-                    Input(name, component_property='n_clicks'),
-                    Input(name, component_property='children'),
-                    prevent_initial_call=True
-                    )
-        def datasetDisplay(n_clicks, children):
-            return GetTableByCollectionName(children)
+def DatasetValues():
+    data = []
+    for name in DatasetsNames:
+        data.append({"value": f"{name}", "label": f"{name.split('-')[0]}"})
+    return DatasetsNames, data
+
+@callback(
+    Output('dataset-display', 'children'),
+    Input("dataset-select", "value")
+)
+def getGraph(value):
+    data = GetCollectionByName(value)
+
+    if data:
+        df = pd.DataFrame(data)
+        df.drop('_id', axis=1, inplace=True)
+        df.drop('Unnamed: 0', axis=1, inplace=True)
         
+        # Criar um gráfico com base nos dados do DataFrame
+        traces = []
+        for column in df.columns:
+            trace = go.Scatter(
+                x=df.index,
+                y=df[column],
+                name=column
+            )
+            traces.append(trace)
 
-
-def GetTableByCollectionName(Name):
-     data = GetCollectionByName(Name)
-
-     df = pd.DataFrame(data)
-     if(df.empty == False):
-        df['_id'] = df['_id'].astype(str)
-        print(df.shape)
-        table = dash_table.DataTable(
-            data=df.to_dict('records'),
-            columns=[{'id': c, 'name': c} for c in df.columns],
-            style_header={ 'border': '1px solid black' },
-            style_cell={ 'border': '1px solid grey' },
+        layout = go.Layout(
+            title=f"Conjunto de Dados: {value.split('-')[0]}",
+            xaxis=dict(title='Índice'),
+            yaxis=dict(title='Valores')
         )
-        return table
-     else:
-          return ''
+
+        figure = go.Figure(data=traces, layout=layout)
+
+        # Exibir o gráfico
+        graph = dcc.Graph(figure=figure)
+        return graph
+
