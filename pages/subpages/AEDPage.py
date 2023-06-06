@@ -122,11 +122,7 @@ def get_variable_types(report):
 
 def get_alerts(report):
     alerts = report['alerts']
-    frases_traduzidas = []
-    for alert in alerts:
-        traducao = translator.translate(alert, dest='pt')
-        frases_traduzidas.append(traducao.text)
-    return frases_traduzidas
+    return alerts
 
 def get_histogram_data(variablesName):
     histogram_data = get_variables(report)[variablesName]['histogram']
