@@ -29,7 +29,8 @@ sidebar = html.Div(
                   'justifyContent':'Space-between',
                    'boxShadow': 'rgba(0, 0, 0, 0.05) -3px 3px 5px',
                    "paddingLeft":"17px",
-                   "paddingTop":"15px"
+                   "paddingTop":"15px",
+                   "borderBottom":"1px solid #2B454E",
         }),
         html.P(
             "Menu", style={'fontFamily':'Nunito','fontWeight':'700', 'fontSize':'1.2rem', 'padding':'17px'}
@@ -44,9 +45,9 @@ sidebar = html.Div(
                     variant="subtle",
                     children=[
                         dmc.NavLink(label="Resumo", style={'color':'rgb(98 98 98)'}, href="/dashboard"),
-                        dmc.NavLink(label="Vendas", style={'color':'rgb(98 98 98)'}, href="/dashboard?vendas"),
-                        dmc.NavLink(label="Ganhos", style={'color':'rgb(98 98 98)'}, href="/dashboard?page-2"),
-                        dmc.NavLink(label="Obstáculos", style={'color':'rgb(98 98 98)'}),
+                        dmc.NavLink(label="Vendas", style={'color':'rgb(98 98 98)'}, href="/dashboard?sales"),
+                        #dmc.NavLink(label="Ganhos", style={'color':'rgb(98 98 98)'}, href="/dashboard?page-2"),
+                        #dmc.NavLink(label="Obstáculos", style={'color':'rgb(98 98 98)'}),
                     ],
                 ),
                 dmc.NavLink(
@@ -56,15 +57,16 @@ sidebar = html.Div(
                     opened=False,
                     variant="subtle",
                     children=[
-                        dmc.NavLink(label="Carregar ficheiro", style={'color':'rgb(98 98 98)'}),
-                        dmc.NavLink(label="Analisar ficheiros", style={'color':'rgb(98 98 98)'}),
+                        dmc.NavLink(label="Carregar ficheiro", style={'color':'rgb(98 98 98)'}, href="/dashboard?uploadFile"),
+                        dmc.NavLink(label="Meus ficheiros", style={'color':'rgb(98 98 98)'}, href="/dashboard?analyzeFile"),
                     ],
                 ),
                 dmc.NavLink(
-                    label="Estatísticas",
+                    label="AED",
                     icon=get_icon(icon="gis:statistic-map"),
                     childrenOffset=28,
                     variant="subtle",
+                    href="/dashboard?AED"
                 ),
                 dmc.NavLink(
                     label="Fatores",
@@ -73,8 +75,8 @@ sidebar = html.Div(
                     opened=False,
                     variant="subtle",
                     children=[
-                        dmc.NavLink(label="Eventos Naturais", style={'color':'rgb(98 98 98)'}),
-                        dmc.NavLink(label="Sazionais", style={'color':'rgb(98 98 98)'}),
+                        dmc.NavLink(label="Externos", style={'color':'rgb(98 98 98)'}, href="/dashboard?externalFactors"),
+                        dmc.NavLink(label="Internos", style={'color':'rgb(98 98 98)'},)
                     ],
                 ),
                 dmc.NavLink(
@@ -84,8 +86,8 @@ sidebar = html.Div(
                     opened=False,
                     variant="subtle",
                     children=[
-                        dmc.NavLink(label="Nova previsão", style={'color':'rgb(98 98 98)'}),
-                        dmc.NavLink(label="Previsões anteriores", style={'color':'rgb(98 98 98)'}),
+                        dmc.NavLink(label="Nova previsão", style={'color':'rgb(98 98 98)'}, href="/dashboard?forecast"),
+                        dmc.NavLink(label="Previsões anteriores", style={'color':'rgb(98 98 98)'}, href="/dashboard?pastPredictions"),
                     ],
                 ),
                 dmc.NavLink(
@@ -95,15 +97,16 @@ sidebar = html.Div(
                     variant="subtle",
                 ),
                 dmc.NavLink(
-                    label="Tarefas",
+                    label="Registos",
                     icon=get_icon(icon="mingcute:task-2-fill"),
                     childrenOffset=28,
                     opened=False,
                     variant="subtle",
                     styles={"icon":{"postion": 'absolute'}},
                     children=[
-                        dmc.NavLink(label="Criar Tarefa", style={'color':'rgb(98 98 98)'}),
-                        dmc.NavLink(label="Limpar o Quadro", style={'color':'rgb(98 98 98)'}),
+                        dmc.NavLink(label="Registar Tarefas", style={'color':'rgb(98 98 98)'}),
+                        dmc.NavLink(label="Registar Promoções", style={'color':'rgb(98 98 98)'}),
+                       # dmc.NavLink(label="Limpar o Quadro", style={'color':'rgb(98 98 98)'}),
                     ],
                 ),
             ],

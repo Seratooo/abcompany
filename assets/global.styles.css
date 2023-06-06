@@ -1,0 +1,298 @@
+#save-button .mantine-Button-label{
+  font-size: 1.5rem;
+}
+
+#save-button .mantine-Button-icon{
+  font-size: 3rem;
+}
+
+#save-button{
+  background-color: #2B454E;
+}
+
+#data-output2{
+  font-size: 1.2rem;
+  font-family: 'Nunito';
+}
+
+
+#estatisticas-container {
+  margin: 2rem;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+#estatisticas-container > p:first-child {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-family: 'Nunito';
+}
+
+#estatisticas-container > div:nth-child(odd) {
+  background-color: #e1e1e1;
+}
+
+#estatisticas-container > div:nth-child(even) {
+  background-color: #d2d2d2;
+}
+
+#estatisticas-container > div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+#estatisticas-container > div > p{
+  width: 50%;
+  border-right: 1px solid silver;
+}
+
+#estatisticas-container p {
+  margin: 0;
+  padding: 5px;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+#estatisticas-container p span {
+  font-weight: bold;
+}
+
+#estatisticas-container > div:nth-child(8) > p:nth-child(2){
+  margin: 0;
+  padding: 5px;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  white-space: pre;
+}
+
+
+
+#variable-types-container {
+  background-color: white;
+  padding: 15px;
+  margin: 2rem;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#variable-types-container p {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-family: 'Nunito';
+}
+
+#variable-types-container div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  flex-direction: column;
+}
+
+#variable-types-container > div{
+  border: 1px solid;
+  padding: 10px;
+}
+
+#variable-types-container div div {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}
+
+#variable-types-container div div p {
+  margin-right: 10px;
+  font-weight: 300;
+  font-size: 1.2rem;
+  font-family: 'Nunito';
+}
+
+#variable-types-container div div p:first-child {
+  font-weight: bold;
+}
+
+
+
+
+
+#aed-container{
+  background-color: #f0f0f0;
+}
+
+#alerts-container {
+  background-color: white;
+  padding: 15px;
+  margin: 2rem;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#alerts-container p {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-family: 'Nunito';
+}
+
+#alerts-container div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  flex-direction: column;
+}
+
+#alerts-container > div{
+  border: 1px solid;
+  padding: 10px;
+}
+
+#alerts-container div div {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}
+
+#alerts-container div div p {
+  margin-right: 10px;
+  font-weight: 300;
+  font-size: 1.2rem;
+  font-family: 'Nunito';
+}
+
+#alerts-container div div p:first-child {
+  /* font-weight: bold; */
+}
+
+#variables-container{
+  padding: 15px;
+  background-color: white;
+  margin: 2rem;
+}
+#variables-container > p{
+  font-size: 2rem;
+  font-family: 'Nunito';
+  font-weight: 700;
+}
+
+#variables-output{
+  min-height: 100vh;
+  height: 100%;
+}
+
+#variables-output > div{
+  text-align: right;
+}
+#variables-output > div > h3{
+  font-size: 1.8rem;
+  font-family: 'Nunito';
+}
+#variables-output > div > p{
+  font-size: 1.2rem;
+  font-family: 'Nunito';
+}
+
+#first_table{
+  background-color: #e0dfdf;
+  padding: 15px;
+  margin: 10px;
+  width: 50%;
+}
+
+#second_table{
+  background-color: #e0dfdf;
+  padding: 15px;
+  margin: 10px;
+}
+
+.container-first_table{
+  display: flex;
+}
+.container-first_table #histogram-graph{
+ width: 50%;
+ height: 60vh;
+}
+
+#histogram-graph2{
+  width: 100%;
+}
+
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  border-bottom: 1px solid silver;
+}
+
+.table-row p {
+  margin: 0;
+  font-size: 1.2rem;
+  font-family: 'Nunito';
+}
+
+.table-row p:first-child {
+  font-weight: bold;
+}
+
+
+.mantine-Tabs-tabsList{
+  font-size: 1.2rem;
+  font-family: 'Nunito';
+  padding: 10px;
+}
+.mantine-Tabs-tabsList button:first-child{
+  background: #adadad;
+  color: #fff;
+}
+
+
+
+.cell-table {
+  width: 433.156px;
+  border-collapse: collapse;
+}
+
+.cell-table th {
+  background-color: #f2f2f2;
+  border: 1px solid rgb(211, 211, 211);
+  padding: 8px;
+  text-align: left;
+}
+
+.cell-table th .column-header-name {
+  font-weight: bold;
+}
+.cell-table th span{
+  font-size: 1.1rem;
+}
+
+.cell-table td {
+  border: 1px solid rgb(211, 211, 211);
+  padding: 8px;
+}
+
+.cell-table td div{
+  font-size: 1.1rem;
+}
+
+
+
+
+.aed-page-class > div{
+  width: 100%;
+}
+
+
+#predition-componets{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+#predition-componets #forecast-btn {
+  font-size: 3.2rem;
+  font-family: 'Nunito';
+  background-color: #2B454E;
+}

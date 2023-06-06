@@ -1,6 +1,6 @@
 #DATABASE
 import pandas as pd
-
+from prophet import Prophet
 
 def getDatabase():
   sales_train_df = pd.read_csv('data/train.csv', low_memory=False)
@@ -21,3 +21,19 @@ def getDatabase():
   sales_train_all_df['Month'] = pd.DatetimeIndex(sales_train_all_df['Date']).month
   sales_train_all_df['Day'] = pd.DatetimeIndex(sales_train_all_df['Date']).day
   return sales_train_all_df
+
+
+def sales_predition(store_id, sales_df, holidays, periods):
+    # sales_df = sales_df[sales_df['Store'] == store_id]
+    sales_df = sales_df[['Date', 'Sales']].rename(columns = {'Date': 'ds', 'Sales':'y'})
+    sales_df['ds'] = pd.to_datetime(sales_df['ds'])
+    sales_df = sales_df.sort_values(by = 'ds')
+    
+    model = Prophet(holidays=holidays)
+    model.fit(sales_df)
+    future = model.make_future_dataframe(periods = periods)
+    forecast = model.predict(future)
+    # figure1 = model.plot(forecast, xlabel= 'Data', ylabel='Vendas')
+    # figure2 = model.plot_components(forecast)
+    
+    return sales_df, forecast
