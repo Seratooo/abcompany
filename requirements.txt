@@ -162,7 +162,7 @@ python-json-logger==2.0.7
 python-slugify==8.0.1
 python-stdnum==1.18
 pytz==2023.3
-PyWavelets==1.4.1
+PyWavelets==1.4.0
 PyYAML==6.0
 pyzmq==25.0.2
 rapidfuzz==2.15.1
