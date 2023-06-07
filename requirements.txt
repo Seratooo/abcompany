@@ -9,7 +9,7 @@ holidays
 pandas
 pandas-datareader
 prophet
-prophet
+meteostat
 pymongo[srv]
 ydata-profiling==4.2.0
 python-dotenv
