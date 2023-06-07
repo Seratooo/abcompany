@@ -1,4 +1,4 @@
-dash
+dash[dev]>=2.5.1
 dash_bootstrap_components
 dash-iconify
 dash-mantine-components
