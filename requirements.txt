@@ -101,8 +101,8 @@ LunarCalendar==0.0.9
 lunardate==0.2.0
 lxml==4.9.2
 MarkupSafe==2.1.2
-matplotlib==3.7.1
-matplotlib-inline==0.1.6
+matplotlib
+matplotlib-inline
 Metaphone==0.6
 meteostat==1.6.5
 mistune==2.0.5
