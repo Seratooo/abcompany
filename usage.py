@@ -33,6 +33,7 @@ sys.path.append("api")
 #     profile.to_file(f"json/{dfName}.json")
 
 app = dash.Dash(__name__, use_pages=True, suppress_callback_exceptions=True, update_title='Carregando...')
+server = app.server
 
 app.layout = html.Div([
     # abcompany.ExampleComponent(id='component'),
