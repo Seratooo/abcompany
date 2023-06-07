@@ -12,4 +12,4 @@ prophet
 prophet
 pymongo[srv]
 ydata-profiling==4.2.0
-
+python-dotenv
