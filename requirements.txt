@@ -10,6 +10,6 @@ pandas
 pandas-datareader
 prophet
 prophet
-'pymongo[srv]'
+pymongo[srv]
 ydata-profiling==4.2.0
 
