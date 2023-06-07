@@ -37,7 +37,7 @@ dash-html-components==2.0.0
 dash-iconify==0.1.2
 dash-mantine-components==0.12.1
 dash-table==5.0.0
-dask==2023.5.0
+dask
 debugpy==1.6.7
 decorator==5.1.1
 defusedxml==0.7.1
