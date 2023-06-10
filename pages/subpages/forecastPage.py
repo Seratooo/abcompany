@@ -2,17 +2,17 @@ from dash import html, Output, Input, callback, State
 from dash import dcc
 from datetime import date, datetime
 from api.clientApp import GetAllCollectionNames, GetCollectionByName
-from api.externalFactors import GetHolidaysByYear, GetInflationByYear, GetWeatherByYear
+from api.externalFactors import GetHolidaysByYear, GetInflationByYear, GetWeatherByYear, future_weather
 from data import configs
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 import dash_mantine_components as dmc
-
+from dash_iconify import DashIconify
 
 DatasetsNames = GetAllCollectionNames()
 PanelMultiSelectOptions = [DatasetsNames[0]]
-
+global df_predition
 forecast = html.Div([
     dcc.Interval(id='interval_db', interval=86400000 * 7, n_intervals=0),
     dcc.Store(id='dataset-sales-forecast-storage', storage_type='local'),
@@ -21,21 +21,15 @@ forecast = html.Div([
                 html.Div([
                     html.H3('Realizar previsão', style={"font":"1.8rem Nunito","fontWeight":"700", "color":"#fff","marginBottom":".8rem"}),
                     html.Div([
-                        html.P('realize a previsão de vendas até uma data pretendida', style={"font":"1.2rem Nunito", "color":"#fff"}),
+                        html.P('Realize a previsão de vendas até uma data pretendida', style={"font":"1.2rem Nunito", "color":"#fff"}),
                     ]),
                     html.Div([
-                        html.P('Fontes selecionadas para análise:', style={"font":"1.2rem Nunito", "color":"#fff"}),
                         dmc.MultiSelect(
                         label="",
-                        placeholder="Select all you like!",
+                        placeholder="Selecione seus conjuntos de dados!",
                         id="panelForecast-dataset-multi-select",
                         value=PanelMultiSelectOptions,
-                        data=[
-                            {"value": "react", "label": "React"},
-                            {"value": "ng", "label": "data 2015-2020"},
-                            {"value": "svelte", "label": "Svelte"},
-                            {"value": "vue", "label": "data 2020 - 2022"},
-                        ],
+                        data=[],
                         style={"width": 400, "marginBottom": 10,"fontSize":"1.2rem"},
                         ),
                     ])
@@ -44,8 +38,8 @@ forecast = html.Div([
         ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
     html.Div([
         html.Div([
-            dmc.Button("Prever", id="forecast-btn"),
-            dmc.Select(
+             dmc.Button("Prever", id="forecast-btn"),
+             dmc.Select(
                         label="",
                         placeholder="Selecione o periodo",
                         id="period-multi-select",
@@ -55,7 +49,7 @@ forecast = html.Div([
                             {"value": "M", "label": "Mensal"},
                             {"value": "Y", "label": "Anual"},
                         ],
-                        style={"width": 200, "marginBottom": 10,"fontSize":"1.2rem"},
+                        style={"width": 150, "marginBottom": 10,"fontSize":"1.2rem"},
                         ),
              dmc.Select(
                         label="",
@@ -76,27 +70,74 @@ forecast = html.Div([
                             {"value": "11", "label": "11"},
                             {"value": "12", "label": "12"},
                         ],
-                        style={"width": 200, "marginBottom": 10,"fontSize":"1.2rem"},
+                        style={"width": 150, "marginBottom": 10,"fontSize":"1.2rem"},
                 )
-        ], style={"display":"flex", "gap":"20px"}),
-     dmc.MultiSelect(
-            label="Factores a considerar",
-            placeholder="Select all you like!",
-            id="factors-multi-select",
-            value=["holiday"],
+        ], id='predition-elements', style={"display":"flex", "gap":"20px"}),
+        html.Div([
+            dmc.Select(
+                label="Feriados Nacionais",
+                placeholder="Selecione o seu país!",
+                id="country-name-select",
+                value="AO",
+                data=[
+                    {"value": "AO", "label": "Angola"},
+                ],
+                style={"width": 200},
+            ),
+            dmc.MultiSelect(
+                    label="Factores a considerar",
+                    placeholder="Selecione os fatores a considerar!",
+                    id="factors-multi-select",
+                    value=["schoolholiday"],
+                    data=[
+                        {"value": "weather", "label": "Clima"},
+                        {"value": "schoolholiday", "label": "Feriados Escolares"},
+                        {"value": "inflation", "label": "Inflação"},
+                    ],
+                    style={"width": 300},
+                ),
+        ], id="factors-wrapper-components"),
+    ], id="factors-components"),
+    html.Div([
+            dmc.NumberInput(
+                id='fourier-number',
+                label="Sazonalidade Anual",
+                description="Suavização da sazonalidade",
+                value=10,
+                min=0,
+                max=30,
+                step=5,
+                icon=DashIconify(icon="fa6-solid:weight-scale"),
+                style={"width": 180},
+            ),
+            dmc.NumberInput(
+                id='fourier-month-number',
+                label="Sazonalidade Mensal",
+                description="Suavização da sazonalidade",
+                value=5,
+                min=0,
+                max=10,
+                step=1,
+                icon=DashIconify(icon="fa6-solid:weight-scale"),
+                style={"width": 180},
+            ),
+            dmc.Select(
+            label="Tipo de Sazonalidade",
+            description="Relação entre a sozalidade e a tendência!",
+            id="seasonality-mode-select",
+            value="multiplicative",
             data=[
-                {"value": "weather", "label": "Clima"},
-                {"value": "holiday", "label": "Feridos Nacionais"},
-                #{"value": "svelte", "label": "Feriados Escolares"},
-                {"value": "inflation", "label": "Inflação"},
+                {"value": "multiplicative", "label": "Multiplicativa"},
+                {"value": "additive", "label": "Aditiva"},
+
             ],
-            style={"width": 400, "marginBottom": 10},
+            style={"width": 250},
         ),
-    ], id="predition-componets"),
+
+    ], id="parameters-components"),
      html.Div([
-            html.Div(id='graph11'),
-            html.Div(id='graph12'),
-            html.Div(id='graph13'),
+            html.Div(id='predition-results'),
+            html.Div(id='holidays-results'),
         ], style={"background":"#F0F0F0", "padding":"10px 0"}),
        
 ])
@@ -131,32 +172,54 @@ def save_param_panelOption(value):
 
 
 @callback(
-    Output("graph11", "children"),
-    Output("graph12", "children"),
-    Output("graph13", "children"),
+    Output("predition-results", "children"),
+    Output("holidays-results","children"),
     State('factors-multi-select','value'),
     Input('externarFactors', 'data'),
     Input('forecast-btn','n_clicks'),
-    State('lenght-multi-select', 'value')
+    State('lenght-multi-select', 'value'),
+    State('country-name-select','value'),
+    State('fourier-number','value'),
+    State('fourier-month-number','value'),
+    State('seasonality-mode-select','value')
 )
-def set_forecast(factorsSeleted, externarFactors, nclicks, lenght):
+def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name, fourier, fourier_monthly, seasonality_mode):
     Holidays = pd.DataFrame()
     Weather = pd.DataFrame()
     Inflation = pd.DataFrame()
     Dataset = getColections(PanelMultiSelectOptions)
     Lenght = int(lenght) * 30
+    global df_predition
     if Dataset['_id'].any():
         Dataset.drop('_id', axis=1, inplace=True)
     
     for sFactor in factorsSeleted:
-        if(sFactor == 'holiday'):
+        if(sFactor == 'schoolholiday'):
             Holidays = getHolidays(externarFactors)
         elif(sFactor == 'weather'):
-            Weather = getWeather(externarFactors)
+            Dataset.loc[:, 'Weather'] = Dataset['Date'].apply(future_weather)
         elif(sFactor == 'inflation'):
             Inflation = getInflation(externarFactors)
     
-    df_original, df_predition = configs.sales_predition(0,Dataset,Holidays, Lenght)
+    if 'Weather' in Dataset.columns:
+        df_original, df_predition, model = configs.sales_predition_Weather(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
+        Weather_regressor = dcc.Graph(
+        id='regressors-plot',
+        figure={
+            'data': [
+                {'x': df_predition['ds'], 'y': df_predition['extra_regressors_multiplicative'], 'type': 'line'}
+            ],
+            'layout': {
+                'title': 'Regressores (Clima)',
+                'xaxis': {'title': 'Data'},
+                'yaxis': {'title': 'Clima'}
+            }
+        }
+        )
+    else:
+        df_original, df_predition, model = configs.sales_predition_v2(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
+
+    
     
     fig = px.line(df_predition, x='ds', y='yhat', title='Previsões de Vendas')
 
@@ -182,38 +245,21 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, lenght):
         template='plotly_white'
     )
     
-    fig = dcc.Graph(
+    Predition_graph = dcc.Graph(
         id='graph11',
         figure=fig
     )
     
-
-    fig2 = dcc.Graph(
-            id="graph12",
-            figure={
-                "data": [
-                    go.Scatter(
-                        x=df_predition['ds'],
-                        y=df_predition['holidays'],
-                        mode="lines+markers",
-                        name="Feriados",
-                        line=dict(color='rgb(31, 119, 180)'),
-                        marker=dict(size=8, color='rgb(31, 119, 180)', symbol='circle'),
-                    )
-                ],
-                "layout": go.Layout(
-                    title="Impacto de Feriados nas Vendas",
-                    xaxis=dict(title="Data", showgrid=False),
-                    yaxis=dict(title="Feriados", showgrid=False),
-                    plot_bgcolor="rgb(240, 240, 240)",
-                    paper_bgcolor="rgb(255, 255, 255)",
-                    font=dict(color="rgb(0, 0, 0)"),
-                ),
-            },
-        )
     
-    #fig = px.area(df_predition, x="ds", y="yhat")
-    #fig2 = px.histogram(df_predition, x="ds", y="holidays", hover_data=df_predition.columns)
+    MyHolidays = []
+    MyHolidays.append(dcc.Tab(label='Feriados Nacionais', value='holiday'))
+    for hday in model.train_holiday_names:
+        MyHolidays.append(dcc.Tab(label=hday, value=f'{hday}'))
+
+    HolidaysTabs = [
+        dcc.Tabs(id="tabs-holiday", value='holiday', children=MyHolidays),
+        html.Div(id='tabs-content-holiday-graph')
+    ]
 
     fig3 = px.line(df_predition, x='ds', y='trend', color='trend', symbol="trend")
     fig3_graph = dcc.Graph(
@@ -221,7 +267,71 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, lenght):
         figure=fig3
     )
     
-    return fig, fig2, fig3_graph
+
+    yearly_seasonality = dcc.Graph(
+        id='seasonality-yearly-plot',
+        figure={
+            'data': [
+                {'x': df_predition['ds'], 'y': df_predition['yearly'], 'type': 'line'}
+            ],
+            'layout': {
+                'title': 'Sazonalidade Anual',
+                'xaxis': {'title': 'Data'},
+                'yaxis': {'title': 'Sazonalidade'}
+            }
+        }
+    )
+    
+    monthly_seasonality = dcc.Graph(
+        id='seasonality-monthly-plot',
+        figure={
+            'data': [
+                {'x': df_predition['ds'], 'y': df_predition['monthly'], 'type': 'line'}
+            ],
+            'layout': {
+                'title': 'Sazonalidade Mensal',
+                'xaxis': {'title': 'Data'},
+                'yaxis': {'title': 'Sazonalidade'}
+            }
+        }
+    )
+    
+    weekly_seasonality = dcc.Graph(
+        id='seasonality-weekly-plot',
+        figure={
+            'data': [
+                {'x': df_predition['ds'], 'y': df_predition['weekly'], 'type': 'line'}
+            ],
+            'layout': {
+                'title': 'Sazonalidade Semanal',
+                'xaxis': {'title': 'Data'},
+                'yaxis': {'title': 'Sazonalidade'}
+            }
+        }
+    )
+
+    seasonality = dmc.Tabs(
+    [
+        dmc.TabsList(
+            [
+                dmc.Tab("Sazonalidade Anual", value="yearly"),
+                dmc.Tab("Sazonalidade Mensal", value="monthly"),
+                dmc.Tab("Sazonalidade Semanal", value="weekly"),
+            ]
+        ),
+        dmc.TabsPanel(yearly_seasonality, value="yearly"),
+        dmc.TabsPanel(monthly_seasonality, value="monthly"),
+        dmc.TabsPanel(weekly_seasonality, value="weekly"),
+    ],
+    color="green",
+    value='yearly',
+    orientation="horizontal",
+    )
+
+    if 'Weather' in Dataset.columns:
+        return [Predition_graph, Weather_regressor, seasonality, fig3_graph], HolidaysTabs
+    else:
+        return [Predition_graph, seasonality, fig3_graph], HolidaysTabs
 
 
 
@@ -254,3 +364,62 @@ def getInflation(data):
     return InflationPD
 
     
+
+@callback(Output('tabs-content-holiday-graph', 'children'),
+              Input('tabs-holiday', 'value'))
+def render_content(tab):
+    global df_predition
+    if tab == 'holiday':
+        return html.Div([
+            html.H3('Impacto dos Feriados Nacionais'),
+            dcc.Graph(
+            id=tab,
+            figure={
+                "data": [
+                    go.Scatter(
+                        x=df_predition['ds'],
+                        y=df_predition['holidays'],
+                        mode="lines+markers",
+                        name="Feriados",
+                        line=dict(color='rgb(31, 119, 180)'),
+                        marker=dict(size=8, color='rgb(31, 119, 180)', symbol='circle'),
+                    )
+                ],
+                "layout": go.Layout(
+                    title="Impacto de Feriados nas Vendas",
+                    xaxis=dict(title="Data", showgrid=False),
+                    yaxis=dict(title="Feriados", showgrid=False),
+                    plot_bgcolor="rgb(240, 240, 240)",
+                    paper_bgcolor="rgb(255, 255, 255)",
+                    font=dict(color="rgb(0, 0, 0)"),
+                ),
+            },
+        )
+        ])
+    else:
+        return html.Div([
+            html.H3(tab),
+            dcc.Graph(
+            id=tab,
+            figure={
+                "data": [
+                    go.Scatter(
+                        x=df_predition['ds'],
+                        y=df_predition[f'{tab}'],
+                        mode="lines+markers",
+                        name="Feriado",
+                        line=dict(color='rgb(31, 119, 180)'),
+                        marker=dict(size=8, color='rgb(31, 119, 180)', symbol='circle'),
+                    )
+                ],
+                "layout": go.Layout(
+                    title=f"Impacto {tab}",
+                    xaxis=dict(title="Data", showgrid=False),
+                    yaxis=dict(title="Feriado", showgrid=False),
+                    plot_bgcolor="rgb(240, 240, 240)",
+                    paper_bgcolor="rgb(255, 255, 255)",
+                    font=dict(color="rgb(0, 0, 0)"),
+                ),
+            },
+        )
+        ])

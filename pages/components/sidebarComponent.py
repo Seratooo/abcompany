@@ -87,7 +87,7 @@ sidebar = html.Div(
                     variant="subtle",
                     children=[
                         dmc.NavLink(label="Nova previsão", style={'color':'rgb(98 98 98)'}, href="/dashboard?forecast"),
-                        dmc.NavLink(label="Previsões anteriores", style={'color':'rgb(98 98 98)'}, href="/dashboard?pastPredictions"),
+                        dmc.NavLink(label="Consultar", style={'color':'rgb(98 98 98)'}, href="/dashboard?pastPredictions"),
                     ],
                 ),
                 dmc.NavLink(
