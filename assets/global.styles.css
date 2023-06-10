@@ -236,15 +236,19 @@
   font-weight: bold;
 }
 
-
+/* TABS */
 .mantine-Tabs-tabsList{
   font-size: 1.2rem;
   font-family: 'Nunito';
   padding: 10px;
 }
+.mantine-Tabs-tabLabel{
+  font-size: 1.2rem;
+  font-family: 'Nunito';
+}
 .mantine-Tabs-tabsList button:first-child{
-  background: #adadad;
-  color: #fff;
+  /* background: #adadad;
+  color: #fff; */
 }
 
 
@@ -285,14 +289,64 @@
 }
 
 
-#predition-componets{
+/* Forecast PAGE */
+
+#factors-components{
   display:flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
 }
-#predition-componets #forecast-btn {
+
+#factors-components #predition-elements{
+  margin-top: 25px;
+}
+#factors-wrapper-components{
+  display: flex;
+  gap: 10px;
+}
+#factors-components #forecast-btn {
   font-size: 3.2rem;
   font-family: 'Nunito';
   background-color: #2B454E;
+  padding: 0 4rem;
+}
+
+#parameters-components{
+ display: flex;
+ gap: 15px;
+ padding: 0px 20px;
+}
+
+#predition-results{
+  padding: 0 20px;
+}
+
+#holidays-results{
+  margin-top: 20px;
+  padding: 0 20px;
+}
+
+#holidays-results #tabs-holiday > div{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+#holidays-results #tabs-holiday .tab--selected{
+  border-top: 5px solid #2B454E;
+}
+#holidays-results #tabs-holiday > div > span{
+  font-size: 1.2rem;
+  font-family: 'Nunito';
+  padding: 3px;
+  text-align: center;
+}
+
+#holidays-results h3 {
+  font-size: 2rem;
+  font-family: 'Nunito';
+  background-color: #fff;
+  padding-top: 10px;
+  padding-left: 5px;
 }

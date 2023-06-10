@@ -31,7 +31,28 @@ def GetWeatherByYear(Year):
     df_reduzido.rename(columns={'tmax': 'Temperatura máxima'}, inplace=True)
     df_reduzido.sort_values('ds', inplace=True)
     df_reduzido.index = pd.to_datetime(df.index)
+    
     data = df_reduzido.iloc[:, :1].copy()
+    data['Date'] = data.index
+    data.rename(columns={'Temperatura média': 'Weather'}, inplace=True)
+    return data, df_reduzido.copy()
+
+def GetWeatherByDay(_start, _end):
+    start = _start
+    end = _end
+    df = Daily(LuandaPoint, start, end)
+    df = df.fetch()
+    df_reduzido = df.iloc[:, :3].copy()
+    df_reduzido.index.name = 'ds'
+    df_reduzido.rename(columns={'tavg': 'Temperatura média'}, inplace=True)
+    df_reduzido.rename(columns={'tmin': 'Temperatura mínima'}, inplace=True)
+    df_reduzido.rename(columns={'tmax': 'Temperatura máxima'}, inplace=True)
+    df_reduzido.sort_values('ds', inplace=True)
+    df_reduzido.index = pd.to_datetime(df.index)
+    
+    data = df_reduzido.iloc[:, :1].copy()
+    data['Date'] = data.index
+    data.rename(columns={'Temperatura média': 'Weather'}, inplace=True)
     return data, df_reduzido.copy()
 
 # def GetPIB_ByYear(Year):
@@ -56,4 +77,14 @@ def GetInflationByYear(Year):
     return df_Dol, df_Eur, df
 
 
-GetInflationByYear(2018)
+
+def future_weather(ds):
+    date = pd.to_datetime(ds)
+    future_weather = GetWeatherByDay(date, date)[0]
+    has_value = future_weather['Weather'].notnull().any()
+    if has_value:
+        Weather = float(future_weather['Weather'])
+        if Weather is not None and int(Weather) > 0:
+            return Weather
+    else:
+        return 0.0
