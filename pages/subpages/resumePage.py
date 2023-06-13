@@ -37,18 +37,22 @@ resume = html.Div([
             dmc.Button("Criar relatório", style={"background":"#fff", "color":"#000","font":"3.2rem Nunito","marginTop":"1.2rem"}),
             )
         ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
-    html.Div([
-            html.Div([
-                html.Div([dcc.Graph(id='graph1', className='dbc')],style={"width":"30%"}),
-                html.Div([dcc.Graph(id='graph2', className='dbc')], style={"width":"30%"}),
-                html.Div([dcc.Graph(id='graph3', className='dbc')], style={"width":"30%"}),
-            ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
-            html.Div([
-                html.Div([dcc.Graph(id='graph4', className='dbc')], style={"width":"51%"}),
-                html.Div([dcc.Graph(id='graph5', className='dbc')], style={"width":"40%"}),
-            ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
-        ]
-        , style={"width":"100%","height":"140%"}),
+    
+    dcc.Loading(children=[
+            html.Div(
+                [
+                    html.Div([
+                        html.Div([dcc.Graph(id='graph1', className='dbc')],style={"width":"30%"}),
+                        html.Div([dcc.Graph(id='graph2', className='dbc')], style={"width":"30%"}),
+                        html.Div([dcc.Graph(id='graph3', className='dbc')], style={"width":"30%"}),
+                    ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
+                    html.Div([
+                        html.Div([dcc.Graph(id='graph4', className='dbc')], style={"width":"51%"}),
+                        html.Div([dcc.Graph(id='graph5', className='dbc')], style={"width":"40%"}),
+                    ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
+                ]
+                , style={"width":"100%","height":"65vh", "min-Height":"55vh"})
+            ], color="#2B454E", type="dot", fullscreen=False,),
 ])
 
 

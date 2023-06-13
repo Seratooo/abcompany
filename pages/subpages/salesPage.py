@@ -38,10 +38,12 @@ sales = html.Div([
             dmc.Button("Criar relatório", style={"background":"#fff", "color":"#000","font":"3.2rem Nunito","marginTop":"1.2rem"}),
             )
         ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
-        html.Div([
-            html.Div([dcc.Graph(id='graph7', className='dbc')], style={"width":"50%"}),
-            html.Div([dcc.Graph(id='graph8', className='dbc')], style={"width":"50%"}),
-        ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
+        dcc.Loading(children=[
+            html.Div([
+                html.Div([dcc.Graph(id='graph7', className='dbc')], style={"width":"46%"}),
+                html.Div([dcc.Graph(id='graph8', className='dbc')], style={"width":"46%"}),
+            ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
+        ], color="#2B454E", type="dot", fullscreen=False,),
         html.Div([
             html.Div([
                 dmc.Select(
@@ -57,7 +59,7 @@ sales = html.Div([
                     ],
                     style={"width": 200, "marginBottom": 10},
                 ),
-                dcc.Graph(id='graph9', className='dbc'),
+                dcc.Loading(children=[dcc.Graph(id='graph9', className='dbc'),], color="#2B454E", type="dot", fullscreen=False,),
             ], style={"width":"46%"}),
             html.Div([
                  dmc.Select(
@@ -73,7 +75,7 @@ sales = html.Div([
                     ],
                     style={"width": 200, "marginBottom": 10},
                 ),
-                dcc.Graph(id='graph10', className='dbc'),
+                dcc.Loading(children=[dcc.Graph(id='graph10', className='dbc'),], color="#2B454E", type="dot", fullscreen=False,),
             ], style={"width":"46%"}),
         ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
         

@@ -41,12 +41,17 @@ def sales_predition(store_id, sales_df, holidays, periods):
     return sales_df, forecast
 
 def sales_predition_v2( sales_df, holidays, periods, country_name, fourier, fourier_monthly, seasonality_mode):
-    sales_df = sales_df[sales_df['Year']==2015]
+    # sales_df = sales_df[sales_df['Year']==2015]
     sales_df = sales_df[['Date', 'Sales']].rename(columns = {'Date': 'ds', 'Sales':'y'})
     sales_df['ds'] = pd.to_datetime(sales_df['ds'])
     sales_df = sales_df.sort_values(by = 'ds')
     
-    model = Prophet(yearly_seasonality=fourier, seasonality_mode=seasonality_mode) #holidays=holidays)
+    has_holidays = holidays.empty
+    if has_holidays:
+        model = Prophet(yearly_seasonality=fourier, seasonality_mode=seasonality_mode) #)
+    else:
+        model = Prophet(yearly_seasonality=fourier, seasonality_mode=seasonality_mode, holidays=holidays) #)
+
     model.add_country_holidays(country_name=country_name)
     model.add_seasonality(name='monthly', period=30.5, fourier_order=fourier_monthly)
     model.fit(sales_df)
@@ -57,12 +62,18 @@ def sales_predition_v2( sales_df, holidays, periods, country_name, fourier, four
 
 
 def sales_predition_Weather(sales_df, holidays, periods,country_name, fourier, fourier_monthly, seasonality_mode):
-    sales_df = sales_df[sales_df['Year']==2015]
+    # sales_df = sales_df[sales_df['Year']==2015]
     sales_df = sales_df[['Date', 'Sales','Weather']] 
     sales_df = sales_df.rename(columns = {'Date': 'ds', 'Sales':'y'})
     sales_df = sales_df.sort_values(by = 'ds')
     
-    model = Prophet(yearly_seasonality=fourier, seasonality_mode=seasonality_mode)  #, holidays=holidays)
+    has_holidays = holidays.empty
+    if has_holidays:
+        model = Prophet(yearly_seasonality=fourier, seasonality_mode=seasonality_mode) #)
+    else:
+        model = Prophet(yearly_seasonality=fourier, seasonality_mode=seasonality_mode, holidays=holidays) #)
+
+    # model = Prophet(yearly_seasonality=fourier, seasonality_mode=seasonality_mode)  #, holidays=holidays)
     model.add_country_holidays(country_name=country_name)
     model.add_seasonality(name='monthly', period=30.5, fourier_order=fourier_monthly)
     model.add_regressor('Weather') #mode='multiplicative'

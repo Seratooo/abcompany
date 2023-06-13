@@ -48,28 +48,32 @@ AED = html.Div([
                 ])
             , style={"widht":"100%"})
         ],className='aed-page-class' , style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem", "width":"100%"}),
-        html.Div([
-          html.Div([
-              html.Div(id='estatisticas-container', style={"width":"72%"}),
-              html.Div([
-                html.Div(id='variable-types-container', style={"height":"50%"}),
-                html.Div(id='alerts-container', style={"height":"50%"}),
-              ], style={"width":"38%", "display":"flex","flexDirection":"column","justifyContent":"space-between"}),
-          ], style={"display":"flex"}),
-          
+        
+        dcc.Loading(children=[
+            html.Div([
+            html.Div([
+                html.Div(id='estatisticas-container', style={"width":"72%"}),
+                html.Div([
+                    html.Div(id='variable-types-container', style={"height":"50%"}),
+                    html.Div(id='alerts-container', style={"height":"50%"}),
+                ], style={"width":"38%", "display":"flex","flexDirection":"column","justifyContent":"space-between"}),
+            ], style={"display":"flex"}),
+            
 
-          html.Div([
-             html.P("Variáveis"),
-             dmc.Select(
-                placeholder="Selecione uma",
-                id="variables-select",
-                value="",
-                data=[ ],
-                style={"width": 200, "marginBottom": 10},
-            ),
-            html.Div(id='variables-output'),
-          ],id='variables-container')
-        ], id="report")
+            html.Div([
+                html.P("Variáveis"),
+                dmc.Select(
+                    placeholder="Selecione uma",
+                    id="variables-select",
+                    value="",
+                    data=[ ],
+                    style={"width": 200, "marginBottom": 10},
+                ),
+                html.Div(id='variables-output'),
+            ],id='variables-container')
+            ], id="report", style={"height":"55vh"})
+        ], color="#2B454E", type="dot", fullscreen=False,),
+
 ], id='aed-container')
 
 

@@ -4,9 +4,9 @@ import pandas as pd
 import plotly.graph_objs as go
 from api.externalFactors import GetHolidaysByYear, GetInflationByYear, GetWeatherByYear
 
-HolidayMultiSelectOptions = ['2013', '2014', '2015']
-WeatherMultiSelectOptions = ['2013', '2014', '2015']
-InflationMultiSelectOptions = ['2013', '2014', '2015']
+HolidayMultiSelectOptions = ['2021', '2022']
+WeatherMultiSelectOptions = ['2021', '2022']
+InflationMultiSelectOptions = ['2021', '2022']
 
 HolidayTab = [
      html.P(children='Feriados', style={"font":"1.8rem Nunito","fontWeight":"700", "color":"#000","marginBottom":".8rem"}),
@@ -41,8 +41,8 @@ HolidayTab = [
                         dmc.Tab("Gráficos", value="graph_holiday")
                     ]
                 ),
-                dmc.TabsPanel(html.Div(id="holiday-multi-selected-value"), value="data_holiday"),
-                dmc.TabsPanel(html.Div(id="holiday-graph"), value="graph_holiday")
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="holiday-multi-selected-value", style={"height":"55vh"})], color="#2B454E", type="dot", fullscreen=False,), value="data_holiday"),
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="holiday-graph", style={"height":"55vh"}),], color="#2B454E", type="dot", fullscreen=False,), value="graph_holiday"),
             ],
             color="green",
             orientation="horizontal",
@@ -84,8 +84,8 @@ WeatherTab = [
                         dmc.Tab("Gráficos", value="graph_weather")
                     ]
                 ),
-                dmc.TabsPanel(html.Div(id="weather-multi-selected-value"), value="data_weather"),
-                dmc.TabsPanel(html.Div(id="weather-graph"), value="graph_weather")
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="weather-multi-selected-value", style={"height":"55vh"})], color="#2B454E", type="dot", fullscreen=False,), value="data_weather"),
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="weather-graph", style={"height":"55vh"})], color="#2B454E", type="dot", fullscreen=False,), value="graph_weather")
             ],
             color="green",
             orientation="horizontal",
@@ -128,8 +128,8 @@ InflationTab = [
                         dmc.Tab("Gráficos", value="graph_inflation")
                     ]
                 ),
-                dmc.TabsPanel(html.Div(id="inflation-multi-selected-value"), value="data_inflation"),
-                dmc.TabsPanel(html.Div(id="inflation-graph"), value="graph_inflation")
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="inflation-multi-selected-value", style={"height":"55vh"})], color="#2B454E", type="dot", fullscreen=False,), value="data_inflation"),
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="inflation-graph", style={"height":"55vh"}),], color="#2B454E", type="dot", fullscreen=False,), value="graph_inflation")
             ],
             color="green",
             orientation="horizontal",

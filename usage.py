@@ -34,19 +34,18 @@ sys.path.append("api")
 
 app = dash.Dash(__name__, use_pages=True, suppress_callback_exceptions=True, update_title='Carregando...')
 server = app.server
-
 app.layout = html.Div([
     # abcompany.ExampleComponent(id='component'),
     # html.H1(children='Test for ABCompany', style={'textAlign':'center'}),
     # dcc.Dropdown(df.country.unique(), 'Canada', id='dropdown-selection'),
-    # dcc.Graph(id='graph-content'),
      dcc.Store(id='externarFactors', data={
-                 'holiday': ['2013', '2014', '2015'],
-                 'weather': ['2013', '2014', '2015'],
-                 'inflation': ['2013', '2014', '2015']
+                 'holiday': ['2021', '2022'],
+                 'weather': ['2021', '2022'],
+                 'inflation': ['2021', '2022']
      }),
      dash.page_container,
-     dmc.Loader(color="green", size="xl", variant="oval", style={"position":"absolute","top":"50%","left":"60%", "zIndex":"1"})
+    #  dcc.Loading(children=[dash.page_container], color="#119DFF", type="dot", fullscreen=True,),
+    #  dmc.Loader(color="green", size="xl", variant="oval", style={"position":"absolute","top":"50%","left":"60%", "zIndex":"1"})
 ], style={
     'background':'#F0F0F0',
     'margin': '-8px',
@@ -55,15 +54,6 @@ app.layout = html.Div([
     'height': '100vh',
     'overflow': 'hidden',
     }) 
-
-# @callback(
-#     Output('graph-content', 'figure'),
-#     Input('dropdown-selection', 'value')
-# )
-# def update_graph(value):
-#     dff = df[df.country==value]
-#     return px.line(dff, x='year', y='pop')
-
 
 if __name__ == '__main__':
     app.run_server(debug=True)
