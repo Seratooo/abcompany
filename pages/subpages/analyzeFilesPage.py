@@ -20,17 +20,19 @@ analyzeFiles = html.Div([
                 ])
             )
         ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
-        dmc.Select(
-                    label="",
-                    placeholder="Select one",
-                    id="dataset-select",
-                    value=f"{PanelMultiSelectOptions}",
-                    data=[],
-                    style={"width": 200, "marginBottom": 10},
-                ),
-    html.Div([
-        html.Div( id="dataset-display", style={"background":"#c4c4c4","width":"100%"})
-], style={"display":"flex", "gap":"10px", "justifyContent":"space-between","alignItems":"center", "height":"76vh", "background":"#F0F0F0"}),
+        html.Div([
+            dmc.Select(
+                        label="",
+                        placeholder="Selecione um conjunto",
+                        id="dataset-select",
+                        value=f"{PanelMultiSelectOptions}",
+                        data=[],
+                        style={"width": 200, "marginBottom": 10},
+                    ),
+            dcc.Loading(children=[
+                html.Div( id="dataset-display", style={"width":"100%","minHeight":"55vh"}),
+            ], color="#2B454E", type="dot", fullscreen=False,),
+        ], style={"padding":"10px"}),
 ])
 
 @callback(Output('dataset-select', 'value'),

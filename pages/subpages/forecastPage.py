@@ -43,11 +43,11 @@ forecast = html.Div([
                         label="",
                         placeholder="Selecione o periodo",
                         id="period-multi-select",
-                        value="M",
+                        value=31,
                         data=[
-                            {"value": "D", "label": "Diária"},
-                            {"value": "M", "label": "Mensal"},
-                            {"value": "Y", "label": "Anual"},
+                            {"value": 1, "label": "Diária"},
+                            {"value": 31, "label": "Mensal"},
+                            {"value": 365, "label": "Anual"},
                         ],
                         style={"width": 150, "marginBottom": 10,"fontSize":"1.2rem"},
                         ),
@@ -135,10 +135,13 @@ forecast = html.Div([
         ),
 
     ], id="parameters-components"),
-     html.Div([
-            html.Div(id='predition-results'),
-            html.Div(id='holidays-results'),
-        ], style={"background":"#F0F0F0", "padding":"10px 0"}),
+     dcc.Loading(children=[
+        html.Div(
+            [
+                html.Div(id='predition-results'),
+                html.Div(id='holidays-results'),
+            ], style={"background":"#F0F0F0", "padding":"10px 0", "height":"55vh"},),
+        ], color="#2B454E", type="dot", fullscreen=False,),
        
 ])
 
@@ -181,158 +184,163 @@ def save_param_panelOption(value):
     State('country-name-select','value'),
     State('fourier-number','value'),
     State('fourier-month-number','value'),
-    State('seasonality-mode-select','value')
+    State('seasonality-mode-select','value'),
+    State('period-multi-select','value'),
 )
-def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name, fourier, fourier_monthly, seasonality_mode):
-    Holidays = pd.DataFrame()
-    Weather = pd.DataFrame()
-    Inflation = pd.DataFrame()
-    Dataset = getColections(PanelMultiSelectOptions)
-    Lenght = int(lenght) * 30
-    global df_predition
-    if Dataset['_id'].any():
-        Dataset.drop('_id', axis=1, inplace=True)
+def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name, fourier, fourier_monthly, seasonality_mode, period):
     
-    for sFactor in factorsSeleted:
-        if(sFactor == 'schoolholiday'):
-            Holidays = getHolidays(externarFactors)
-        elif(sFactor == 'weather'):
-            Dataset.loc[:, 'Weather'] = Dataset['Date'].apply(future_weather)
-        elif(sFactor == 'inflation'):
-            Inflation = getInflation(externarFactors)
-    
-    if 'Weather' in Dataset.columns:
-        df_original, df_predition, model = configs.sales_predition_Weather(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
-        Weather_regressor = dcc.Graph(
-        id='regressors-plot',
-        figure={
-            'data': [
-                {'x': df_predition['ds'], 'y': df_predition['extra_regressors_multiplicative'], 'type': 'line'}
-            ],
-            'layout': {
-                'title': 'Regressores (Clima)',
-                'xaxis': {'title': 'Data'},
-                'yaxis': {'title': 'Clima'}
+    if nclicks is not None:
+
+        Holidays = pd.DataFrame()
+        Weather = pd.DataFrame()
+        Inflation = pd.DataFrame()
+        Dataset = getColections(PanelMultiSelectOptions)
+        Lenght = int(lenght) * period
+        global df_predition
+        if Dataset['_id'].any():
+            Dataset.drop('_id', axis=1, inplace=True)
+        
+        for sFactor in factorsSeleted:
+            if(sFactor == 'schoolholiday'):
+                Holidays = pd.read_csv('data/school_holiday.csv')
+            elif(sFactor == 'weather'):
+                Dataset.loc[:, 'Weather'] = Dataset['Date'].apply(future_weather)
+            elif(sFactor == 'inflation'):
+                Inflation = getInflation(externarFactors)
+        
+        if 'Weather' in Dataset.columns:
+            df_original, df_predition, model = configs.sales_predition_Weather(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
+            Weather_regressor = dcc.Graph(
+            id='regressors-plot',
+            figure={
+                'data': [
+                    {'x': df_predition['ds'], 'y': df_predition['extra_regressors_multiplicative'], 'type': 'line'}
+                ],
+                'layout': {
+                    'title': 'Regressores (Clima)',
+                    'xaxis': {'title': 'Data'},
+                    'yaxis': {'title': 'Clima'}
+                }
             }
-        }
+            )
+        else:
+            df_original, df_predition, model = configs.sales_predition_v2(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
+
+        
+        
+        fig = px.line(df_predition, x='ds', y='yhat', title='Previsões de Vendas')
+
+        # Adicionando faixa de incerteza
+        fig.add_trace(
+            go.Scatter(
+                x=df_predition['ds'],
+                y=df_predition['yhat_upper'],
+                fill='tonexty',
+                mode='none',
+                name='Faixa de Incerteza',
+                line=dict(color='rgba(0, 176, 246, 0.2)')
+            )
         )
-    else:
-        df_original, df_predition, model = configs.sales_predition_v2(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
 
-    
-    
-    fig = px.line(df_predition, x='ds', y='yhat', title='Previsões de Vendas')
+        fig.add_scatter(x=df_original['ds'], y=df_original['y'], mode='markers', name='Vendas reais')
 
-    # Adicionando faixa de incerteza
-    fig.add_trace(
-        go.Scatter(
-            x=df_predition['ds'],
-            y=df_predition['yhat_upper'],
-            fill='tonexty',
-            mode='none',
-            name='Faixa de Incerteza',
-            line=dict(color='rgba(0, 176, 246, 0.2)')
+        fig.update_layout(
+            xaxis_title='Data',
+            yaxis_title='Vendas',
+            legend_title='Dados',
+            hovermode='x',
+            template='plotly_white'
         )
-    )
+        
+        Predition_graph = dcc.Graph(
+            id='graph11',
+            figure=fig
+        )
+        
+        
+        MyHolidays = []
+        MyHolidays.append(dcc.Tab(label='Feriados Nacionais', value='holiday'))
+        for hday in model.train_holiday_names:
+            MyHolidays.append(dcc.Tab(label=hday, value=f'{hday}'))
 
-    fig.add_scatter(x=df_original['ds'], y=df_original['y'], mode='markers', name='Vendas reais')
+        HolidaysTabs = [
+            dcc.Tabs(id="tabs-holiday", value='holiday', children=MyHolidays),
+            html.Div(id='tabs-content-holiday-graph')
+        ]
 
-    fig.update_layout(
-        xaxis_title='Data',
-        yaxis_title='Vendas',
-        legend_title='Dados',
-        hovermode='x',
-        template='plotly_white'
-    )
-    
-    Predition_graph = dcc.Graph(
-        id='graph11',
-        figure=fig
-    )
-    
-    
-    MyHolidays = []
-    MyHolidays.append(dcc.Tab(label='Feriados Nacionais', value='holiday'))
-    for hday in model.train_holiday_names:
-        MyHolidays.append(dcc.Tab(label=hday, value=f'{hday}'))
+        fig3 = px.line(df_predition, x='ds', y='trend', color='trend', symbol="trend")
+        fig3_graph = dcc.Graph(
+            id='graph13',
+            figure=fig3
+        )
+        
 
-    HolidaysTabs = [
-        dcc.Tabs(id="tabs-holiday", value='holiday', children=MyHolidays),
-        html.Div(id='tabs-content-holiday-graph')
-    ]
-
-    fig3 = px.line(df_predition, x='ds', y='trend', color='trend', symbol="trend")
-    fig3_graph = dcc.Graph(
-        id='graph13',
-        figure=fig3
-    )
-    
-
-    yearly_seasonality = dcc.Graph(
-        id='seasonality-yearly-plot',
-        figure={
-            'data': [
-                {'x': df_predition['ds'], 'y': df_predition['yearly'], 'type': 'line'}
-            ],
-            'layout': {
-                'title': 'Sazonalidade Anual',
-                'xaxis': {'title': 'Data'},
-                'yaxis': {'title': 'Sazonalidade'}
+        yearly_seasonality = dcc.Graph(
+            id='seasonality-yearly-plot',
+            figure={
+                'data': [
+                    {'x': df_predition['ds'], 'y': df_predition['yearly'], 'type': 'line'}
+                ],
+                'layout': {
+                    'title': 'Sazonalidade Anual',
+                    'xaxis': {'title': 'Data'},
+                    'yaxis': {'title': 'Sazonalidade'}
+                }
             }
-        }
-    )
-    
-    monthly_seasonality = dcc.Graph(
-        id='seasonality-monthly-plot',
-        figure={
-            'data': [
-                {'x': df_predition['ds'], 'y': df_predition['monthly'], 'type': 'line'}
-            ],
-            'layout': {
-                'title': 'Sazonalidade Mensal',
-                'xaxis': {'title': 'Data'},
-                'yaxis': {'title': 'Sazonalidade'}
+        )
+        
+        monthly_seasonality = dcc.Graph(
+            id='seasonality-monthly-plot',
+            figure={
+                'data': [
+                    {'x': df_predition['ds'], 'y': df_predition['monthly'], 'type': 'line'}
+                ],
+                'layout': {
+                    'title': 'Sazonalidade Mensal',
+                    'xaxis': {'title': 'Data'},
+                    'yaxis': {'title': 'Sazonalidade'}
+                }
             }
-        }
-    )
-    
-    weekly_seasonality = dcc.Graph(
-        id='seasonality-weekly-plot',
-        figure={
-            'data': [
-                {'x': df_predition['ds'], 'y': df_predition['weekly'], 'type': 'line'}
-            ],
-            'layout': {
-                'title': 'Sazonalidade Semanal',
-                'xaxis': {'title': 'Data'},
-                'yaxis': {'title': 'Sazonalidade'}
+        )
+        
+        weekly_seasonality = dcc.Graph(
+            id='seasonality-weekly-plot',
+            figure={
+                'data': [
+                    {'x': df_predition['ds'], 'y': df_predition['weekly'], 'type': 'line'}
+                ],
+                'layout': {
+                    'title': 'Sazonalidade Semanal',
+                    'xaxis': {'title': 'Data'},
+                    'yaxis': {'title': 'Sazonalidade'}
+                }
             }
-        }
-    )
+        )
 
-    seasonality = dmc.Tabs(
-    [
-        dmc.TabsList(
-            [
-                dmc.Tab("Sazonalidade Anual", value="yearly"),
-                dmc.Tab("Sazonalidade Mensal", value="monthly"),
-                dmc.Tab("Sazonalidade Semanal", value="weekly"),
-            ]
-        ),
-        dmc.TabsPanel(yearly_seasonality, value="yearly"),
-        dmc.TabsPanel(monthly_seasonality, value="monthly"),
-        dmc.TabsPanel(weekly_seasonality, value="weekly"),
-    ],
-    color="green",
-    value='yearly',
-    orientation="horizontal",
-    )
+        seasonality = dmc.Tabs(
+        [
+            dmc.TabsList(
+                [
+                    dmc.Tab("Sazonalidade Anual", value="yearly"),
+                    dmc.Tab("Sazonalidade Mensal", value="monthly"),
+                    dmc.Tab("Sazonalidade Semanal", value="weekly"),
+                ]
+            ),
+            dmc.TabsPanel(yearly_seasonality, value="yearly"),
+            dmc.TabsPanel(monthly_seasonality, value="monthly"),
+            dmc.TabsPanel(weekly_seasonality, value="weekly"),
+        ],
+        color="green",
+        value='yearly',
+        orientation="horizontal",
+        )
 
-    if 'Weather' in Dataset.columns:
-        return [Predition_graph, Weather_regressor, seasonality, fig3_graph], HolidaysTabs
+        if 'Weather' in Dataset.columns:
+            return [Predition_graph, Weather_regressor, seasonality, fig3_graph], HolidaysTabs
+        else:
+            return [Predition_graph, seasonality, fig3_graph], HolidaysTabs
     else:
-        return [Predition_graph, seasonality, fig3_graph], HolidaysTabs
-
+        return html.Div('Realize sua previsão aqui!', id="predition-banner"), html.Div()
 
 
 def getColections(Names):
