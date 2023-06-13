@@ -475,3 +475,11 @@ label.mantine-InputWrapper-label{
 #upload-elements + div{
   height: 55vh;
 }
+
+/* AnalyzesFiles */
+
+#dataset-display{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
