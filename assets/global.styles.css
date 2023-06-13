@@ -395,3 +395,83 @@
   justify-content: center;
   display: none;
 }
+
+
+/* UPLOAD PAGE STYLE */
+
+#upload-elements{
+    width:100%;
+    height:85%;
+    background:#dbdada;
+    display:flex;
+    padding: 20px;
+    gap: 15px;
+    flex-direction:column;
+}
+
+#lb_dataset{
+  width: 350px;
+}
+
+input.mantine-Input-input {
+  border: none;
+  font-size: 1.2rem;
+  font-family: 'Nunito';
+  padding: 20px;
+  border-radius: 10;
+}
+label.mantine-InputWrapper-label{
+  font-size: 1.6rem;
+  font-family: 'Nunito';
+
+}
+#save-button{
+  padding: 10px 0;
+}
+
+#data-output2{
+  display: none;
+  height: 50vh;
+}
+
+#data-output2.on{
+  background-color: rgba(0, 0, 0, 0.858);
+  color: #f2f2f2;
+  font-size: 1.8rem;
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  gap: 7px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+#data-output2.on .desc-popup{
+  font-size: 1.8rem;
+  font-family: 'Nunito';
+  margin-top: 18%;
+  width: 500px;
+}
+
+#data-output2.on #btn-popup{
+  background: #2B454E;
+  padding: 17px 30px;
+  border: none;
+  font-size: 1.2rem;
+  font-family: 'Nunito';
+  color: white;
+  border-radius: 7px;
+  width: 200px;
+  cursor: pointer;
+  transition: background .7s;
+}
+
+#data-output2.on #btn-popup:hover{
+  background: #d2d2d2;
+  color: #2B454E;
+}
+
+#upload-elements + div{
+  height: 55vh;
+}
