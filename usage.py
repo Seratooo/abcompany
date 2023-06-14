@@ -43,12 +43,13 @@ app.layout = html.Div([
                  'weather': ['2021', '2022'],
                  'inflation': ['2021', '2022']
      }),
+     dcc.Store(id='User', data={}, storage_type='local'),
      dash.page_container,
     #  dcc.Loading(children=[dash.page_container], color="#119DFF", type="dot", fullscreen=True,),
     #  dmc.Loader(color="green", size="xl", variant="oval", style={"position":"absolute","top":"50%","left":"60%", "zIndex":"1"})
 ], style={
     'background':'#F0F0F0',
-    'margin': '-8px',
+    'margin': '0',
     'padding': '0',
     'boxSizing': 'border-box',
     'height': '100vh',

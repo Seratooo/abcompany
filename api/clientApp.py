@@ -4,6 +4,16 @@ from dotenv import load_dotenv
 load_dotenv()
 from pymongo.mongo_client import MongoClient
 
+
+def getConnectionUsers():
+  uri = f"{os.getenv('PYTHON_PUBLIC_URI')}"
+  client = MongoClient(uri)
+  try:
+      client.admin.command('ping')
+      return client["Users"]
+  except Exception as e:
+      print(e)
+
 def getConnection():
   uri = f"{os.getenv('PYTHON_PUBLIC_URI')}"
 
@@ -37,3 +47,12 @@ def GetCollectionByName(Name):
    all_results = mycollection.find()
    return list(all_results)
 
+
+def isAuthenticatedUser(email, password):
+   db_users = getConnectionUsers()
+   mycollection = db_users['Registered-Users']
+   all_results = mycollection.find()
+   for element in list(all_results):  
+       if element.get("email") == email and element.get("password") == password:
+          return True, element
+   return False, {}

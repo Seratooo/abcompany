@@ -132,8 +132,10 @@ def getDataSetName(value):
           Input('save-button','n_clicks'),
           )
 def loadPopUp(n_clicks):
-    if n_clicks:
+    if n_clicks is not None:
         return 'on'
+    else:
+        return ''
 
 @callback(Output('data-output2', 'children'),
           Input('save-button','n_clicks'))

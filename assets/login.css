@@ -72,8 +72,10 @@
 
 #loginPage #second-section .second-wrapper > .div2 {
   display: flex;
+  padding-top: 15px;
 }
-.div2 #BtnLogin{
+
+#loginPage #second-section .second-wrapper > .div2 #BtnLogin{
     font-family: 'Nunito'; 
     font-size: 1.6rem;
     padding:1.5rem 6rem; 
@@ -83,10 +85,10 @@
     border-radius: 4px 0 0 4px;
     cursor: pointer;
 }
-.div2 #BtnPassword{
+#loginPage #second-section .second-wrapper > .div2 #BtnPassword{
     font-family: 'Nunito';
     font-size: 1.6rem; 
-    padding:1.5rem 6rem; 
+    padding:1.5rem 5.5rem; 
     background: rgb(185 185 185);
     color:black; 
     border:none; 
