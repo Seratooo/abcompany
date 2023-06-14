@@ -40,8 +40,8 @@ sales = html.Div([
         ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
         dcc.Loading(children=[
             html.Div([
-                html.Div([dcc.Graph(id='graph7', className='dbc')], style={"width":"46%"}),
-                html.Div([dcc.Graph(id='graph8', className='dbc')], style={"width":"46%"}),
+                html.Div([dcc.Graph(id='graph7', className='dbc')], style={"width":"47%"}),
+                html.Div([dcc.Graph(id='graph8', className='dbc')], style={"width":"47%"}),
             ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
         ], color="#2B454E", type="dot", fullscreen=False,),
         html.Div([
@@ -60,7 +60,7 @@ sales = html.Div([
                     style={"width": 200, "marginBottom": 10},
                 ),
                 dcc.Loading(children=[dcc.Graph(id='graph9', className='dbc'),], color="#2B454E", type="dot", fullscreen=False,),
-            ], style={"width":"46%"}),
+            ], style={"width":"47%"}),
             html.Div([
                  dmc.Select(
                     label="",
@@ -76,7 +76,7 @@ sales = html.Div([
                     style={"width": 200, "marginBottom": 10},
                 ),
                 dcc.Loading(children=[dcc.Graph(id='graph10', className='dbc'),], color="#2B454E", type="dot", fullscreen=False,),
-            ], style={"width":"46%"}),
+            ], style={"width":"47%"}),
         ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
         
 ], style={"width":"100%","height":"140%"})
@@ -95,16 +95,16 @@ def select_value(value):
     fig7 = go.Figure()
     fig7.add_trace(go.Indicator(
             title = {"text": f"<span style='font-size:150%'>Clientes Alcançados</span><br><span style='font-size:70%'>entre o ano de:</span><br><span>{d7['Year'].min()} - {d7['Year'].max()}</span>"},
-            value = (d7['Customers'].count()),
+            value = (d7['Customers'].sum()),
             number = {'suffix': ""}
     ))
 
     d8 = sales_train_all_df
     fig8 = go.Figure()
     fig8.add_trace(go.Indicator(
-            title = {"text": f"<span style='font-size:150%'>Receitas Arrecadadas</span><br><span style='font-size:70%'>entre o ano de:</span><br><span>{d8['Year'].min()} - {d8['Year'].max()}</span>"},
+            title = {"text": f"<span style='font-size:150%'>Receitas Vendidas</span><br><span style='font-size:70%'>entre o ano de:</span><br><span>{d8['Year'].min()} - {d8['Year'].max()}</span>"},
             value = (d8['Sales'].sum()),
-            number = {'prefix': "AKZ "}
+            number = {'prefix': ""}
     ))
 
 
@@ -151,8 +151,8 @@ def changeSales(value, label, dataset):
      )
 
      # Personalizar cores das barras
-     cores = px.colors.qualitative.Plotly
-     fig.update_traces(marker_color=cores)
+    #  cores = px.colors.qualitative.Plotly
+     fig.update_traces(marker_color='#2B454E')
 
      return fig
 
@@ -193,8 +193,8 @@ def changeCustomers(value, label, dataset):
      )
 
      # Personalizar cores das barras
-     cores = px.colors.qualitative.Plotly
-     fig.update_traces(marker_color=cores)
+     #  cores = px.colors.qualitative.Plotly
+     fig.update_traces(marker_color='#2B454E')
 
      return fig
 

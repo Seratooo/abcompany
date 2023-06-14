@@ -32,7 +32,7 @@ analyzeFiles = html.Div([
             dcc.Loading(children=[
                 html.Div( id="dataset-display", style={"width":"100%","minHeight":"55vh"}),
             ], color="#2B454E", type="dot", fullscreen=False,),
-        ], style={"padding":"10px"}),
+        ], style={"padding":"20px"}),
 ])
 
 @callback(Output('dataset-select', 'value'),

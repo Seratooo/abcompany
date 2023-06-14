@@ -268,7 +268,7 @@ def variables_output(variable, value):
   variables_HTML = []
   variables_data = get_variables_data_byName(variable, report)
 
-  fig = px.histogram(df[variable], x=variable, nbins=50)
+  fig = px.histogram(df[variable], x=variable, nbins=50, color_discrete_sequence=["#2B454E"])
 
   variables_HTML.append(html.Div([
       html.H3(variable),
@@ -314,7 +314,7 @@ def variables_output(variable, value):
         dmc.TabsPanel(html.Div(second_table, id='second_table'), value="datails"),
         dmc.TabsPanel(dcc.Graph(
             id='histogram-graph2',
-            figure=fig
+            figure=fig,
             ), value="distribution"
           ),
     ],

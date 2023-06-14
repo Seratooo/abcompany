@@ -42,13 +42,13 @@ resume = html.Div([
             html.Div(
                 [
                     html.Div([
-                        html.Div([dcc.Graph(id='graph1', className='dbc')],style={"width":"30%"}),
-                        html.Div([dcc.Graph(id='graph2', className='dbc')], style={"width":"30%"}),
-                        html.Div([dcc.Graph(id='graph3', className='dbc')], style={"width":"30%"}),
+                        html.Div([dcc.Graph(id='graph1', className='dbc')],style={"width":"31.5%"}),
+                        html.Div([dcc.Graph(id='graph2', className='dbc')], style={"width":"31.5%"}),
+                        html.Div([dcc.Graph(id='graph3', className='dbc')], style={"width":"31.5%"}),
                     ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
                     html.Div([
-                        html.Div([dcc.Graph(id='graph4', className='dbc')], style={"width":"51%"}),
-                        html.Div([dcc.Graph(id='graph5', className='dbc')], style={"width":"40%"}),
+                        html.Div([dcc.Graph(id='graph4', className='dbc')], style={"width":"53%"}),
+                        html.Div([dcc.Graph(id='graph5', className='dbc')], style={"width":"42%"}),
                     ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
                 ]
                 , style={"width":"100%","height":"65vh", "min-Height":"55vh"})
@@ -72,7 +72,7 @@ def select_value(value):
 
     fig1 = go.Figure() 
     fig1.add_trace(go.Indicator(
-            title = {"text": f"<span style='font-size:150%'>Período de Análise </span><br><span style='font-size:70%'>entre o ano de:</span><br><span>{sales_train_all_df['Year'].min()} - {sales_train_all_df['Year'].max()}</span>"},
+            title = {"text": f"<span style='font-size:150%'>Período de Análise </span><br><br><span>{sales_train_all_df['Year'].min()} à {sales_train_all_df['Year'].max()}</span>"},
             value = (sales_train_all_df['Year'].max() - sales_train_all_df['Year'].min()),
             number = {'suffix': " Anos"}
     ))
@@ -88,22 +88,22 @@ def select_value(value):
 
     fig2 = go.Figure()
     fig2.add_trace(go.Indicator(mode='number+delta',
-            title = {"text": f"<span style='font-size:150%'>Maior Rendimento diário <br> em {Year} anos</span><br><span style='font-size:70%'> em relação a média</span><br>"},
+            title = {"text": f"<span style='font-size:150%'>Maior N% de Vendas Diárias <br> em {Year} anos</span><br><span style='font-size:70%'> em relação a média</span><br>"},
             value = df2['Sales'].iloc[0],
-            number = {'prefix': "AKZ "},
+            number = {'suffix': " Vendas"},
             delta = {'relative': True, 'valueformat': '.1%', 'reference': df2['Sales'].mean()}
     ))
 
 
-    df3 = df2_dataframe.groupby(['Date'])['Sales'].sum().reset_index()
-    df3.sort_values(ascending=True, inplace=True, by='Sales')
+    df3 = df2_dataframe.groupby(['Date'])['Customers'].sum().reset_index()
+    df3.sort_values(ascending=True, inplace=True, by='Customers')
 
     fig3 = go.Figure()
     fig3.add_trace(go.Indicator(mode='number+delta',
-            title = {"text": f"<span style='font-size:150%'>Menor Rendimento diário <br> em {Year} anos</span><br><span style='font-size:70%'> em relação a média</span><br>"},
-            value = df3['Sales'].iloc[0],
-            number = {'prefix': "AKZ "},
-            delta = {'relative': True, 'valueformat': '.1%', 'reference': df3['Sales'].mean()}
+            title = {"text": f"<span style='font-size:150%'>Menor N% de Clinetes Diários <br> em {Year} anos</span><br><span style='font-size:70%'> em relação a média</span><br>"},
+            value = df3['Customers'].iloc[0],
+            number = {'suffix': " Clientes"},
+            delta = {'relative': True, 'valueformat': '.1%', 'reference': df3['Customers'].mean()}
     ))
 
 
