@@ -32,7 +32,7 @@ analyzeFiles = html.Div([
             dcc.Loading(children=[
                 html.Div( id="dataset-display", style={"width":"100%","minHeight":"55vh"}),
             ], color="#2B454E", type="dot", fullscreen=False,),
-        ], style={"padding":"10px"}),
+        ], style={"padding":"20px"}),
 ])
 
 @callback(Output('dataset-select', 'value'),
@@ -62,24 +62,29 @@ def getGraph(value):
         df.drop('Unnamed: 0', axis=1, inplace=True)
         
         # Criar um gráfico com base nos dados do DataFrame
-        traces = []
-        for column in df.columns:
-            trace = go.Scatter(
-                x=df.index,
-                y=df[column],
-                name=column
-            )
-            traces.append(trace)
+        histograms = []
+        for col in df.columns:
+            trace = go.Histogram(x=df[col], name=col)
+            histograms.append(trace)
 
         layout = go.Layout(
-            title=f"Conjunto de Dados: {value.split('-')[0]}",
-            xaxis=dict(title='Índice'),
-            yaxis=dict(title='Valores')
+            title='Distribuição de Variáveis',
+            barmode='overlay',
+            xaxis=dict(title='Valores'),
+            yaxis=dict(title='Frequência')
         )
 
-        figure = go.Figure(data=traces, layout=layout)
+        figure = go.Figure(data=histograms, layout=layout)
 
         # Exibir o gráfico
         graph = dcc.Graph(figure=figure)
-        return graph
+
+        #Exibir a tabela
+        table = dash_table.DataTable(
+        data=df.to_dict('records'),
+        columns=[{'id': c, 'name': c} for c in df.columns],
+        fixed_rows={'headers': True},
+        style_data={'fontSize': '1.2rem'},
+        )
+        return [graph, table]
 
