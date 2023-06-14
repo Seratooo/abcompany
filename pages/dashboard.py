@@ -1,13 +1,9 @@
 import dash
-from dash import Input, Output, dcc, html, callback
+from dash import Input, Output, dcc, html, callback, State
 from subpages import resumePage, salesPage, uploadPage, analyzeFilesPage, forecastPage, pastPredictionsPages, externalFactorsPage, AEDPage
-from data import configs
 from components import headerComponent, sidebarComponent, containerComponent
 dash.register_page(__name__,  suppress_callback_exceptions=True)
 
-
-#DATABASE
-sales_train_all_df = configs.getDatabase()
 
 #COMPOENTS
 sidebar = sidebarComponent.sidebar
@@ -16,7 +12,12 @@ content = containerComponent.content
 
 DashboardWrapper = html.Div([header, content], style={"width":"100%"})
 
-layout = html.Div([dcc.Location(id='url', refresh=False), sidebar, DashboardWrapper], style={"display":"flex"})
+layout = html.Div([
+    dcc.Location(id='url2', refresh=True),
+    dcc.Location(id='url', refresh=False), 
+    sidebar, 
+    DashboardWrapper
+], style={"display":"flex"})
 
 
 #PAGES
@@ -28,6 +29,16 @@ ForecastPage = forecastPage.forecast
 PastPredictionsPage = pastPredictionsPages.pastPredictions
 ExternalFactorsPage = externalFactorsPage.externalFactorsPage
 AEDPage = AEDPage.AED
+
+@callback(
+    Output('url2','pathname', allow_duplicate=True),
+    Input('url2','url'),
+    State('User', 'data'),
+    prevent_initial_call='initial_duplicate'
+)
+def isUserLog(_, data):
+    if data == {}:
+        return '/login'
 
 @callback(
           Output("page-content", "children"), 
