@@ -15,3 +15,5 @@ ydata-profiling==4.2.0
 python-dotenv
 build
 wheel
+xhtml2pdf
+kaleido

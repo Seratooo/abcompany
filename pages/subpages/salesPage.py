@@ -1,15 +1,25 @@
 from dash import html, dcc, callback, Output, Input, State
 from api.clientApp import GetAllCollectionNames, GetCollectionByName
-from data.configs import getDatabase
 import plotly.graph_objects as go
 import plotly.express as px
 import dash_mantine_components as dmc
 import pandas as pd
+from api.chartsAPI import TemplateChart
+import plotly.io as pio
+import base64
+from report.reports import convert_html_to_pdf
+
+global report_html, figures
+report_html = ''
+width = 600
+height = 600
+template = TemplateChart
 
 DatasetsNames = GetAllCollectionNames()
 PanelMultiSelectOptions = [DatasetsNames[0]]
 
 sales = html.Div([
+    dcc.Download(id="download-sales"),
     dcc.Interval(id='interval_db', interval=86400000 * 7, n_intervals=0),
     dcc.Store(id='dataset-sales-storage', storage_type='local'),
     html.Div([
@@ -35,9 +45,11 @@ sales = html.Div([
                 ])
             ),
             html.Div(
-            dmc.Button("Criar relatório", style={"background":"#fff", "color":"#000","font":"3.2rem Nunito","marginTop":"1.2rem"}),
+            dmc.Button("Gerar relatório", style={"background":"#fff", "color":"#000","font":"3.2rem Nunito","marginTop":"1.2rem"}, id='generate-report'),
             )
         ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
+        html.Div([
+        html.Div(id='report-output-sales', className='report_output'),
         dcc.Loading(children=[
             html.Div([
                 html.Div([dcc.Graph(id='graph7', className='dbc')], style={"width":"47%"}),
@@ -78,9 +90,9 @@ sales = html.Div([
                 dcc.Loading(children=[dcc.Graph(id='graph10', className='dbc'),], color="#2B454E", type="dot", fullscreen=False,),
             ], style={"width":"47%"}),
         ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
+        ])
         
 ], style={"width":"100%","height":"140%"})
-
 
 
 @callback(
@@ -89,6 +101,8 @@ sales = html.Div([
           Input("panelSales-dataset-multi-select", "value")
           )
 def select_value(value):
+    global figures
+    figures = []
     sales_train_all_df = getColections(value)
 
     d7 = sales_train_all_df[sales_train_all_df['Customers']>0]
@@ -107,6 +121,8 @@ def select_value(value):
             number = {'prefix': ""}
     ))
 
+    figures.insert(0, fig7)
+    figures.insert(1, fig8)
 
     fig7.update_layout(height=230)
     fig8.update_layout(height=230)
@@ -121,6 +137,10 @@ def select_value(value):
         State("panelSales-dataset-multi-select", "value")
 )
 def changeSales(value, label, dataset):
+    #  global figures
+    #  if len(figures) > 2:
+    #     figures.pop(2)
+
      sales_train_all_df = getColections(dataset)
      
      df9 = sales_train_all_df.groupby(f'{value}')['Sales'].mean().reset_index()
@@ -153,6 +173,8 @@ def changeSales(value, label, dataset):
      # Personalizar cores das barras
     #  cores = px.colors.qualitative.Plotly
      fig.update_traces(marker_color='#2B454E')
+
+    #  figures.insert(2, fig)
 
      return fig
 
@@ -235,3 +257,64 @@ def getColections(Names):
     df_PD['Month'] = pd.DatetimeIndex(df_PD['Date']).month
     df_PD['Day'] = pd.DatetimeIndex(df_PD['Date']).day
     return df_PD
+
+
+
+@callback(
+    Output('report-output-sales','children'),
+    Output('report-output-sales', 'style', allow_duplicate=True),
+    Input('generate-report','n_clicks'),
+    prevent_initial_call=True
+)
+def generate_report(n_clicks):
+    descriptionData = []
+    captionData = []
+
+    descriptionData.insert(0, 'this is a description of data in graph number 1')
+    captionData.insert(0, 'Clientes Alcançados')
+
+    descriptionData.insert(1, 'this is a description of data in graph number 2')
+    captionData.insert(1, 'Receitas vendidas')
+
+    descriptionData.insert(2, 'this is a description of data in graph number 2')
+    captionData.insert(2, 'Média de Vendas por dia')
+
+    images = [base64.b64encode(pio.to_image(figure, format='png', width=width, height=height)).decode('utf-8') for figure in figures]
+    
+    global report_html
+    report_html = ''
+    for index, image in enumerate(images):
+        _ = template
+        _ = _.format(image=image, caption=captionData[index], description=descriptionData[index], width=width, height=height)
+        report_html += _
+
+    if n_clicks is not None:
+        return [
+            html.Div([
+                html.Div('Download', id="dowload-report"),
+                html.Div('Fechar', id='close-report'),
+            ], className="wrapper-btn-report"),
+            html.Iframe(srcDoc=report_html, width='100%', height='100%')
+            ], {'display': 'block'}
+    else:
+        return '', {'display': 'none'}
+    
+@callback(
+    Output('report-output-sales', 'style'),
+    Input('close-report','n_clicks'),
+)
+def close_report(n_clicks):
+    if n_clicks is not None:
+       return {'display': 'none'}
+    else:
+        return {'display': 'block'}
+    
+@callback(
+    Output('download-sales', 'data'),
+    Input('dowload-report','n_clicks'),
+)
+def dowload_report(n_clicks):
+    if n_clicks is not None:
+        convert_html_to_pdf(report_html,'report_html.pdf')
+        return dcc.send_file(
+        "./report_html.pdf", "sales_report.pdf")
