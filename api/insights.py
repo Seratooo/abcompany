@@ -7,6 +7,36 @@ data = {
 
 df = pd.DataFrame(data)
 
+
+def periodo_de_analise():
+    return 'O conjunto de dados utilizado abrange um intervalo de tempo específico, permitindo uma compreensão dos padrões, tendências e comportamentos que ocorreram durante esse período.'
+
+def maiores_demandas(df):
+    peaks = find_peak_period(df)
+    text = f'Esse valor representa o maior número de vendas registado em um único dia, o que pode indicar a existência fatores como promoções especiais, eventos ou outros motivadores que impulsionaram as vendas nesse período específico. Estes valores foram registados nas seguintes datas:  {peaks}.'
+    return text
+
+def menores_demandas(df):
+    downturns = find_downturns_period(df)
+    text = f'Esse valor representa um ponto de baixa demanda em um único dia, sugerindo que fatores como falta de atração, promoções inadequadas ou outros motivadores podem ter contribuído para essa queda no número de clientes. As menores baixas foram registadas em {downturns}.'
+    return text
+
+def amostra_dataset(df):
+    text = f'O conjunto de dados é composto por {len(df)} observações e {df.shape[1]} variáveis, representando diferentes aspectos e características relevantes do domínio em questão. Cada observação corresponde a uma entidade ou evento específico, enquanto cada variável representa um atributo mensurável associado a essa entidade ou evento. '
+    text2 = 'As variáveis incluídas no conjunto de dados podem abranger aspectos das vendas realizadas e clientes alcançados, fornecendo uma ampla gama de informações para análises e estudos detalhados.'
+    return f'{text}{text2}'
+
+
+def total_clientes(df):
+    return f'Ao longo do período analisado, foi possível alcançar um total de {df["Customers"].sum()} clientes.'
+
+def total_vendas(df):
+    return f'Ao longo do período analisado, foi possível realizar um total de {df["Sales"].sum()} vendas.'
+
+def receitas_mes(df):
+    text = f'{semestre_tendencia_crescimento(df)}. {tendencia_crescimento_inicial(df, [1,2,3,4])}'
+    return text
+
 def semestre_tendencia_crescimento(df):
     # Agrupar por semestre e calcular a diferença de vendas entre o primeiro e último mês
     df['Semester'] = pd.cut(df['Month'], bins=[1, 6, 12], labels=['1º', '2º'])
@@ -65,7 +95,22 @@ def find_peak_period(df):
     # Obter as datas com as maiores vendas
     maiores_vendas = df[df['Sales'] == df['Sales'].max()]['Date']
     
-    return maiores_vendas
+    maiores_vendas_formatadas = ', '.join(maiores_vendas.dt.strftime('%Y-%m-%d'))
+    return maiores_vendas_formatadas
+
+def find_downturns_period(df):
+
+    # Converter a coluna 'Date' para o tipo de data
+    df['Date'] = pd.to_datetime(df['Date'])
+
+    # Ordenar o dataframe pelo valor das vendas em ordem decrescente
+    df = df.sort_values(by='Customers', ascending=False)
+
+    # Obter as datas com as maiores vendas
+    maiores_clientes = df[df['Customers'] == df['Customers'].min()]['Date']
+    
+    maiores_clientes_formatadas = ', '.join(maiores_clientes.dt.strftime('%Y-%m-%d'))
+    return maiores_clientes_formatadas
 
 def calcular_quantidade_vendas_maior_menor_media(dataset):
     # Calcular a média das vendas
@@ -78,4 +123,9 @@ def calcular_quantidade_vendas_maior_menor_media(dataset):
     vendas_menor_media = df[df['Sales'] < media_vendas]
     return vendas_maior_media, vendas_menor_media
 
+
+
+# df2 = pd.read_csv('TargetValues.csv')
+
+# print(find_peak_period(df2))
 
