@@ -499,3 +499,42 @@ label.mantine-InputWrapper-label{
   flex-direction: column;
   gap: 15px;
 }
+
+
+/* Report output */
+
+.report_output{
+  position: absolute;
+  display: none;
+  background-color: #F0F0F0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1111111;
+
+}
+.report_output .wrapper-btn-report{
+  display:flex;
+  justify-content:space-between; 
+  padding:15px;
+  background: rgb(30, 30, 30);
+}
+
+#dowload-report{
+  font-size: 1.2rem;
+  color: #f2f2f2;
+  font-family: 'Nunito';
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+#close-report{
+  font-size: 1.2rem;
+  color: #f2f2f2;
+  font-family: 'Nunito';
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+#dowload-report:hover, #close-report:hover{
+  background-color: #2B454E;
+}

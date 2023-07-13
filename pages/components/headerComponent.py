@@ -16,7 +16,7 @@ HEADAER_STYLE = {
 
 header = html.Div(
     [
-        dcc.Loading(children=[dcc.Location(id='url3', refresh=True)], color="#2B454E", type="dot", fullscreen=True,),
+        dcc.Location(id='url3', refresh=True),
         html.Div(id='data-output-header'),
         html.Div([
             dmc.Group(

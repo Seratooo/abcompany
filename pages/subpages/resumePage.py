@@ -1,14 +1,26 @@
 from dash import html, dcc, callback, Output, Input, State
 import plotly.express as px
+from api.chartsAPI import TemplateChart
 from api.clientApp import GetAllCollectionNames, GetCollectionByName
-from data.configs import getDatabase
 import plotly.graph_objects as go
 import dash_mantine_components as dmc
 import pandas as pd
+import base64
+import plotly.io as pio
+from report.reports import convert_html_to_pdf
+
+global report_html
+report_html = ''
+template = TemplateChart
+width = 600
+height = 600
+global figures
 
 DatasetsNames = GetAllCollectionNames()
 PanelMultiSelectOptions = [DatasetsNames[0]]
 resume = html.Div([
+    
+    dcc.Download(id="download-resume"),
     dcc.Interval(id='interval_db', interval=86400000 * 7, n_intervals=0),
     dcc.Store(id='dataset-names-storage', storage_type='local'),
     html.Div([
@@ -34,11 +46,12 @@ resume = html.Div([
                 ])
             ),
             html.Div(
-            dmc.Button("Criar relatório", style={"background":"#fff", "color":"#000","font":"3.2rem Nunito","marginTop":"1.2rem"}),
+            dmc.Button("Gerar relatório", style={"background":"#fff", "color":"#000","font":"3.2rem Nunito","marginTop":"1.2rem"}, id="generate-report"),
             )
         ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
     
     dcc.Loading(children=[
+        html.Div(id='report-output-resume', className='report_output'),
             html.Div(
                 [
                     html.Div([
@@ -56,10 +69,6 @@ resume = html.Div([
 ])
 
 
-
-
-
-
 @callback(Output("graph1", "figure"),
           Output("graph2", "figure"),
           Output("graph3", "figure"),
@@ -68,13 +77,23 @@ resume = html.Div([
           Input("panel-dataset-multi-select", "value")
           )
 def select_value(value):
+    global figures
+    figures = []
     sales_train_all_df = getColections(value)
-
     fig1 = go.Figure() 
+
+    Y = len(sales_train_all_df['Year'].unique())
+    suffix = ''
+    if Y > 0:
+        suffix= " Ano(s)"
+    else:
+        Y = int(sales_train_all_df['Month'].max())
+        suffix= " Meses"
+
     fig1.add_trace(go.Indicator(
             title = {"text": f"<span style='font-size:150%'>Período de Análise </span><br><br><span>{sales_train_all_df['Year'].min()} à {sales_train_all_df['Year'].max()}</span>"},
-            value = (sales_train_all_df['Year'].max() - sales_train_all_df['Year'].min()),
-            number = {'suffix': " Anos"}
+            value = (Y),
+            number = {'suffix': suffix}
     ))
 
     df2_dataframe = sales_train_all_df
@@ -84,11 +103,11 @@ def select_value(value):
     df2 = df2_dataframe.groupby(['Date'])['Sales'].sum().reset_index()
     df2.sort_values(ascending=False, inplace=True, by='Sales')
 
-    Year = (df2_dataframe['Year'].max()) - (df2_dataframe['Year'].min())
+    Year = len(sales_train_all_df['Year'].unique())
 
     fig2 = go.Figure()
     fig2.add_trace(go.Indicator(mode='number+delta',
-            title = {"text": f"<span style='font-size:150%'>Maior N% de Vendas Diárias <br> em {Year} anos</span><br><span style='font-size:70%'> em relação a média</span><br>"},
+            title = {"text": f"<span style='font-size:150%'>Maior N% de Vendas Diárias <br> em {Year} ano(s)</span><br><span style='font-size:70%'> em relação a média</span><br>"},
             value = df2['Sales'].iloc[0],
             number = {'suffix': " Vendas"},
             delta = {'relative': True, 'valueformat': '.1%', 'reference': df2['Sales'].mean()}
@@ -100,7 +119,7 @@ def select_value(value):
 
     fig3 = go.Figure()
     fig3.add_trace(go.Indicator(mode='number+delta',
-            title = {"text": f"<span style='font-size:150%'>Menor N% de Clinetes Diários <br> em {Year} anos</span><br><span style='font-size:70%'> em relação a média</span><br>"},
+            title = {"text": f"<span style='font-size:150%'>Menor N% de Clientes Diários <br> em {Year} ano(s)</span><br><span style='font-size:70%'> em relação a média</span><br>"},
             value = df3['Customers'].iloc[0],
             number = {'suffix': " Clientes"},
             delta = {'relative': True, 'valueformat': '.1%', 'reference': df3['Customers'].mean()}
@@ -132,6 +151,12 @@ def select_value(value):
     df5 = sales_train_all_df.groupby('Month')['Sales'].sum().reset_index()
 
     fig5 = px.pie(df5, values='Sales', names='Month', title='Distribuição das receitas por mês')
+    
+    figures.insert(0, fig1)
+    figures.insert(1, fig2)
+    figures.insert(2, fig3) 
+    figures.insert(3, fig4)
+    figures.insert(4, fig5)
 
     fig1.update_layout(height=230)
     fig2.update_layout(height=230)
@@ -149,13 +174,11 @@ def SetDataValuesOnCompont(interval_db):
     value = PanelMultiSelectOptions
     return value, DatasetValues()[1]
 
-
 def DatasetValues():
     data = []
     for name in DatasetsNames:
         data.append({"value": f"{name}", "label": f"{name.split('-')[0]}"})
     return DatasetsNames, data
-
 
 @callback(
     Output('dataset-names-storage', 'data', allow_duplicate=True),
@@ -167,9 +190,6 @@ def save_param_panelOption(value):
     PanelMultiSelectOptions = value
     return PanelMultiSelectOptions
 
-
-
-
 def getColections(Names):
     df_PD = pd.DataFrame()
     for name in Names:
@@ -179,3 +199,68 @@ def getColections(Names):
     df_PD['Month'] = pd.DatetimeIndex(df_PD['Date']).month
     df_PD['Day'] = pd.DatetimeIndex(df_PD['Date']).day
     return df_PD
+
+@callback(
+    Output('report-output-resume','children'),
+    Output('report-output-resume', 'style', allow_duplicate=True),
+    Input('generate-report','n_clicks'),
+    prevent_initial_call=True
+)
+def generate_report(n_clicks):
+    descriptionData = []
+    captionData = []
+
+    descriptionData.insert(0,'this is a description of data in graph number 1')
+    captionData.insert(0, 'Período de Análise dos Dados')
+
+    descriptionData.insert(1, 'this is a description of data in graph number 2')
+    captionData.insert(1,'Maior Número de Vendas Diárias')
+
+    descriptionData.insert(2, 'this is a description of data in graph number 2')
+    captionData.insert(2,'Maior Número de Clientes Diários')
+
+    descriptionData.insert(3, 'this is a description of data in graph number 2')
+    captionData.insert(3,'Amostra dos dados a serem analisados')
+
+    descriptionData.insert(4, 'this is a description of data in graph number 2')
+    captionData.insert(4,'Distribuição de receitas por mês')
+    
+    images = [base64.b64encode(pio.to_image(figure, format='png', width=width, height=height)).decode('utf-8') for figure in figures]
+    
+    global report_html
+    report_html = ''
+    for index, image in enumerate(images):
+        _ = template
+        _ = _.format(image=image, caption=captionData[index], description=descriptionData[index], width=width, height=height)
+        report_html += _
+
+    if n_clicks is not None:
+        return [
+            html.Div([
+                html.Div('Download', id="dowload-report"),
+                html.Div('Fechar', id='close-report'),
+            ], className="wrapper-btn-report"),
+            html.Iframe(srcDoc=report_html, width='100%', height='100%')
+            ], {'display': 'block'}
+    else:
+        return '', {'display': 'none'}
+    
+@callback(
+    Output('report-output-resume', 'style'),
+    Input('close-report','n_clicks'),
+)
+def close_report(n_clicks):
+    if n_clicks is not None:
+       return {'display': 'none'}
+    else:
+        return {'display': 'block'}
+    
+@callback(
+    Output('download-resume', 'data'),
+    Input('dowload-report','n_clicks'),
+)
+def dowload_report(n_clicks):
+    if n_clicks is not None:
+        convert_html_to_pdf(report_html,'report_html.pdf')
+        return dcc.send_file(
+        "./report_html.pdf", "resume_report.pdf")
