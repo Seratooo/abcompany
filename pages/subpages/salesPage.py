@@ -7,12 +7,13 @@ import pandas as pd
 from api.chartsAPI import TemplateChart
 import plotly.io as pio
 import base64
+from api.insights import total_clientes, total_vendas
 from report.reports import convert_html_to_pdf
 
-global report_html, figures
+global report_html, figures, TargetValues
 report_html = ''
-width = 600
-height = 600
+width = 500
+height = 500
 template = TemplateChart
 
 DatasetsNames = GetAllCollectionNames()
@@ -101,10 +102,10 @@ sales = html.Div([
           Input("panelSales-dataset-multi-select", "value")
           )
 def select_value(value):
-    global figures
+    global figures, TargetValues
     figures = []
     sales_train_all_df = getColections(value)
-
+    TargetValues = sales_train_all_df
     d7 = sales_train_all_df[sales_train_all_df['Customers']>0]
     fig7 = go.Figure()
     fig7.add_trace(go.Indicator(
@@ -270,14 +271,14 @@ def generate_report(n_clicks):
     descriptionData = []
     captionData = []
 
-    descriptionData.insert(0, 'this is a description of data in graph number 1')
+    descriptionData.insert(0, total_clientes(TargetValues))
     captionData.insert(0, 'Clientes Alcançados')
 
-    descriptionData.insert(1, 'this is a description of data in graph number 2')
+    descriptionData.insert(1, total_vendas(TargetValues))
     captionData.insert(1, 'Receitas vendidas')
 
-    descriptionData.insert(2, 'this is a description of data in graph number 2')
-    captionData.insert(2, 'Média de Vendas por dia')
+    # descriptionData.insert(2, 'this is a description of data in graph number 2')
+    # captionData.insert(2, 'Média de Vendas por dia')
 
     images = [base64.b64encode(pio.to_image(figure, format='png', width=width, height=height)).decode('utf-8') for figure in figures]
     

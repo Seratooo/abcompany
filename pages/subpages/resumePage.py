@@ -7,14 +7,15 @@ import dash_mantine_components as dmc
 import pandas as pd
 import base64
 import plotly.io as pio
+from api.insights import amostra_dataset, maiores_demandas, menores_demandas, periodo_de_analise, receitas_mes
 from report.reports import convert_html_to_pdf
 
 global report_html
 report_html = ''
 template = TemplateChart
-width = 600
-height = 600
-global figures
+width = 500
+height = 500
+global figures, Best_sales, TargetValues
 
 DatasetsNames = GetAllCollectionNames()
 PanelMultiSelectOptions = [DatasetsNames[0]]
@@ -77,9 +78,11 @@ resume = html.Div([
           Input("panel-dataset-multi-select", "value")
           )
 def select_value(value):
-    global figures
+    global figures, Best_sales, TargetValues
     figures = []
     sales_train_all_df = getColections(value)
+    TargetValues = sales_train_all_df
+
     fig1 = go.Figure() 
 
     Y = len(sales_train_all_df['Year'].unique())
@@ -149,7 +152,7 @@ def select_value(value):
 
 
     df5 = sales_train_all_df.groupby('Month')['Sales'].sum().reset_index()
-
+    Best_sales = df5
     fig5 = px.pie(df5, values='Sales', names='Month', title='Distribuição das receitas por mês')
     
     figures.insert(0, fig1)
@@ -209,20 +212,20 @@ def getColections(Names):
 def generate_report(n_clicks):
     descriptionData = []
     captionData = []
-
-    descriptionData.insert(0,'this is a description of data in graph number 1')
+    
+    descriptionData.insert(0, periodo_de_analise())
     captionData.insert(0, 'Período de Análise dos Dados')
-
-    descriptionData.insert(1, 'this is a description of data in graph number 2')
+    TargetValues.to_string
+    descriptionData.insert(1, maiores_demandas(TargetValues))
     captionData.insert(1,'Maior Número de Vendas Diárias')
 
-    descriptionData.insert(2, 'this is a description of data in graph number 2')
-    captionData.insert(2,'Maior Número de Clientes Diários')
+    descriptionData.insert(2, menores_demandas(TargetValues))
+    captionData.insert(2,'Menor Número de Clientes Diários')
 
-    descriptionData.insert(3, 'this is a description of data in graph number 2')
+    descriptionData.insert(3, amostra_dataset(TargetValues))
     captionData.insert(3,'Amostra dos dados a serem analisados')
 
-    descriptionData.insert(4, 'this is a description of data in graph number 2')
+    descriptionData.insert(4, receitas_mes(Best_sales))
     captionData.insert(4,'Distribuição de receitas por mês')
     
     images = [base64.b64encode(pio.to_image(figure, format='png', width=width, height=height)).decode('utf-8') for figure in figures]
