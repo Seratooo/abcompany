@@ -1,6 +1,8 @@
+import base64
 from dash import html, Output, Input, callback, State
 from dash import dcc
 from datetime import date, datetime
+from api.chartsAPI import TemplateForceastChart
 from api.clientApp import GetAllCollectionNames, GetCollectionByName
 from api.externalFactors import GetHolidaysByYear, GetInflationByYear, GetWeatherByYear, future_weather
 from data import configs
@@ -9,11 +11,19 @@ import plotly.graph_objects as go
 import plotly.express as px
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
+import plotly.io as pio
+
+from report.reports import convert_html_to_pdf
 
 DatasetsNames = GetAllCollectionNames()
 PanelMultiSelectOptions = [DatasetsNames[0]]
-global df_predition
+global df_predition, report_html, figures
+figures = []
+template = TemplateForceastChart
+
 forecast = html.Div([
+    dcc.Download(id="download-forecast"),
+    html.Div(id='report-output-forecast', className='report_output'),
     dcc.Interval(id='interval_db', interval=86400000 * 7, n_intervals=0),
     dcc.Store(id='dataset-sales-forecast-storage', storage_type='local'),
     html.Div([
@@ -30,12 +40,13 @@ forecast = html.Div([
                         id="panelForecast-dataset-multi-select",
                         value=PanelMultiSelectOptions,
                         data=[],
-                        style={"width": 400, "marginBottom": 10,"fontSize":"1.2rem"},
+                        style={"width": 400, "fontSize":"1.2rem"},
                         ),
-                    ])
+                        dmc.Button("Gerar relatório", style={"background":"#fff", "color":"#000","font":"3.2rem Nunito","marginTop":"1.2rem"}, id='generate-report'),
+                    ], style={"display":"flex","justifyContent":"space-between", "alignItems":"center"})
                 ])
             )
-        ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
+        ], style={"background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
     html.Div([
         html.Div([
              dmc.Button("Prever", id="forecast-btn"),
@@ -190,7 +201,8 @@ def save_param_panelOption(value):
 def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name, fourier, fourier_monthly, seasonality_mode, period):
     
     if nclicks is not None:
-
+        global figures
+        figures = []
         Holidays = pd.DataFrame()
         Weather = pd.DataFrame()
         Inflation = pd.DataFrame()
@@ -251,7 +263,7 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name,
             hovermode='x',
             template='plotly_white'
         )
-        
+        figures.append(fig)
         Predition_graph = dcc.Graph(
             id='graph11',
             figure=fig
@@ -273,21 +285,23 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name,
             id='graph13',
             figure=fig3
         )
+        figures.append(fig3)
         
-
+        yearly_seasonality_fig = go.Figure(
+            data=[
+                go.Scatter(x=df_predition['ds'], y=df_predition['yearly'], mode='lines')
+            ],
+            layout=go.Layout(
+                title='Sazonalidade Anual',
+                xaxis={'title': 'Data'},
+                yaxis={'title': 'Sazonalidade'}
+            )
+        )
         yearly_seasonality = dcc.Graph(
             id='seasonality-yearly-plot',
-            figure={
-                'data': [
-                    {'x': df_predition['ds'], 'y': df_predition['yearly'], 'type': 'line'}
-                ],
-                'layout': {
-                    'title': 'Sazonalidade Anual',
-                    'xaxis': {'title': 'Data'},
-                    'yaxis': {'title': 'Sazonalidade'}
-                }
-            }
+            figure=yearly_seasonality_fig
         )
+        figures.append(yearly_seasonality_fig)
         
         monthly_seasonality = dcc.Graph(
             id='seasonality-monthly-plot',
@@ -431,3 +445,51 @@ def render_content(tab):
             },
         )
         ])
+    
+@callback(
+    Output('report-output-forecast','children'),
+    Output('report-output-forecast', 'style', allow_duplicate=True),
+    Input('generate-report','n_clicks'),
+    prevent_initial_call=True
+)
+def generate_report(n_clicks):
+    images = [base64.b64encode(pio.to_image(figure, format='png', width='1240px', height='auto')).decode('utf-8') for figure in figures]
+    
+    global report_html
+    report_html = ''
+    for index, image in enumerate(images):
+        _ = template
+        _ = _.format(image=image, width='900px', height='auto')
+        report_html += _
+
+    if n_clicks is not None:
+        return [
+            html.Div([
+                html.Div('Download', id="dowload-report"),
+                html.Div('Fechar', id='close-report'),
+            ], className="wrapper-btn-report"),
+            html.Iframe(srcDoc=report_html, width="100%", height="100%")
+            ], {'display': 'block'}
+    else:
+        return '', {'display': 'none'}
+    
+
+@callback(
+    Output('report-output-forecast', 'style'),
+    Input('close-report','n_clicks'),
+)
+def close_report(n_clicks):
+    if n_clicks is not None:
+       return {'display': 'none'}
+    else:
+        return {'display': 'block'}
+    
+@callback(
+    Output('download-forecast', 'data'),
+    Input('dowload-report','n_clicks'),
+)
+def dowload_report(n_clicks):
+    if n_clicks is not None:
+        convert_html_to_pdf(report_html,'report_html.pdf')
+        return dcc.send_file(
+        "./report_html.pdf", "forecast_report.pdf")

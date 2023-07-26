@@ -1,6 +1,6 @@
 import dash
 from dash import Input, Output, dcc, html, callback, State
-from subpages import resumePage, salesPage, uploadPage, analyzeFilesPage, forecastPage, pastPredictionsPages, externalFactorsPage, AEDPage
+from subpages import resumePage, salesPage, uploadPage, analyzeFilesPage, forecastPage, pastPredictionsPages, externalFactorsPage, AEDPage, tasksPage, promotionPage
 from components import headerComponent, sidebarComponent, containerComponent
 dash.register_page(__name__,  suppress_callback_exceptions=True)
 
@@ -29,6 +29,8 @@ ForecastPage = forecastPage.forecast
 PastPredictionsPage = pastPredictionsPages.pastPredictions
 ExternalFactorsPage = externalFactorsPage.externalFactorsPage
 AEDPage = AEDPage.AED
+TaskSPage = tasksPage.tasks
+PromtionPage = promotionPage.promotion
 
 @callback(
     Output('url2','pathname', allow_duplicate=True),
@@ -61,6 +63,10 @@ def render_page_content(pathname, search):
         return ExternalFactorsPage
     elif  link == "/dashboard?AED":
         return AEDPage
+    elif  link == "/dashboard?tasks":
+        return TaskSPage
+    elif  link == "/dashboard?promotions":
+        return PromtionPage
     # If the user tries to reach a different page, return a 404 message
     return html.Div(
         [

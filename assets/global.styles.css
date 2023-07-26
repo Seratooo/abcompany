@@ -538,3 +538,44 @@ label.mantine-InputWrapper-label{
 #dowload-report:hover, #close-report:hover{
   background-color: #2B454E;
 }
+
+
+
+#task-wrapper {
+  background-color: #dbdada;
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  height: 350px;
+  justify-content: center;
+  margin: 10% auto 0;
+  padding: 25px;
+}
+
+#task-wrapper .name-wrapper{
+  display: flex;
+  gap: 10px;
+}
+#task-wrapper .name-wrapper .mantine-TextInput-root{
+  flex: 1;
+}
+#task-wrapper .desc-wrapper #desc-task{
+  width: 100%;
+}
+
+#task-wrapper .data-wrapper{
+  margin-top:10px;
+  display: flex; gap: 10px;
+}
+
+#task-wrapper #create-task{
+  width: 330px;
+  font-size: 4.2rem;
+  font-size: 'Nunito';
+  background-color: #2B454E;
+}
+
+#tabs-wrapprer{
+  width: 80%;
+  margin: 3% auto 0;
+}

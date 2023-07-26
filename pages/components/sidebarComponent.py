@@ -104,8 +104,8 @@ sidebar = html.Div(
                     variant="subtle",
                     styles={"icon":{"postion": 'absolute'}},
                     children=[
-                        dmc.NavLink(label="Registar Tarefas", style={'color':'rgb(98 98 98)'}),
-                        dmc.NavLink(label="Registar Promoções", style={'color':'rgb(98 98 98)'}),
+                        dmc.NavLink(label="Registar Tarefas", style={'color':'rgb(98 98 98)'}, href="/dashboard?tasks"),
+                        dmc.NavLink(label="Registar Promoções", style={'color':'rgb(98 98 98)'}, href="/dashboard?promotions"),
                        # dmc.NavLink(label="Limpar o Quadro", style={'color':'rgb(98 98 98)'}),
                     ],
                 ),
