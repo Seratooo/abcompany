@@ -8,15 +8,16 @@ import plotly.express as px
 import pandas as pd
 import json
 import re
-from googletrans import Translator
+from report.reports import convert_html_to_pdf
+# from translate import Translator
+# translator= Translator(from_lang='english',to_lang="portuguese")
 
-
-translator = Translator()
 DatasetsNames = GetAllCollectionNames()
 PanelMultiSelectOptions = DatasetsNames[0]
-
+global dataset_report
 
 AED = html.Div([
+    dcc.Download(id="download-aed"),
     dcc.Interval(id='interval_db', interval=86400000 * 7, n_intervals=0),
     dcc.Store(id='dataset-sales-aed-storage', storage_type='local'),
     html.Div([
@@ -41,7 +42,7 @@ AED = html.Div([
                             ),
                         ]),
                         html.Div([
-                            html.P('Aqui você poderá analisar aspectos estatísticos e insights dos seus conjuntos de dados', style={"font":"1.2rem Nunito", "color":"#fff"}),
+                            dmc.Button("Gerar relatório", style={"background":"#fff", "color":"#000","font":"3.2rem Nunito","marginTop":"1.2rem"}, id='generate-report-aed'),
                         ])
                     ], style={"display":"flex", "justifyContent":"space-between", "width":"100%"}),
                     
@@ -50,6 +51,7 @@ AED = html.Div([
         ],className='aed-page-class' , style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem", "width":"100%"}),
         
         dcc.Loading(children=[
+            html.Div(id='report-output-aed', className='report_output'),
             html.Div([
             html.Div([
                 html.Div(id='estatisticas-container', style={"width":"72%"}),
@@ -234,6 +236,7 @@ def update_alerts(_, value):
     alerts_container_html.append(html.P("Alertas"))
     Main_div = []
     for value in alerts_container:
+        # value = translator.translate(value)
         element = html.Div([
             html.P(f'{value}')
         ])
@@ -264,6 +267,8 @@ def variables_alerts(_, value):
 )
 def variables_output(variable, value):
   df = getColections([value])
+  global dataset_report
+  dataset_report = df
   report = getJson(value) 
   variables_HTML = []
   variables_data = get_variables_data_byName(variable, report)
@@ -346,3 +351,49 @@ def getColections(Names):
     return df_PD
 
 ### --- Funções Auxiliares --- ####
+
+
+### - Geranerat Report --- ###
+global report_aed
+report_aed = ''
+@callback(Output('report-output-aed','children'),
+          Output('report-output-aed', 'style', allow_duplicate=True),
+          Input("generate-report-aed",'n_clicks'),
+          Input("paneleAed-dataset-multi-select", "value"),
+          prevent_initial_call=True)
+def generate_report(n_clicks, value):
+    if n_clicks is not None:
+        global report_aed
+        profile = ProfileReport(dataset_report, title="AED REPORT", minimal=False)
+        report_aed = profile.html
+        return [
+                html.Div([
+                    #html.Div('Download', id="dowload-report"),
+                    html.Div('Fechar', id='close-report'),
+                ], className="wrapper-btn-report"),
+                html.Iframe(srcDoc=report_aed.replace('#377eb8','#2B454E').replace('#337ab7','#2B454E'), width='100%', height='100%')
+                ], {'display': 'block'}
+    else:
+        return '', {'display': 'none'}
+    
+@callback(
+    Output('report-output-aed', 'style'),
+    Input('close-report','n_clicks'),
+)
+def close_report(n_clicks):
+    if n_clicks is not None:
+       return {'display': 'none'}
+    else:
+        return {'display': 'block'}
+    
+
+# @callback(
+#     Output('download-aed', 'data'),
+#     Input('dowload-report','n_clicks'),
+# )
+# def dowload_report(n_clicks):
+#     if n_clicks is not None:
+#         convert_html_to_pdf(report_aed.encode('utf-8').translate(''),'report_html.pdf')
+#         return dcc.send_file(
+#         "./report_html.pdf", "aed_report.pdf")
+        
