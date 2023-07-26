@@ -5,3 +5,11 @@ TemplateChart = (''
     '<hr>'
 '')
 
+
+TemplateForceastChart = (''
+    '<div style="display:flex; justify-content:center; "><img style="width: {width}; height: {height}" src="data:image/png;base64,{image}"></div>'
+    # '{caption}'                              # Optional caption to include below the graph
+    '<br>'
+    '<hr>'
+'')
+
