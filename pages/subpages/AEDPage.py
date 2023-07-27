@@ -338,7 +338,7 @@ def variables_output(variable, value):
 
 ### --- Funções Auxiliares --- ####
 def getJson(name):
-    caminho_arquivo = f'json/{name}.json'
+    caminho_arquivo = f'json/{name.replace(":","")}.json'
     with open(caminho_arquivo) as arquivo_json:
         dados_json = json.load(arquivo_json)
     return dados_json
