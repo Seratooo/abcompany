@@ -37,6 +37,24 @@ pip install abcompany
    npm run build
    ```
 
+### For Windows
+   1. Create env
+   ```shell
+   python -m venv venv
+   ```
+   2. Policy Setting
+   ```shell
+   Set-ExecutionPolicy Unrestricted -Scope Process
+   ```
+   3. Active ENV
+      - ```shell 
+      venv\Scripts\activate.bat
+      ```
+      - ```shell 
+      venv\Scripts\Activate.ps1
+      ```
+
+
 ### Component Code
 
 ### Publish

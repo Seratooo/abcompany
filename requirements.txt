@@ -3,7 +3,7 @@ dash_bootstrap_components
 dash-iconify
 dash-mantine-components
 eurostat
-googletrans
+#googletrans
 gunicorn
 holidays
 pandas

@@ -15,22 +15,23 @@ sys.path.append("data")
 sys.path.append("api")
 
 
-# DatasetsNames = GetAllCollectionNames()
+DatasetsNames = GetAllCollectionNames()
 
-# def getColections(Names):
-#     df_PD = pd.DataFrame()
-#     for name in Names:
-#         df_PD =pd.concat((df_PD, pd.DataFrame(GetCollectionByName(name))))
+def getColections(Names):
+    df_PD = pd.DataFrame()
+    for name in Names:
+        df_PD =pd.concat((df_PD, pd.DataFrame(GetCollectionByName(name))))
     
-#     return df_PD
+    return df_PD
 
-# for dfName in DatasetsNames:
-#     df = getColections([dfName])
-#     df.drop('_id', axis=1, inplace=True)
-#     df.drop('Unnamed: 0', axis=1, inplace=True)
-#     profile = ProfileReport(df, title=f"Relatório: {dfName}")
-#     profile.to_json()
-#     profile.to_file(f"json/{dfName}.json")
+for dfName in DatasetsNames:
+    if not os.path.exists(f"json/{dfName.replace(':','')}.json"):
+        df = getColections([dfName])
+        df.drop('_id', axis=1, inplace=True)
+        df.drop('Unnamed: 0', axis=1, inplace=True)
+        profile = ProfileReport(df, title=f"Relatório: {dfName}")
+        profile.to_json()
+        profile.to_file(f"json/{dfName.replace(':','')}.json")
 
 app = dash.Dash(__name__, use_pages=True, suppress_callback_exceptions=True, update_title='Carregando...')
 server = app.server
