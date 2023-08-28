@@ -117,15 +117,15 @@ def select_value(value):
     ))
 
 
-    df3 = df2_dataframe.groupby(['Date'])['Customers'].sum().reset_index()
-    df3.sort_values(ascending=True, inplace=True, by='Customers')
+    df3 = df2_dataframe.groupby(['Date'])['Quantity'].sum().reset_index()
+    df3.sort_values(ascending=True, inplace=True, by='Quantity')
 
     fig3 = go.Figure()
     fig3.add_trace(go.Indicator(mode='number+delta',
-            title = {"text": f"<span style='font-size:150%'>Menor N% de Clientes Diários <br> em {Year} ano(s)</span><br><span style='font-size:70%'> em relação a média</span><br>"},
-            value = df3['Customers'].iloc[0],
-            number = {'suffix': " Clientes"},
-            delta = {'relative': True, 'valueformat': '.1%', 'reference': df3['Customers'].mean()}
+            title = {"text": f"<span style='font-size:150%'>Menor N% de Quantidade de vendas diárias <br> em {Year} ano(s)</span><br><span style='font-size:70%'> em relação a média</span><br>"},
+            value = df3['Quantity'].iloc[0],
+            number = {'suffix': " Venda(s)"},
+            delta = {'relative': True, 'valueformat': '.1%', 'reference': df3['Quantity'].mean()}
     ))
 
 
