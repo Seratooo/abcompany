@@ -78,7 +78,7 @@ sales = html.Div([
                  dmc.Select(
                     label="",
                     placeholder="Select one",
-                    id="customers-select",
+                    id="price-select",
                     value="Day",
                     data=[
                         {"value": "Month", "label": "Mês"},
@@ -106,11 +106,11 @@ def select_value(value):
     figures = []
     sales_train_all_df = getColections(value)
     TargetValues = sales_train_all_df
-    d7 = sales_train_all_df[sales_train_all_df['Customers']>0]
+    d7 = sales_train_all_df[sales_train_all_df['Quantity']>0]
     fig7 = go.Figure()
     fig7.add_trace(go.Indicator(
-            title = {"text": f"<span style='font-size:150%'>Clientes Alcançados</span><br><span style='font-size:70%'>entre o ano de:</span><br><span>{d7['Year'].min()} - {d7['Year'].max()}</span>"},
-            value = (d7['Customers'].sum()),
+            title = {"text": f"<span style='font-size:150%'>Quantidade Vendida </span><br><span style='font-size:70%'>entre o ano de:</span><br><span>{d7['Year'].min()} - {d7['Year'].max()}</span>"},
+            value = (d7['Quantity'].sum()),
             number = {'suffix': ""}
     ))
 
@@ -181,14 +181,14 @@ def changeSales(value, label, dataset):
 
 @callback(
         Output("graph10", "figure"),
-        Input("customers-select", "value"),
-        State('customers-select','label'),
+        Input("price-select", "value"),
+        State('price-select','label'),
         State("panelSales-dataset-multi-select", "value")
 )
-def changeCustomers(value, label, dataset):
+def changePrice(value, label, dataset):
      sales_train_all_df = getColections(dataset)
 
-     df10 = sales_train_all_df.groupby(f'{value}')['Customers'].mean().reset_index()
+     df10 = sales_train_all_df.groupby(f'{value}')['Price'].mean().reset_index()
      
      if value == 'DayOfWeek':
         dia_semana_dict = {1: 'Segunda-feira', 2: 'Terça-feira', 3: 'Quarta-feira', 4: 'Quinta-feira', 5: 'Sexta-feira', 6: 'Sábado', 7: 'Domingo'}
@@ -200,17 +200,17 @@ def changeCustomers(value, label, dataset):
         df10['Month'] = df10['Month'].map(meses_dict)
 
      fig = go.Figure()
-     fig.add_trace(go.Bar(x=df10[f'{value}'], y=df10['Customers'], name='Média de Clientes', marker_color='blue'))
+     fig.add_trace(go.Bar(x=df10[f'{value}'], y=df10['Price'], name='Média de Preços', marker_color='blue'))
 
      # Adicionar o gráfico de linha
-     fig.add_trace(go.Scatter(x=df10[f'{value}'], y=df10['Customers'], mode='lines', name='Média de Clientes', line_color='red'))
+     fig.add_trace(go.Scatter(x=df10[f'{value}'], y=df10['Price'], mode='lines', name='Média de Preços', line_color='red'))
 
-     customersBy = {'Year': 'Ano', 'Day': 'Dia', 'Month': 'Mês', 'DayOfWeek': 'Dia da Semana'}
+     priceBy = {'Year': 'Ano', 'Day': 'Dia', 'Month': 'Mês', 'DayOfWeek': 'Dia da Semana'}
      # Personalizar layout e estilo do gráfico
      fig.update_layout(
-        title=f'Média de Clientes por {customersBy.get(value)}',
-        xaxis_title=f'{customersBy.get(value)}',
-        yaxis_title='Média de Clientes', 
+        title=f'Média de Preços por {priceBy.get(value)}',
+        xaxis_title=f'{priceBy.get(value)}',
+        yaxis_title='Média de Preços', 
         plot_bgcolor='white',
         showlegend=False
      )
