@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+import pandas as pd
 
 load_dotenv()
 from pymongo.mongo_client import MongoClient
@@ -43,8 +44,19 @@ def GetAllCollectionNames():
    return db.list_collection_names()
 
 def GetCollectionByName(Name):
+#   name = Name.replace("_","")
+#   if  os.path.exists(f"data/{name}.csv"):
+#      caminho_arquivo = f'data/{name}.csv'
+#      df_local = pd.read_csv(caminho_arquivo.split('-')[0])
+#      return df_local.values.tolist()
+   
    mycollection = db[Name]
    all_results = mycollection.find()
+ #  df = pd.DataFrame(list(all_results))
+
+#   if not os.path.exists(f"data/df_local.csv"):
+#      df.to_csv(f'df_local.csv')
+    
    return list(all_results)
 
 

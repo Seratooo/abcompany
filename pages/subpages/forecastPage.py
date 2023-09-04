@@ -4,7 +4,7 @@ from dash import dcc
 from datetime import date, datetime
 from api.chartsAPI import TemplateForceastChart
 from api.clientApp import GetAllCollectionNames, GetCollectionByName
-from api.externalFactors import GetHolidaysByYear, GetInflationByYear, GetWeatherByYear, future_weather
+from api.externalFactors import GetHolidaysByYear, GetInflationByYear, GetWeatherByYear, future_euro_inflation, future_weather
 from data import configs
 import pandas as pd
 import plotly.graph_objects as go
@@ -20,6 +20,7 @@ PanelMultiSelectOptions = [DatasetsNames[0]]
 global df_predition, report_html, figures
 figures = []
 template = TemplateForceastChart
+
 
 forecast = html.Div([
     dcc.Download(id="download-forecast"),
@@ -92,6 +93,8 @@ forecast = html.Div([
                 value="AO",
                 data=[
                     {"value": "AO", "label": "Angola"},
+                    {"value": "MZ", "label": "Moçambique"},
+
                 ],
                 style={"width": 200},
             ),
@@ -143,7 +146,23 @@ forecast = html.Div([
 
             ],
             style={"width": 250},
-        ),
+            ),
+            dmc.Select(
+            label="Produto",
+            description="Selecione um produto!",
+            id="product-select",
+            value="Peixe Carapau",
+            data=[
+                {"value": "Peixe Carapau", "label": "Peixe Carapau"},
+                {"value": "Peixe Corvina", "label": "Peixe Corvina"},
+                {"value": "Coxa Seara Brasil", "label": "Coxa Seara Brasil"},
+                {"value": "Febras", "label": "Febras"},
+                {"value": "Limão Nacional", "label": "Limão Nacional"},
+                # banana pão
+
+            ],
+            style={"width": 250},
+            ),
 
     ], id="parameters-components"),
      dcc.Loading(children=[
@@ -197,8 +216,9 @@ def save_param_panelOption(value):
     State('fourier-month-number','value'),
     State('seasonality-mode-select','value'),
     State('period-multi-select','value'),
+    State('product-select','value')
 )
-def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name, fourier, fourier_monthly, seasonality_mode, period):
+def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name, fourier, fourier_monthly, seasonality_mode, period, product):
     
     if nclicks is not None:
         global figures
@@ -207,10 +227,10 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name,
         Weather = pd.DataFrame()
         Inflation = pd.DataFrame()
         Dataset = getColections(PanelMultiSelectOptions)
+        Dataset = Dataset[Dataset['Product']==product]
+        Dataset = cleanDataset(Dataset)
         Lenght = int(lenght) * period
         global df_predition
-        if Dataset['_id'].any():
-            Dataset.drop('_id', axis=1, inplace=True)
         
         for sFactor in factorsSeleted:
             if(sFactor == 'schoolholiday'):
@@ -218,7 +238,8 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name,
             elif(sFactor == 'weather'):
                 Dataset.loc[:, 'Weather'] = Dataset['Date'].apply(future_weather)
             elif(sFactor == 'inflation'):
-                Inflation = getInflation(externarFactors)
+                Dataset.loc[:, 'Inflation_euro'] = Dataset['Date'].apply(future_euro_inflation)
+                print(Dataset)
         
         if 'Weather' in Dataset.columns:
             df_original, df_predition, model = configs.sales_predition_Weather(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
@@ -226,12 +247,27 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name,
             id='regressors-plot',
             figure={
                 'data': [
-                    {'x': df_predition['ds'], 'y': df_predition['extra_regressors_multiplicative'], 'type': 'line'}
+                    {'x': df_predition['ds'], 'y': df_predition[f'extra_regressors_{seasonality_mode}'], 'type': 'line'}
                 ],
                 'layout': {
                     'title': 'Regressores (Clima)',
                     'xaxis': {'title': 'Data'},
                     'yaxis': {'title': 'Clima'}
+                }
+            }
+            )
+        elif 'Inflation_euro' in  Dataset.columns:
+            df_original, df_predition, model = configs.sales_predition_Weather(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
+            Inflation_Euro_regressor = dcc.Graph(
+            id='regressors-plot',
+            figure={
+                'data': [
+                    {'x': df_predition['ds'], 'y': df_predition[f'extra_regressors_{seasonality_mode}'], 'type': 'line'}
+                ],
+                'layout': {
+                    'title': 'Regressores (Inflação - Euro)',
+                    'xaxis': {'title': 'Data'},
+                    'yaxis': {'title': 'Euro'}
                 }
             }
             )
@@ -351,6 +387,8 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name,
 
         if 'Weather' in Dataset.columns:
             return [Predition_graph, Weather_regressor, seasonality, fig3_graph], HolidaysTabs
+        elif 'Inflation_euro' in Dataset.columns:
+            return [Predition_graph, Inflation_Euro_regressor, seasonality, fig3_graph], HolidaysTabs
         else:
             return [Predition_graph, seasonality, fig3_graph], HolidaysTabs
     else:
@@ -385,7 +423,20 @@ def getInflation(data):
        InflationPD = pd.concat((InflationPD, GetInflationByYear(int(year))[2]))
     return InflationPD
 
-    
+def cleanDataset(sales_df):
+    aggregated_data = sales_df.groupby('Date')['Quantity'].sum().reset_index()
+    sales_df = pd.DataFrame(aggregated_data)
+
+    q1_qntd = sales_df.Quantity.quantile(.25)
+    q3_qntd = sales_df.Quantity.quantile(.75)
+    IQR_price = q3_qntd - q1_qntd
+
+    # Setting the limits
+    sup_qntd = q3_qntd + 1.5*IQR_price
+    inf_qntd = q1_qntd - 1.5*IQR_price
+
+    sales_df.drop(sales_df[sales_df.Quantity > sup_qntd].index,axis =0, inplace = True)
+    return sales_df
 
 @callback(Output('tabs-content-holiday-graph', 'children'),
               Input('tabs-holiday', 'value'))

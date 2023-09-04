@@ -76,7 +76,22 @@ def GetInflationByYear(Year):
     
     return df_Dol, df_Eur, df
 
-
+def GetInflationByYear_V2(ds):
+    date = pd.to_datetime(ds)
+    mes = f'0{date.month}' if date.month < 10 else date.month
+    ano = date.year
+    myFilters = {'startPeriod': f'{ano}-{mes}', 'endPeriod': f'{ano}-{mes}', 'FREQ': ['M'], 'geo': ['US','EU'], 'coicop':['cp00']}
+    data  =  eurostat.get_data_df( 'PRC_HICP_MANR',filter_pars=myFilters ) 
+    data = data.iloc[:, 4:].copy()
+    df = data.T
+    df.index.name = 'ds'
+    df.rename(columns={0: 'Dolar'}, inplace=True)
+    df.rename(columns={1: 'Euro'}, inplace=True)
+    df.index = pd.to_datetime(df.index)
+    df_Eur = df.iloc[:, 1:].copy()
+    df_Dol = df.iloc[:, :1].copy()
+    
+    return df_Dol, df_Eur, df
 
 def future_weather(ds):
     date = pd.to_datetime(ds)
@@ -86,5 +101,16 @@ def future_weather(ds):
         Weather = float(future_weather['Weather'])
         if Weather is not None and int(Weather) > 0:
             return Weather
+    else:
+        return 0.0
+    
+
+def future_euro_inflation(ds):
+    future_inflation = GetInflationByYear_V2(f'{ds}')[1]
+    has_value = future_inflation['Euro'].notnull().any()
+    if has_value:
+        Dolar = float(future_inflation['Euro'])
+        if Dolar is not None and int(Dolar) > 0:
+            return Dolar
     else:
         return 0.0

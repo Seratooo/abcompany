@@ -1,6 +1,5 @@
 from dash import html, dcc, callback, Output, Input, dash_table
 from api.clientApp import GetAllCollectionNames, GetCollectionByName
-from data.configs import getDatabase
 from ydata_profiling import ProfileReport
 import dash_mantine_components as dmc
 import plotly.graph_objects as go
