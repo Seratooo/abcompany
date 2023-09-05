@@ -56,10 +56,11 @@ def DatasetValues():
 def getGraph(value):
     data = GetCollectionByName(value)
 
-    if data:
-        df = pd.DataFrame(data)
+    if not data.empty:
+        df = data
         df.drop('_id', axis=1, inplace=True)
         df.drop('Unnamed: 0', axis=1, inplace=True)
+        df.drop('Unnamed: 0.1', axis=1, inplace=True)
         
         # Criar um gráfico com base nos dados do DataFrame
         histograms = []

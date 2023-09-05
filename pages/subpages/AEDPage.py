@@ -345,7 +345,7 @@ def getJson(name):
 def getColections(Names):
     df_PD = pd.DataFrame()
     for name in Names:
-        df_PD =pd.concat((df_PD, pd.DataFrame(GetCollectionByName(name))))
+        df_PD =pd.concat((df_PD, GetCollectionByName(name)))
     
     return df_PD
 

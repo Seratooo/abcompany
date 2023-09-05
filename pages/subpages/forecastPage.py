@@ -153,11 +153,29 @@ forecast = html.Div([
             id="product-select",
             value="Peixe Carapau",
             data=[
+                {"value": "Água Pura 5L", "label": "Água Pura 5L"},
+                {"value": "Abacate Nacional", "label": "Abacate Nacional"},
+                {"value": "Asa de Frango 10Kg", "label": "Asa de Frango 10Kg"},
                 {"value": "Peixe Carapau", "label": "Peixe Carapau"},
                 {"value": "Peixe Corvina", "label": "Peixe Corvina"},
+                {"value": "Peixe Pescada", "label": "Peixe Pescada"},
+                {"value": "Batata Rena Nacional", "label": "Batata Rena Nacional"},
+                {"value": "Batata Doce Nacional", "label": "Batata Doce Nacional"},
+                {"value": "Cebola Nacional", "label": "Cebola Nacional"},
+                {"value": "COXA USA KOCH FOODS", "label": "COXA USA KOCH FOODS"},
                 {"value": "Coxa Seara Brasil", "label": "Coxa Seara Brasil"},
-                {"value": "Febras", "label": "Febras"},
-                {"value": "Limão Nacional", "label": "Limão Nacional"},
+                {"value": "Chouriço Corrente 155", "label": "Chouriço Corrente"},
+                {"value": "Entrecosto Especial", "label": "Entrecosto Especial"},
+                {"value": "ENTRECOSTO DE PORCO (PERDIX) ", "label": "Entrecosto de porco (PERDIX)"},
+                {"value": "Figado de Vaca", "label": "Figado de Vaca"},
+                {"value": "Frango 1.200g", "label": "Frango 1.200g"},
+                {"value": "Tomate Maduro Nacional", "label": "Tomate Maduro Nacional"},
+                {"value": "Óleo Fula Soja", "label": "Óleo Fula Soja"},
+                {"value": "VINAGRE PRIMAVERA 500ML", "label": "VINAGRE PRIMAVERA 500ML"},
+
+
+
+
                 # banana pão
 
             ],
@@ -398,7 +416,7 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name,
 def getColections(Names):
     df_PD = pd.DataFrame()
     for name in Names:
-        df_PD =pd.concat((df_PD, pd.DataFrame(GetCollectionByName(name))))
+        df_PD =pd.concat((df_PD, GetCollectionByName(name)))
     return df_PD
 
 def getHolidays(data):
