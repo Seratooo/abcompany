@@ -2,7 +2,7 @@
 import pandas as pd
 from prophet import Prophet
 
-from api.externalFactors import future_euro_inflation, future_weather
+from api.externalFactors import future_euro_inflation, future_usd_inflation, future_weather
 
 def sales_predition(store_id, sales_df, holidays, periods):
     # sales_df = sales_df[sales_df['Store'] == store_id]
@@ -42,7 +42,15 @@ def sales_predition_v2( sales_df, holidays, periods, country_name, fourier, four
 
 def sales_predition_Weather(sales_df, holidays, periods,country_name, fourier, fourier_monthly, seasonality_mode):
 
-    sales_df = sales_df[['Date', 'Quantity','Weather']] 
+    paramters = ['Date','Quantity']
+    if 'Inflation_euro' in sales_df.columns:
+        paramters.append('Inflation_euro')
+    elif 'Weather' in sales_df.columns:
+        paramters.append('Weather')
+    elif 'Inflation_dolar' in sales_df.columns:
+        paramters.append('Inflation_dolar')
+
+    sales_df = sales_df[paramters] 
     sales_df = sales_df.rename(columns = {'Date': 'ds', 'Quantity':'y'})
     sales_df = sales_df.sort_values(by = 'ds')
     
@@ -60,6 +68,8 @@ def sales_predition_Weather(sales_df, holidays, periods,country_name, fourier, f
         model.add_regressor('Weather', mode=seasonality_mode)
     elif 'Inflation_euro' in sales_df.columns:
          model.add_regressor('Inflation_euro', mode=seasonality_mode)
+    elif 'Inflation_dolar' in sales_df.columns:
+        model.add_regressor('Inflation_dolar', mode=seasonality_mode)
 
     model.fit(sales_df)
     
@@ -69,6 +79,8 @@ def sales_predition_Weather(sales_df, holidays, periods,country_name, fourier, f
         future['Weather'] = future['ds'].apply(future_weather)
     elif 'Inflation_euro' in sales_df.columns:
         future['Inflation_euro'] = future['ds'].apply(future_euro_inflation)
-
+    elif 'Inflation_dolar' in sales_df.columns:
+        future['Inflation_dolar'] = future['ds'].apply(future_usd_inflation)
+        
     forecast = model.predict(future)
     return sales_df, forecast, model

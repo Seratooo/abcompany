@@ -4,7 +4,7 @@ from dash import dcc
 from datetime import date, datetime
 from api.chartsAPI import TemplateForceastChart
 from api.clientApp import GetAllCollectionNames, GetCollectionByName
-from api.externalFactors import GetHolidaysByYear, GetInflationByYear, GetWeatherByYear, future_euro_inflation, future_weather
+from api.externalFactors import GetHolidaysByYear, GetInflationByYear, GetWeatherByYear, future_euro_inflation, future_usd_inflation, future_weather
 from data import configs
 import pandas as pd
 import plotly.graph_objects as go
@@ -104,9 +104,12 @@ forecast = html.Div([
                     id="factors-multi-select",
                     value=["schoolholiday"],
                     data=[
-                        {"value": "weather", "label": "Clima"},
                         {"value": "schoolholiday", "label": "Feriados Escolares"},
-                        {"value": "inflation", "label": "Inflação"},
+                        {"value": "weather", "label": "Temperatura"},
+                        {"value": "covid_19", "label": "Covid-19"},
+                        {"value": "inflation_eur", "label": "Euro (Taxa de câmbio)"},
+                        {"value": "inflation_usd", "label": "Dólar (Taxa de câmbio)"},
+
                     ],
                     style={"width": 300},
                 ),
@@ -251,44 +254,66 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name,
         global df_predition
         
         for sFactor in factorsSeleted:
-            if(sFactor == 'schoolholiday'):
-                Holidays = pd.read_csv('data/school_holiday.csv')
+            if(sFactor == 'schoolholiday' or sFactor == 'covid_19'):
+                if(sFactor == 'schoolholiday'):
+                    Holidays = pd.concat((Holidays, pd.read_csv('data/school_holiday.csv'))) 
+                if(sFactor == 'covid_19'):
+                    Holidays = pd.concat((Holidays, pd.read_csv('data/covid_19.csv'))) 
+
             elif(sFactor == 'weather'):
                 Dataset.loc[:, 'Weather'] = Dataset['Date'].apply(future_weather)
-            elif(sFactor == 'inflation'):
+            elif(sFactor == 'inflation_eur'):
                 Dataset.loc[:, 'Inflation_euro'] = Dataset['Date'].apply(future_euro_inflation)
-                print(Dataset)
+            elif(sFactor == 'inflation_usd'):
+                Dataset.loc[:, 'Inflation_dolar'] = Dataset['Date'].apply(future_usd_inflation)
         
-        if 'Weather' in Dataset.columns:
+        if 'Weather' in Dataset.columns or 'Inflation_euro' in  Dataset.columns or 'Inflation_dolar' in  Dataset.columns:
             df_original, df_predition, model = configs.sales_predition_Weather(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
-            Weather_regressor = dcc.Graph(
-            id='regressors-plot',
-            figure={
-                'data': [
-                    {'x': df_predition['ds'], 'y': df_predition[f'extra_regressors_{seasonality_mode}'], 'type': 'line'}
-                ],
-                'layout': {
-                    'title': 'Regressores (Clima)',
-                    'xaxis': {'title': 'Data'},
-                    'yaxis': {'title': 'Clima'}
+            
+            if 'Weather' in df_predition:
+                Weather_regressor = dcc.Graph(
+                id='regressors-plot',
+                figure={
+                    'data': [
+                        {'x': df_predition['ds'], 'y': df_predition[f'Weather'], 'type': 'line'}
+                    ],
+                    'layout': {
+                        'title': 'Regressores (Clima)',
+                        'xaxis': {'title': 'Data'},
+                        'yaxis': {'title': 'Clima'}
+                    }
                 }
-            }
-            )
-        elif 'Inflation_euro' in  Dataset.columns:
-            df_original, df_predition, model = configs.sales_predition_Weather(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
-            Inflation_Euro_regressor = dcc.Graph(
-            id='regressors-plot',
-            figure={
-                'data': [
-                    {'x': df_predition['ds'], 'y': df_predition[f'extra_regressors_{seasonality_mode}'], 'type': 'line'}
-                ],
-                'layout': {
-                    'title': 'Regressores (Inflação - Euro)',
-                    'xaxis': {'title': 'Data'},
-                    'yaxis': {'title': 'Euro'}
+                )
+
+            if 'Inflation_euro' in df_predition:
+                Inflation_Euro_regressor = dcc.Graph(
+                id='regressors-plot',
+                figure={
+                    'data': [
+                        {'x': df_predition['ds'], 'y': df_predition[f'Inflation_euro'], 'type': 'line'}
+                    ],
+                    'layout': {
+                        'title': 'Regressores (Inflação - Euro)',
+                        'xaxis': {'title': 'Data'},
+                        'yaxis': {'title': 'Euro'}
+                    }
                 }
-            }
-            )
+                )
+                
+            if 'Inflation_dolar' in df_predition:
+                Inflation_Dolar_regressor = dcc.Graph(
+                id='regressors-plot',
+                figure={
+                    'data': [
+                        {'x': df_predition['ds'], 'y': df_predition[f'Inflation_dolar'], 'type': 'line'}
+                    ],
+                    'layout': {
+                    'title': 'Regressores (Inflação - Dólar)',
+                    'xaxis': {'title': 'Data'},
+                    'yaxis': {'title': 'Dolar'}
+                    }
+                }
+                )          
         else:
             df_original, df_predition, model = configs.sales_predition_v2(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
 
@@ -403,12 +428,18 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name,
         orientation="horizontal",
         )
 
+        returned_items = [Predition_graph, seasonality, fig3_graph]
         if 'Weather' in Dataset.columns:
-            return [Predition_graph, Weather_regressor, seasonality, fig3_graph], HolidaysTabs
+            returned_items.insert(1, Weather_regressor)
+            #return [Predition_graph, Weather_regressor, seasonality, fig3_graph], HolidaysTabs
         elif 'Inflation_euro' in Dataset.columns:
-            return [Predition_graph, Inflation_Euro_regressor, seasonality, fig3_graph], HolidaysTabs
-        else:
-            return [Predition_graph, seasonality, fig3_graph], HolidaysTabs
+            returned_items.insert(1, Inflation_Euro_regressor)
+            #return [Predition_graph, Inflation_Euro_regressor, seasonality, fig3_graph], HolidaysTabs
+        elif 'Inflation_dolar' in Dataset.columns:
+            returned_items.insert(1, Inflation_Dolar_regressor)
+            
+        
+        return returned_items, HolidaysTabs
     else:
         return html.Div('Realize sua previsão aqui!', id="predition-banner"), html.Div()
 
