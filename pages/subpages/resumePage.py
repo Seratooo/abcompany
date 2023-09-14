@@ -220,7 +220,7 @@ def generate_report(n_clicks):
     captionData.insert(1,'Maior Número de Vendas Diárias')
 
     descriptionData.insert(2, menores_demandas(TargetValues))
-    captionData.insert(2,'Menor Número de Clientes Diários')
+    captionData.insert(2,'Menor Número de vendas em quantidade')
 
     descriptionData.insert(3, amostra_dataset(TargetValues))
     captionData.insert(3,'Amostra dos dados a serem analisados')
