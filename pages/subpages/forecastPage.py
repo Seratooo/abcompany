@@ -12,6 +12,7 @@ import plotly.express as px
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 import plotly.io as pio
+#from sklearn.metrics import mean_absolute_percentage_error
 
 from report.reports import convert_html_to_pdf
 
@@ -269,7 +270,11 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name,
         
         if 'Weather' in Dataset.columns or 'Inflation_euro' in  Dataset.columns or 'Inflation_dolar' in  Dataset.columns:
             df_original, df_predition, model = configs.sales_predition_Weather(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
-            
+         #   print(df_original.head(200)['y'])
+          #  print( df_predition.head(200)['yhat'])
+
+            #mape = mean_absolute_percentage_error(df_original.head(230)['y'], df_predition.head(230)['yhat'])
+            #print("MAPE: {:.2f}%".format(mape*100))
             if 'Weather' in df_predition:
                 Weather_regressor = dcc.Graph(
                 id='regressors-plot',

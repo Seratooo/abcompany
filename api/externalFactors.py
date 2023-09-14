@@ -41,8 +41,8 @@ def GetWeatherByYear(Year):
     return data, df_reduzido.copy()
 
 def GetWeatherByDay(_start, _end):
-    start = _start
-    end = _end
+    start = pd.to_datetime(_start)
+    end = pd.to_datetime(_end)
     df = Daily(LuandaPoint, start, end)
     df = df.fetch()
     df_reduzido = df.iloc[:, :3].copy()
@@ -97,16 +97,28 @@ def GetInflationByYear_V2(ds):
     return df_Dol, df_Eur, df
 
 def future_weather(ds):
-    date = pd.to_datetime(ds)
-    future_weather = GetWeatherByDay(date, date)[0]
-    has_value = future_weather['Weather'].notnull().any()
-    if has_value:
-        Weather = float(future_weather['Weather'])
-        if Weather is not None and int(Weather) > 0:
-            return Weather
-    else:
+    date = pd.to_datetime(ds).strftime('%Y-%m-%d')
+    df_weather = pd.read_csv('data/df_weather.csv')
+    data_atual = datetime.date.today()
+    data_formatada = data_atual.strftime('%Y-%m-%d')
+
+    if not df_weather[df_weather.Date == data_formatada]['Weather'].values:
+        future_weather = GetWeatherByDay(data_formatada, data_formatada)[0]
+        has_value = future_weather['Weather'].notnull().any()
+        if has_value:
+            Weather = float(future_weather['Weather'])
+            if Weather is not None and int(Weather) > 0:
+                new_element = {
+                'time': data_formatada,
+                'Date': data_formatada,
+                'Weather': Weather,
+                }
+                df_weather = pd.concat([df_weather, pd.DataFrame([new_element])], ignore_index=True)
+                df_weather.to_csv('data/df_weather.csv')
+    try:
+        return df_weather[df_weather.Date == date]['Weather'].values[0]
+    except:
         return 0.0
-    
 
 def future_euro_inflation(ds):
     ds = pd.to_datetime(ds).strftime('%Y-%m-%d')
