@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+import pandas as pd
 
 load_dotenv()
 from pymongo.mongo_client import MongoClient
@@ -43,9 +44,21 @@ def GetAllCollectionNames():
    return db.list_collection_names()
 
 def GetCollectionByName(Name):
+   name = Name.split('-')[0]
+   caminho_arquivo = f'data/{name}.csv'
+   if  os.path.exists(caminho_arquivo):
+      df_local = pd.read_csv(caminho_arquivo)
+      return df_local
+   
    mycollection = db[Name]
    all_results = mycollection.find()
-   return list(all_results)
+   df = pd.DataFrame(list(all_results))
+   df.to_csv(caminho_arquivo)
+
+   if not os.path.exists(caminho_arquivo):
+      df.to_csv(caminho_arquivo)
+    
+   return df
 
 
 def isAuthenticatedUser(email, password):

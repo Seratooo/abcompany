@@ -196,7 +196,7 @@ def save_param_panelOption(value):
 def getColections(Names):
     df_PD = pd.DataFrame()
     for name in Names:
-        df_PD =pd.concat((df_PD, pd.DataFrame(GetCollectionByName(name))))
+        df_PD =pd.concat((df_PD, GetCollectionByName(name)))
     
     df_PD['Year'] = pd.DatetimeIndex(df_PD['Date']).year
     df_PD['Month'] = pd.DatetimeIndex(df_PD['Date']).month
@@ -220,7 +220,7 @@ def generate_report(n_clicks):
     captionData.insert(1,'Maior Número de Vendas Diárias')
 
     descriptionData.insert(2, menores_demandas(TargetValues))
-    captionData.insert(2,'Menor Número de Clientes Diários')
+    captionData.insert(2,'Menor Número de vendas em quantidade')
 
     descriptionData.insert(3, amostra_dataset(TargetValues))
     captionData.insert(3,'Amostra dos dados a serem analisados')

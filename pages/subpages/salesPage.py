@@ -252,7 +252,7 @@ def save_param_panelOption(value):
 def getColections(Names):
     df_PD = pd.DataFrame()
     for name in Names:
-        df_PD = pd.concat((df_PD, pd.DataFrame(GetCollectionByName(name))))
+        df_PD = pd.concat((df_PD, GetCollectionByName(name)))
     
     df_PD['Year'] = pd.DatetimeIndex(df_PD['Date']).year
     df_PD['Month'] = pd.DatetimeIndex(df_PD['Date']).month

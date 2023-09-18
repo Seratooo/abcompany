@@ -143,7 +143,7 @@ def saveDataSet(n_clicks):
     global LIST_CSV
     if n_clicks:
         if((PD_CSV.empty == False) and D_NAME):
-            if all(col in PD_CSV.columns for col in ['Date', 'Sales', 'Quantity', 'Price', 'DayOfWeek', 'Year', 'Month', 'Day']):
+            if all(col in PD_CSV.columns for col in ['Date', 'Sales','Product', 'Quantity', 'Price', 'DayOfWeek', 'Year', 'Month', 'Day']):
                 today = str(datetime.today().strftime("%Y-%m-%d %H:%M:%S"))
                 name = f'{D_NAME}-{today}'
                 for index, df_csv in enumerate(LIST_CSV):
