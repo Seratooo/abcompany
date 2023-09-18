@@ -437,10 +437,10 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name,
         if 'Weather' in Dataset.columns:
             returned_items.insert(1, Weather_regressor)
             #return [Predition_graph, Weather_regressor, seasonality, fig3_graph], HolidaysTabs
-        elif 'Inflation_euro' in Dataset.columns:
+        if 'Inflation_euro' in Dataset.columns:
             returned_items.insert(1, Inflation_Euro_regressor)
             #return [Predition_graph, Inflation_Euro_regressor, seasonality, fig3_graph], HolidaysTabs
-        elif 'Inflation_dolar' in Dataset.columns:
+        if 'Inflation_dolar' in Dataset.columns:
             returned_items.insert(1, Inflation_Dolar_regressor)
             
         
