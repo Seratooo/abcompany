@@ -58,7 +58,7 @@ promotion = html.Div([
     html.Div([
             html.Div(
                 html.Div([
-                    html.H3('Registar Promoção', style={"font":"1.8rem Nunito","fontWeight":"700", "color":"#fff","marginBottom":".8rem"}),
+                    html.H3('Registar Promoção', className='PainelStyle'),
                     html.Div([
                         html.P('Aqui você poderá registar todas as promoções', style={"font":"1.2rem Nunito", "color":"#fff"}),
                     ])

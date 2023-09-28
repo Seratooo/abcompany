@@ -13,7 +13,7 @@
  padding: 10px;
 }
 
-#generate-report{
+#generate-report, #generate-report-aed{
   background-color: white;
   color: black;
   font-size: 3rem;

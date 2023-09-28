@@ -26,36 +26,30 @@ sales = html.Div([
     html.Div([
             html.Div(
                 html.Div([
-                    html.H3('Painel de Vendas', style={"font":"1.8rem Nunito","fontWeight":"700", "color":"#fff","marginBottom":".8rem"}),
+                    html.H3('Painel de Vendas', className='PainelStyle'),
                     html.Div([
-                        html.P('Fontes selecionadas para análise:', style={"font":"1.2rem Nunito", "color":"#fff"}),
                         dmc.MultiSelect(
                         label="",
-                        placeholder="Select all you like!",
+                        placeholder="Selecione o conjunto de dados!",
                         id="panelSales-dataset-multi-select",
                         value=PanelMultiSelectOptions,
-                        data=[
-                            {"value": "react", "label": "React"},
-                            {"value": "ng", "label": "data 2015-2020"},
-                            {"value": "svelte", "label": "Svelte"},
-                            {"value": "vue", "label": "data 2020 - 2022"},
-                        ],
-                        style={"width": 400, "marginBottom": 10,"fontSize":"1.2rem"},
+                        data=[],
+                        style={"width": 200, "marginBottom": 10,"fontSize":"1.2rem"},
                         ),
                     ])
                 ])
             ),
             html.Div(
-            dmc.Button("Gerar relatório", style={"background":"#fff", "color":"#000","font":"3.2rem Nunito","marginTop":"1.2rem"}, id='generate-report'),
+            dmc.Button("Gerar relatório", id='generate-report'),
             )
-        ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
+        ], className='WrapperPainel'),
         html.Div([
         html.Div(id='report-output-sales', className='report_output'),
         dcc.Loading(children=[
             html.Div([
-                html.Div([dcc.Graph(id='graph7', className='dbc')], style={"width":"47%"}),
-                html.Div([dcc.Graph(id='graph8', className='dbc')], style={"width":"47%"}),
-            ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
+                html.Div([dcc.Graph(id='graph7', className='dbc')], style={"width":"49%"}),
+                html.Div([dcc.Graph(id='graph8', className='dbc')], style={"width":"49%"}),
+            ], style={"display":"flex","gap":"5px","justifyContent":"center", "padding":"6px 0"}),
         ], color="#2B454E", type="dot", fullscreen=False,),
         html.Div([
             html.Div([
@@ -73,7 +67,7 @@ sales = html.Div([
                     style={"width": 200, "marginBottom": 10},
                 ),
                 dcc.Loading(children=[dcc.Graph(id='graph9', className='dbc'),], color="#2B454E", type="dot", fullscreen=False,),
-            ], style={"width":"47%"}),
+            ], style={"width":"49%"}),
             html.Div([
                  dmc.Select(
                     label="",
@@ -89,11 +83,11 @@ sales = html.Div([
                     style={"width": 200, "marginBottom": 10},
                 ),
                 dcc.Loading(children=[dcc.Graph(id='graph10', className='dbc'),], color="#2B454E", type="dot", fullscreen=False,),
-            ], style={"width":"47%"}),
-        ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
+            ], style={"width":"49%"}),
+        ], style={"display":"flex","gap":"10px","justifyContent":"center", "padding":"6px 0"}),
         ])
         
-], style={"width":"100%","height":"140%"})
+], style={"width":"100%","height":"119vh"})
 
 
 @callback(
@@ -109,7 +103,7 @@ def select_value(value):
     d7 = sales_train_all_df[sales_train_all_df['Quantity']>0]
     fig7 = go.Figure()
     fig7.add_trace(go.Indicator(
-            title = {"text": f"<span style='font-size:150%'>Quantidade Vendida </span><br><span style='font-size:70%'>entre o ano de:</span><br><span>{d7['Year'].min()} - {d7['Year'].max()}</span>"},
+            title = {"text": f"<span style='font-size:1.8rem'>Quantidade vendida </span><br><span style='font-size:1.2rem'>entre o ano de: </span><span style='font-size:1.2rem'>{d7['Year'].min()} - {d7['Year'].max()}</span>"},
             value = (d7['Quantity'].sum()),
             number = {'suffix': ""}
     ))
@@ -117,7 +111,7 @@ def select_value(value):
     d8 = sales_train_all_df
     fig8 = go.Figure()
     fig8.add_trace(go.Indicator(
-            title = {"text": f"<span style='font-size:150%'>Receitas arrecadadas</span><br><span style='font-size:70%'>entre o ano de:</span><br><span>{d8['Year'].min()} - {d8['Year'].max()}</span>"},
+            title = {"text": f"<span style='font-size:1.8rem'>Receitas arrecadadas</span><br><span style='font-size:1.2rem'>entre o ano de: </span><span style='font-size:1.2rem'>{d8['Year'].min()} - {d8['Year'].max()}</span>"},
             value = (d8['Sales'].sum()),
             number = {'prefix': ""}
     ))

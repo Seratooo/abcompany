@@ -31,10 +31,7 @@ forecast = html.Div([
     html.Div([
             html.Div(
                 html.Div([
-                    html.H3('Realizar previsão', style={"font":"1.8rem Nunito","fontWeight":"700", "color":"#fff","marginBottom":".8rem"}),
-                    html.Div([
-                        html.P('Realize a previsão de vendas até uma data pretendida', style={"font":"1.2rem Nunito", "color":"#fff"}),
-                    ]),
+                    html.H3('Realizar previsão', className='PainelStyle'),
                     html.Div([
                         dmc.MultiSelect(
                         label="",
@@ -42,40 +39,41 @@ forecast = html.Div([
                         id="panelForecast-dataset-multi-select",
                         value=PanelMultiSelectOptions,
                         data=[],
-                        style={"width": 400, "fontSize":"1.2rem"},
+                        style={"width": 200, "fontSize":"1.2rem"},
                         ),
-                        dmc.Button("Gerar relatório", style={"background":"#fff", "color":"#000","font":"3.2rem Nunito","marginTop":"1.2rem"}, id='generate-report'),
-                    ], style={"display":"flex","justifyContent":"space-between", "alignItems":"center"})
-                ])
-            )
-        ], style={"background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
+                        dmc.DatePicker(
+                        minDate=date(2023, 1, 1),
+                        maxDate=datetime.now().date(),
+                        value=date(2023, 1, 31),
+                        inputFormat="DD-MM-YYYY",
+                        id='forecast-date',
+                        ),
+                        dmc.Button("Prever", id="forecast-btn"),
+                    ], style={"display":"flex","justifyContent":"space-between", "alignItems":"center", "gap":"10px"}, id='predition-elements')
+                ]),
+                
+            ),
+            dmc.Button("Gerar relatório", id='generate-report'),
+        ],className='WrapperPainel'),
     html.Div([
-        html.Div([
-             dmc.Button("Prever", id="forecast-btn"),
-                  dmc.DatePicker(
-                    minDate=date(2023, 1, 1),
-                    maxDate=datetime.now().date(),
-                    value=date(2023, 1, 31),
-                    inputFormat="DD-MM-YYYY",
-                    id='forecast-date'
-        ),
-        ], id='predition-elements', style={"display":"flex", "gap":"20px"}),
         html.Div([
             dmc.Select(
                 placeholder="Feriados Nacionais!",
                 id="country-name-select",
                 value="AO",
+                description='Feriados',
                 data=[
                     {"value": "AO", "label": "Angola"},
                     {"value": "MZ", "label": "Moçambique"},
 
                 ],
-                style={"width": 200},
+                style={"width": 150},
             ),
             dmc.MultiSelect(
                     placeholder="Factores a considerar",
                     id="factors-multi-select",
-                    value=[],
+                    description='Factores',
+                    value=["schoolholiday"],
                     data=[
                         {"value": "schoolholiday", "label": "Feriados Escolares"},
                         {"value": "weather", "label": "Temperatura"},
@@ -84,11 +82,10 @@ forecast = html.Div([
                         {"value": "inflation_usd", "label": "Dólar (Taxa de câmbio)"},
 
                     ],
-                    style={"width": 300},
+                    style={"width": 325},
                 ),
         ], id="factors-wrapper-components"),
-    ], id="factors-components"),
-    html.Div([
+        html.Div([
             dmc.NumberInput(
                 id='fourier-number',
                 description="Sazonalidade Anual",
@@ -150,6 +147,7 @@ forecast = html.Div([
             ),
 
     ], id="parameters-components"),
+    ], id="factors-components"),
      dcc.Loading(children=[
         html.Div(
             [

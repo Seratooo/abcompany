@@ -14,7 +14,7 @@ upload = html.Div([
     html.Div([
             html.Div(
                 html.Div([
-                    html.H3('Carregar ficheiro', style={"font":"1.8rem Nunito","fontWeight":"700", "color":"#fff","marginBottom":".8rem"}),
+                    html.H3('Carregar ficheiro', className='PainelStyle'),
                     html.Div([
                         html.P('Carregue um ficheiro execel contendo os seus dados para análise', style={"font":"1.2rem Nunito", "color":"#fff"}),
                     ])
