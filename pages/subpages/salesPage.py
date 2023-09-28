@@ -117,7 +117,7 @@ def select_value(value):
     d8 = sales_train_all_df
     fig8 = go.Figure()
     fig8.add_trace(go.Indicator(
-            title = {"text": f"<span style='font-size:150%'>Receitas Vendidas</span><br><span style='font-size:70%'>entre o ano de:</span><br><span>{d8['Year'].min()} - {d8['Year'].max()}</span>"},
+            title = {"text": f"<span style='font-size:150%'>Receitas arrecadadas</span><br><span style='font-size:70%'>entre o ano de:</span><br><span>{d8['Year'].min()} - {d8['Year'].max()}</span>"},
             value = (d8['Sales'].sum()),
             number = {'prefix': ""}
     ))

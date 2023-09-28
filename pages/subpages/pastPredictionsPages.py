@@ -17,9 +17,9 @@ pastPredictions = html.Div([
     html.Div([
             html.Div(
                 html.Div([
-                    html.H3('Previsões anteriores', style={"font":"1.8rem Nunito","fontWeight":"700", "color":"#fff","marginBottom":".8rem"}),
+                    html.H3('Impacto de Previsões', style={"font":"1.8rem Nunito","fontWeight":"700", "color":"#fff","marginBottom":".8rem"}),
                     html.Div([
-                        html.P('Aqui você poderá visualizar todas as previsões já realizadas', style={"font":"1.2rem Nunito", "color":"#fff"}),
+                        html.P('Aqui você poderá consultar o impacto de previsões em um dia específico.', style={"font":"1.2rem Nunito", "color":"#fff"}),
                     ]),
                     dmc.MultiSelect(
                         label="",
@@ -31,13 +31,6 @@ pastPredictions = html.Div([
                         ),
                 ])
             ),
-          #  dcc.DatePickerSingle(
-                #id='my-date-picker-single',
-               # min_date_allowed=date(2023, 1, 1),
-              #  max_date_allowed=datetime.now().date(),
-             #   initial_visible_month=date(2023, 1, 1),
-            #    date=date(2023, 1, 1)
-           # ),
             dmc.DatePicker(
                 id="date-picker",
                 description="Selecione uma data a analisar",

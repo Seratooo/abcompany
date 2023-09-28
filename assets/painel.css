@@ -1,0 +1,27 @@
+.PainelStyle{
+ font-size: 1.4rem;
+ font-family: 'Nunito';
+ font-weight: 700;
+ color: white;
+ margin-bottom: .5rem;
+}
+.WrapperPainel{
+ display: flex;
+ background: #2B454E;
+ justify-content: space-between;
+ align-items: center;
+ padding: 10px;
+}
+
+#generate-report{
+  background-color: white;
+  color: black;
+  font-size: 3rem;
+  font-family: 'Nunito';
+  margin-top: 1.2rem;
+  transition: .3s;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+#generate-report:hover{
+  background-color: #f5f5f6;
+}
