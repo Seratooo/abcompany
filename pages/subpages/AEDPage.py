@@ -22,32 +22,26 @@ AED = html.Div([
     html.Div([
             html.Div(
                 html.Div([
-                    html.H3('Análise Exploratória Dos Dados', style={"font":"1.8rem Nunito","fontWeight":"700", "color":"#fff","marginBottom":".8rem"}),
+                    html.H3('Análise Exploratória Dos Dados', className='PainelStyle'),
                     html.Div([
                         html.Div([
-                            html.P('Fontes selecionadas para análise:', style={"font":"1.2rem Nunito", "color":"#fff"}),
                             dmc.Select(
                             label="",
-                            placeholder="Select all you like!",
+                            placeholder="Selecione o conjunto de dados!",
                             id="paneleAed-dataset-multi-select",
                             value=PanelMultiSelectOptions,
-                            data=[
-                                {"value": "react", "label": "React"},
-                                {"value": "ng", "label": "data 2015-2020"},
-                                {"value": "svelte", "label": "Svelte"},
-                                {"value": "vue", "label": "data 2020 - 2022"},
-                            ],
-                            style={"width": 400, "marginBottom": 10,"fontSize":"1.2rem"},
+                            data=[],
+                            style={"width": 200, "marginBottom": 10,"fontSize":"1.2rem"},
                             ),
                         ]),
-                        html.Div([
-                            dmc.Button("Gerar relatório", style={"background":"#fff", "color":"#000","font":"3.2rem Nunito","marginTop":"1.2rem"}, id='generate-report-aed'),
-                        ])
-                    ], style={"display":"flex", "justifyContent":"space-between", "width":"100%"}),
+                    ]),
                     
                 ])
-            , style={"widht":"100%"})
-        ],className='aed-page-class' , style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem", "width":"100%"}),
+            ),
+            html.Div([
+                dmc.Button("Gerar relatório", id='generate-report-aed'),
+            ])
+        ],className='WrapperPainel'),
         
         dcc.Loading(children=[
             html.Div(id='report-output-aed', className='report_output'),

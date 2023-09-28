@@ -144,9 +144,9 @@ externalFactorsPage = html.Div([
     html.Div([
             html.Div(
                 html.Div([
-                    html.H3('Fatores Externos', style={"font":"1.8rem Nunito","fontWeight":"700", "color":"#fff","marginBottom":".8rem"}),
+                    html.H3('Fatores Externos', className='PainelStyle'),
                     html.Div([
-                        html.P('Aqui você poderá configurar fatores externos que impactam sua venas', style={"font":"1.2rem Nunito", "color":"#fff"}),
+                        html.P('Aqui você analisar os fatores externos ao longo do tempo', style={"font":"1.2rem Nunito", "color":"#fff"}),
                     ])
                 ])
             )
@@ -170,7 +170,7 @@ externalFactorsPage = html.Div([
             orientation="vertical",
             value="holidays"
         ),
-    ], style={"padding":"5rem", "height":"100vh", "background":"#f0f0f0","overflow":"scroll","marginBottom":"30px"}),
+    ], style={"padding":"10px 0", "height":"100vh", "background":"#f0f0f0","overflow":"scroll","marginBottom":"30px"}),
 ])
 
 

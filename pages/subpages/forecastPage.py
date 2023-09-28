@@ -31,10 +31,7 @@ forecast = html.Div([
     html.Div([
             html.Div(
                 html.Div([
-                    html.H3('Realizar previsão', style={"font":"1.8rem Nunito","fontWeight":"700", "color":"#fff","marginBottom":".8rem"}),
-                    html.Div([
-                        html.P('Realize a previsão de vendas até uma data pretendida', style={"font":"1.2rem Nunito", "color":"#fff"}),
-                    ]),
+                    html.H3('Realizar previsão', className='PainelStyle'),
                     html.Div([
                         dmc.MultiSelect(
                         label="",
@@ -42,67 +39,40 @@ forecast = html.Div([
                         id="panelForecast-dataset-multi-select",
                         value=PanelMultiSelectOptions,
                         data=[],
-                        style={"width": 400, "fontSize":"1.2rem"},
+                        style={"width": 200, "fontSize":"1.2rem"},
                         ),
-                        dmc.Button("Gerar relatório", style={"background":"#fff", "color":"#000","font":"3.2rem Nunito","marginTop":"1.2rem"}, id='generate-report'),
-                    ], style={"display":"flex","justifyContent":"space-between", "alignItems":"center"})
-                ])
-            )
-        ], style={"background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
+                        dmc.DatePicker(
+                        minDate=date(2023, 1, 1),
+                        maxDate=datetime.now().date(),
+                        value=date(2023, 1, 31),
+                        inputFormat="DD-MM-YYYY",
+                        id='forecast-date',
+                        ),
+                        dmc.Button("Prever", id="forecast-btn"),
+                    ], style={"display":"flex","justifyContent":"space-between", "alignItems":"center", "gap":"10px"}, id='predition-elements')
+                ]),
+                
+            ),
+            dmc.Button("Gerar relatório", id='generate-report'),
+        ],className='WrapperPainel'),
     html.Div([
         html.Div([
-             dmc.Button("Prever", id="forecast-btn"),
-             dmc.Select(
-                        label="",
-                        placeholder="Selecione o periodo",
-                        id="period-multi-select",
-                        value=31,
-                        data=[
-                            {"value": 1, "label": "Diária"},
-                            {"value": 31, "label": "Mensal"},
-                            {"value": 365, "label": "Anual"},
-                        ],
-                        style={"width": 150, "marginBottom": 10,"fontSize":"1.2rem"},
-                        ),
-             dmc.Select(
-                        label="",
-                        placeholder="Prever até:",
-                        id="lenght-multi-select",
-                        value="1",
-                        data=[
-                            {"value": "1", "label": "1"},
-                            {"value": "2", "label": "2"},
-                            {"value": "3", "label": "3"},
-                            {"value": "4", "label": "4"},
-                            {"value": "5", "label": "5"},
-                            {"value": "6", "label": "6"},
-                            {"value": "7", "label": "7"},
-                            {"value": "8", "label": "8"},
-                            {"value": "9", "label": "9"},
-                            {"value": "10", "label": "10"},
-                            {"value": "11", "label": "11"},
-                            {"value": "12", "label": "12"},
-                        ],
-                        style={"width": 150, "marginBottom": 10,"fontSize":"1.2rem"},
-                )
-        ], id='predition-elements', style={"display":"flex", "gap":"20px"}),
-        html.Div([
             dmc.Select(
-                label="Feriados Nacionais",
-                placeholder="Selecione o seu país!",
+                placeholder="Feriados Nacionais!",
                 id="country-name-select",
                 value="AO",
+                description='Feriados',
                 data=[
                     {"value": "AO", "label": "Angola"},
                     {"value": "MZ", "label": "Moçambique"},
 
                 ],
-                style={"width": 200},
+                style={"width": 150},
             ),
             dmc.MultiSelect(
-                    label="Factores a considerar",
-                    placeholder="Selecione os fatores a considerar!",
+                    placeholder="Factores a considerar",
                     id="factors-multi-select",
+                    description='Factores',
                     value=["schoolholiday"],
                     data=[
                         {"value": "schoolholiday", "label": "Feriados Escolares"},
@@ -112,36 +82,32 @@ forecast = html.Div([
                         {"value": "inflation_usd", "label": "Dólar (Taxa de câmbio)"},
 
                     ],
-                    style={"width": 300},
+                    style={"width": 325},
                 ),
         ], id="factors-wrapper-components"),
-    ], id="factors-components"),
-    html.Div([
+        html.Div([
             dmc.NumberInput(
                 id='fourier-number',
-                label="Sazonalidade Anual",
-                description="Suavização da sazonalidade",
+                description="Sazonalidade Anual",
                 value=10,
                 min=0,
                 max=30,
                 step=5,
                 icon=DashIconify(icon="fa6-solid:weight-scale"),
-                style={"width": 180},
+                style={"width": 115},
             ),
             dmc.NumberInput(
                 id='fourier-month-number',
-                label="Sazonalidade Mensal",
-                description="Suavização da sazonalidade",
+                description="Sazonalidade Mensal",
                 value=5,
                 min=0,
                 max=10,
                 step=1,
                 icon=DashIconify(icon="fa6-solid:weight-scale"),
-                style={"width": 180},
+                style={"width": 115},
             ),
             dmc.Select(
-            label="Tipo de Sazonalidade",
-            description="Relação entre a sozalidade e a tendência!",
+            description="Tipo de Sazonalidade",
             id="seasonality-mode-select",
             value="multiplicative",
             data=[
@@ -149,11 +115,10 @@ forecast = html.Div([
                 {"value": "additive", "label": "Aditiva"},
 
             ],
-            style={"width": 250},
+            style={"width": 150},
             ),
             dmc.Select(
-            label="Produto",
-            description="Selecione um produto!",
+            description="Produto",
             id="product-select",
             value="Peixe Carapau",
             data=[
@@ -176,17 +141,13 @@ forecast = html.Div([
                 {"value": "Tomate Maduro Nacional", "label": "Tomate Maduro Nacional"},
                 {"value": "Óleo Fula Soja", "label": "Óleo Fula Soja"},
                 {"value": "VINAGRE PRIMAVERA 500ML", "label": "VINAGRE PRIMAVERA 500ML"},
-
-
-
-
                 # banana pão
-
             ],
-            style={"width": 250},
+            style={"width": 150},
             ),
 
     ], id="parameters-components"),
+    ], id="factors-components"),
      dcc.Loading(children=[
         html.Div(
             [
@@ -232,15 +193,14 @@ def save_param_panelOption(value):
     State('factors-multi-select','value'),
     Input('externarFactors', 'data'),
     Input('forecast-btn','n_clicks'),
-    State('lenght-multi-select', 'value'),
     State('country-name-select','value'),
     State('fourier-number','value'),
     State('fourier-month-number','value'),
     State('seasonality-mode-select','value'),
-    State('period-multi-select','value'),
-    State('product-select','value')
+    State('product-select','value'),
+    State('forecast-date','value'),
 )
-def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name, fourier, fourier_monthly, seasonality_mode, period, product):
+def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier, fourier_monthly, seasonality_mode, product, date):
     
     if nclicks is not None:
         global figures
@@ -251,7 +211,9 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, lenght, country_name,
         Dataset = getColections(PanelMultiSelectOptions)
         Dataset = Dataset[Dataset['Product']==product]
         Dataset = cleanDataset(Dataset)
-        Lenght = int(lenght) * period
+        Selected_date = datetime.strptime(date, '%Y-%m-%d')
+        Last_df_date = datetime.strptime(Dataset['Date'].max(), '%Y-%m-%d')
+        Lenght = abs((Selected_date - Last_df_date).days)
         global df_predition
         
         for sFactor in factorsSeleted:

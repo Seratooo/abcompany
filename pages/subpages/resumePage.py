@@ -27,45 +27,38 @@ resume = html.Div([
     html.Div([
             html.Div(
                 html.Div([
-                    html.H3('Painel de Resumo', style={"font":"1.8rem Nunito","fontWeight":"700", "color":"#fff","marginBottom":".8rem"}),
+                    html.H3('Painel de Resumo', className='PainelStyle'),
                     html.Div([
-                        html.P('Fontes selecionadas para análise:', style={"font":"1.2rem Nunito", "color":"#fff"}),
                         dmc.MultiSelect(
-                        label="",
-                        placeholder="Select all you like!",
+                        placeholder="Selecione um conjunto de dados!",
                         id="panel-dataset-multi-select",
                         value=PanelMultiSelectOptions,
-                        data=[
-                            {"value": "react", "label": "React"},
-                            {"value": "ng", "label": "data 2015-2020"},
-                            {"value": "svelte", "label": "Svelte"},
-                            {"value": "vue", "label": "data 2020 - 2022"},
-                        ],
-                        style={"width": 400, "marginBottom": 10,"fontSize":"1.2rem"},
+                        data=[],
+                        style={"width": 200, "marginBottom": 10,"fontSize":"1.2rem"},
                         ),
                     ])
                 ])
             ),
             html.Div(
-            dmc.Button("Gerar relatório", style={"background":"#fff", "color":"#000","font":"3.2rem Nunito","marginTop":"1.2rem"}, id="generate-report"),
+            dmc.Button("Gerar relatório", id="generate-report"),
             )
-        ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
+        ], className='WrapperPainel'),
     
     dcc.Loading(children=[
         html.Div(id='report-output-resume', className='report_output'),
             html.Div(
                 [
                     html.Div([
-                        html.Div([dcc.Graph(id='graph1', className='dbc')],style={"width":"31.5%"}),
-                        html.Div([dcc.Graph(id='graph2', className='dbc')], style={"width":"31.5%"}),
-                        html.Div([dcc.Graph(id='graph3', className='dbc')], style={"width":"31.5%"}),
-                    ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
+                        html.Div([dcc.Graph(id='graph1', className='dbc')],style={"width":"32.5%"}),
+                        html.Div([dcc.Graph(id='graph2', className='dbc')], style={"width":"32.5%"}),
+                        html.Div([dcc.Graph(id='graph3', className='dbc')], style={"width":"32.5%"}),
+                    ], style={"display":"flex","gap":"5px","justifyContent":"center", "padding":"6px 0"}),
                     html.Div([
-                        html.Div([dcc.Graph(id='graph4', className='dbc')], style={"width":"53%"}),
-                        html.Div([dcc.Graph(id='graph5', className='dbc')], style={"width":"42%"}),
-                    ], style={"display":"flex","gap":"10px","justifyContent":"center","background":"#F0F0F0", "padding":"10px 0"}),
+                        html.Div([dcc.Graph(id='graph4', className='dbc')], style={"width":"59%"}),
+                        html.Div([dcc.Graph(id='graph5', className='dbc')], style={"width":"39%"}),
+                    ], style={"display":"flex","gap":"5px","justifyContent":"center", "padding":"6px 0"}),
                 ]
-                , style={"width":"100%","height":"65vh", "min-Height":"55vh"})
+                , style={"width":"100%","height":"98vh"})
             ], color="#2B454E", type="dot", fullscreen=False,),
 ])
 
@@ -78,95 +71,99 @@ resume = html.Div([
           Input("panel-dataset-multi-select", "value")
           )
 def select_value(value):
-    global figures, Best_sales, TargetValues
-    figures = []
-    sales_train_all_df = getColections(value)
-    TargetValues = sales_train_all_df
+    print(value)
+    if value != []:
+        global figures, Best_sales, TargetValues
+        figures = []
+        sales_train_all_df = getColections(value)
+        TargetValues = sales_train_all_df
 
-    fig1 = go.Figure() 
+        fig1 = go.Figure() 
 
-    Y = len(sales_train_all_df['Year'].unique())
-    suffix = ''
-    if Y > 0:
-        suffix= " Ano(s)"
-    else:
-        Y = int(sales_train_all_df['Month'].max())
-        suffix= " Meses"
+        Y = len(sales_train_all_df['Year'].unique())
+        suffix = ''
+        if Y > 0:
+            suffix= " Ano(s)"
+        else:
+            Y = int(sales_train_all_df['Month'].max())
+            suffix= " Meses"
 
-    fig1.add_trace(go.Indicator(
-            title = {"text": f"<span style='font-size:150%'>Período de Análise </span><br><br><span>{sales_train_all_df['Year'].min()} à {sales_train_all_df['Year'].max()}</span>"},
-            value = (Y),
-            number = {'suffix': suffix}
-    ))
-
-    df2_dataframe = sales_train_all_df
-    df2_dataframe[['Date', 'Sales']].rename(columns = {'Date': 'date', 'Sales':'sales'})
-
-
-    df2 = df2_dataframe.groupby(['Date'])['Sales'].sum().reset_index()
-    df2.sort_values(ascending=False, inplace=True, by='Sales')
-
-    Year = len(sales_train_all_df['Year'].unique())
-
-    fig2 = go.Figure()
-    fig2.add_trace(go.Indicator(mode='number+delta',
-            title = {"text": f"<span style='font-size:150%'>Maior N% de Vendas Diárias <br> em {Year} ano(s)</span><br><span style='font-size:70%'> em relação a média</span><br>"},
-            value = df2['Sales'].iloc[0],
-            number = {'suffix': " Vendas"},
-            delta = {'relative': True, 'valueformat': '.1%', 'reference': df2['Sales'].mean()}
-    ))
-
-
-    df3 = df2_dataframe.groupby(['Date'])['Quantity'].sum().reset_index()
-    df3.sort_values(ascending=True, inplace=True, by='Quantity')
-
-    fig3 = go.Figure()
-    fig3.add_trace(go.Indicator(mode='number+delta',
-            title = {"text": f"<span style='font-size:150%'>Menor N% de Quantidade de vendas diárias <br> em {Year} ano(s)</span><br><span style='font-size:70%'> em relação a média</span><br>"},
-            value = df3['Quantity'].iloc[0],
-            number = {'suffix': " Venda(s)"},
-            delta = {'relative': True, 'valueformat': '.1%', 'reference': df3['Quantity'].mean()}
-    ))
-
-
-    df4 = sales_train_all_df[sales_train_all_df.columns[1:6]].head(10)
-    df4.drop('Unnamed: 0', axis=1, inplace=True)
-    
-    fig4 = go.Figure()
-    fig4.add_trace(
-        go.Table(
-            header=dict(
-                values=df4.columns,
-                font=dict(size=10),
-                align="left"
-            ),
-            cells=dict(
-                values=[df4[k].tolist() for k in df4.columns[0:,]],
-                align = "left")
+        fig1.add_trace(go.Indicator(
+                title = {"text": f"<span style='font-size:1.8rem'>Período de análise </span><br><br><span style='font-size:1.2rem'>{sales_train_all_df['Year'].min()} à {sales_train_all_df['Year'].max()}</span>"},
+                value = (Y),
+                number = {'suffix': suffix}
         ))
 
-    fig4.update_layout(
-        showlegend=False,
-        title_text="Amostra dos dados a serem analisados",
-    )
+        df2_dataframe = sales_train_all_df
+        df2_dataframe[['Date', 'Sales']].rename(columns = {'Date': 'date', 'Sales':'sales'})
 
 
-    df5 = sales_train_all_df.groupby('Month')['Sales'].sum().reset_index()
-    Best_sales = df5
-    fig5 = px.pie(df5, values='Sales', names='Month', title='Distribuição das receitas por mês')
-    
-    figures.insert(0, fig1)
-    figures.insert(1, fig2)
-    figures.insert(2, fig3) 
-    figures.insert(3, fig4)
-    figures.insert(4, fig5)
+        df2 = df2_dataframe.groupby(['Date'])['Sales'].sum().reset_index()
+        df2.sort_values(ascending=False, inplace=True, by='Sales')
 
-    fig1.update_layout(height=230)
-    fig2.update_layout(height=230)
-    fig3.update_layout(height=230)
-    fig4.update_layout(height=430)
-    fig5.update_layout(height=430)
-    return fig1, fig2, fig3, fig4, fig5
+        Year = len(sales_train_all_df['Year'].unique())
+
+        fig2 = go.Figure()
+        fig2.add_trace(go.Indicator(mode='number+delta',
+                title = {"text": f"<span style='font-size:1.8rem'>Maior valor de receitas diárias <br> em {Year} ano(s)</span><br><span style='font-size:1.2rem'> em relação a média</span><br>"},
+                value = df2['Sales'].iloc[0],
+                number = {'suffix': " AKZ"},
+                delta = {'relative': True, 'valueformat': '.1%', 'reference': df2['Sales'].mean()}
+        ))
+
+
+        df3 = df2_dataframe.groupby(['Date'])['Quantity'].sum().reset_index()
+        df3.sort_values(ascending=True, inplace=True, by='Quantity')
+
+        fig3 = go.Figure()
+        fig3.add_trace(go.Indicator(mode='number+delta',
+                title = {"text": f"<span style='font-size:1.8rem'>Menor quantidade de vendas diárias <br> em {Year} ano(s)</span><br><span style='font-size:1.2rem'> em relação a média</span><br>"},
+                value = df3['Quantity'].iloc[0],
+                number = {'suffix': " Venda(s)"},
+                delta = {'relative': True, 'valueformat': '.1%', 'reference': df3['Quantity'].mean()}
+        ))
+
+
+        df4 = sales_train_all_df[sales_train_all_df.columns[1:6]].head(10)
+        df4.drop('Unnamed: 0', axis=1, inplace=True)
+        
+        fig4 = go.Figure()
+        fig4.add_trace(
+            go.Table(
+                header=dict(
+                    values=df4.columns,
+                    font=dict(size=10),
+                    align="left"
+                ),
+                cells=dict(
+                    values=[df4[k].tolist() for k in df4.columns[0:,]],
+                    align = "left")
+            ))
+
+        fig4.update_layout(
+            showlegend=False,
+            title_text="Amostra dos dados a serem analisados",
+        )
+
+
+        df5 = sales_train_all_df.groupby('Month')['Sales'].sum().reset_index()
+        Best_sales = df5
+        fig5 = px.pie(df5, values='Sales', names='Month', title='Distribuição das receitas por mês')
+        
+        figures.insert(0, fig1)
+        figures.insert(1, fig2)
+        figures.insert(2, fig3) 
+        figures.insert(3, fig4)
+        figures.insert(4, fig5)
+
+        fig1.update_layout(height=230)
+        fig2.update_layout(height=230)
+        fig3.update_layout(height=230)
+        fig4.update_layout(height=430)
+        fig5.update_layout(height=430)
+        return fig1, fig2, fig3, fig4, fig5
+    else:
+        return html.Div()
 
 
 @callback(Output('panel-dataset-multi-select', component_property='value'),

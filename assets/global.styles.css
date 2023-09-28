@@ -293,9 +293,6 @@
 
 
 
-.aed-page-class > div{
-  width: 100%;
-}
 
 
 /* Forecast PAGE */
@@ -304,7 +301,8 @@
   display:flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 4px 13px;
+  background: #dbdada;
 }
 
 #factors-components #predition-elements{
@@ -314,17 +312,28 @@
   display: flex;
   gap: 10px;
 }
-#factors-components #forecast-btn {
+
+#forecast-btn, #Consult-btn {
   font-size: 3.2rem;
   font-family: 'Nunito';
-  background-color: #2B454E;
-  padding: 0 4rem;
+  background-color: #f5f5f6;
+  padding: 0 3rem;
+  color: #2B454E;
+  transition: .3s;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+#forecast-btn:hover, #Consult-btn:hover{
+  background-color: white;
+}
+
+input.mantine-Input-input{
+padding: 0 10px !important;
 }
 
 #parameters-components{
  display: flex;
- gap: 15px;
- padding: 0px 20px;
+ gap: 5px;
+ padding: 0px 0px;
 }
 
 #predition-results{
@@ -545,10 +554,10 @@ label.mantine-InputWrapper-label{
   background-color: #dbdada;
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 73%;
   height: 350px;
   justify-content: center;
-  margin: 10% auto 0;
+  margin: 23px auto 0;
   padding: 25px;
 }
 
@@ -576,6 +585,12 @@ label.mantine-InputWrapper-label{
 }
 
 #tabs-wrapprer{
-  width: 80%;
+  width: 100%;
   margin: 3% auto 0;
+}
+
+
+/*Tabela factores zIndex*/
+.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner.dash-freeze-left .cell-0-1, .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner.dash-freeze-top .cell-0-1, .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner.dash-virtualized .cell-0-1{
+  z-index: 0;
 }

@@ -58,7 +58,7 @@ tasks = html.Div([
     html.Div([
             html.Div(
                 html.Div([
-                    html.H3('Registar Tarefas', style={"font":"1.8rem Nunito","fontWeight":"700", "color":"#fff","marginBottom":".8rem"}),
+                    html.H3('Registar Tarefas', className='PainelStyle'),
                     html.Div([
                         html.P('Aqui você poderá registar todas as tarefas', style={"font":"1.2rem Nunito", "color":"#fff"}),
                     ])

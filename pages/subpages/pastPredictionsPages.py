@@ -1,10 +1,12 @@
 from datetime import datetime
-from dash import html, callback, Input, Output, dcc, dash_table
+from dash import html, callback, Input, Output, dcc, dash_table, State
 import pandas as pd
 from api.clientApp import GetAllCollectionNames, GetCollectionByName
 from api.externalFactors import future_euro_inflation, future_usd_inflation, future_weather
 from data.configs import sales_predition_Weather
 import dash_mantine_components as dmc
+from dash.dash_table import DataTable, FormatTemplate
+from datetime import date
 
 DatasetsNames = GetAllCollectionNames()
 PanelMultiSelectOptions = [DatasetsNames[0]]
@@ -15,24 +17,31 @@ pastPredictions = html.Div([
     html.Div([
             html.Div(
                 html.Div([
-                    html.H3('Previsões anteriores', style={"font":"1.8rem Nunito","fontWeight":"700", "color":"#fff","marginBottom":".8rem"}),
-                    html.Div([
-                        html.P('Aqui você poderá visualizar todas as previsões já realizadas', style={"font":"1.2rem Nunito", "color":"#fff"}),
-                    ]),
-                    dmc.MultiSelect(
-                        label="",
-                        placeholder="Selecione seus conjuntos de dados!",
-                        id="panelInsight-dataset-multi-select",
-                        value=PanelMultiSelectOptions,
-                        data=[],
-                        style={"width": 400, "fontSize":"1.2rem"},
-                        ),
+                    html.H3('Impacto de Previsões', className='PainelStyle'),
+                        html.Div([
+                        dmc.MultiSelect(
+                            label="",
+                            placeholder="Selecione seus conjuntos de dados!",
+                            id="panelInsight-dataset-multi-select",
+                            value=PanelMultiSelectOptions,
+                            data=[],
+                            style={"width": 200, "fontSize":"1.2rem"},
+                            ),
+                        dmc.DatePicker(
+                            minDate=date(2023, 1, 1),
+                            maxDate=datetime.now().date(),
+                            value=date(2023, 1, 31),
+                            inputFormat="DD-MM-YYYY",
+                            id='Consult-date',
+                            ),
+                        dmc.Button("Consultar", id="Consult-btn"),
+                    ], style={"display":"flex","justifyContent":"space-between", "alignItems":"center", "gap":"10px"}),
                 ])
-            )
-        ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
+            ),
+        ], className='WrapperPainel'),
     html.Div([
     html.Div([
-        html.P("Mostrar dados do arquivo",style={"font":"1.8rem Nunito"}, id='wrapper-result')
+        dcc.Loading(children=[html.Div("",style={"font":"1.8rem Nunito"}, id='wrapper-result')], color="#2B454E", type="dot", fullscreen=False,)
     ], style={"background":"#c4c4c4","width":"100%","height":"76vh"})
 ], style={"display":"flex", "gap":"10px", "justifyContent":"space-between","alignItems":"center", "height":"76vh", "background":"#F0F0F0"}),
 ])
@@ -68,56 +77,79 @@ def save_param_panelOption(value):
 @callback(
     Output('wrapper-result', 'children'),
     Input('interval_db', component_property='n_intervals'),
-    Input("panelInsight-dataset-multi-select", "value"),
+    State("panelInsight-dataset-multi-select", "value"),
+    Input("Consult-btn","n_clicks"),
+    State("Consult-date","value"),
 )
-def hanldleInsight(_,__):
+def hanldleInsight(_,__,n_clicks, date):
     
-    Produts = ['Água Pura 5L','Abacate Nacional','Asa de Frango 10Kg',
-               'Batata Rena Nacional','Batata Doce Nacional','Cebola Nacional',
-               'COXA USA KOCH FOODS','Coxa Seara Brasil','Entrecosto Especial',
-               'ENTRECOSTO DE PORCO (PERDIX) ','Figado de Vaca','Frango 1.200g',
-               'Tomate Maduro Nacional','Óleo Fula Soja',
-               'Peixe Corvina','Peixe Carapau',
-               'VINAGRE PRIMAVERA 500ML']
-    Holidays = pd.DataFrame()
-    Df_Table = pd.DataFrame()
-    
-    Holidays = pd.concat((Holidays, pd.read_csv('data/school_holiday.csv'))) 
-    Holidays = pd.concat((Holidays, pd.read_csv('data/covid_19.csv')))
-    
-    for produt in Produts:
+    if n_clicks is not None:
+        Produts = ['Água Pura 5L','Abacate Nacional','Asa de Frango 10Kg',
+                # 'Batata Rena Nacional','Batata Doce Nacional','Cebola Nacional',
+                # 'COXA USA KOCH FOODS','Coxa Seara Brasil','Entrecosto Especial',
+                # 'ENTRECOSTO DE PORCO (PERDIX) ','Figado de Vaca','Frango 1.200g',
+                # 'Tomate Maduro Nacional','Óleo Fula Soja',
+                # 'Peixe Corvina','Peixe Carapau',
+                'VINAGRE PRIMAVERA 500ML']
+        Holidays = pd.DataFrame()
+        Df_Table = pd.DataFrame()
         
-        Dataset = getColections(PanelMultiSelectOptions)
-        Dataset = Dataset[Dataset['Product']== produt]
-        Dataset = cleanDataset(Dataset)      
+        Holidays = pd.concat((Holidays, pd.read_csv('data/school_holiday.csv'))) 
+        Holidays = pd.concat((Holidays, pd.read_csv('data/covid_19.csv')))
         
-        Dataset.loc[:, 'Weather'] = Dataset['Date'].apply(future_weather)
-        Dataset.loc[:, 'Inflation_euro'] = Dataset['Date'].apply(future_euro_inflation)
-        Dataset.loc[:, 'Inflation_dolar'] = Dataset['Date'].apply(future_usd_inflation)
+        for produt in Produts:
+            
+            Dataset = getColections(PanelMultiSelectOptions)
+            Dataset = Dataset[Dataset['Product']== produt]
+            Dataset = cleanDataset(Dataset)      
+            
+            Dataset.loc[:, 'Weather'] = Dataset['Date'].apply(future_weather)
+            Dataset.loc[:, 'Inflation_euro'] = Dataset['Date'].apply(future_euro_inflation)
+            Dataset.loc[:, 'Inflation_dolar'] = Dataset['Date'].apply(future_usd_inflation)
 
-        Final_date = datetime.strptime('2023-01-01', '%Y-%m-%d')
-        Intial_date = datetime.strptime(Dataset['Date'].max(), '%Y-%m-%d')
-        period = abs((Final_date - Intial_date).days)
-        
-        Lenght = period
-        country_name = 'AO'
-        fourier = 10
-        fourier_monthly = 5
-        seasonality_mode = 'additive'
-        
-        df_original, df_predition, model = sales_predition_Weather(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
+            Final_date = datetime.strptime(date, '%Y-%m-%d')
+            Intial_date = datetime.strptime(Dataset['Date'].max(), '%Y-%m-%d')
+            period = abs((Final_date - Intial_date).days)
+            
+            Lenght = period
+            country_name = 'AO'
+            fourier = 10
+            fourier_monthly = 5
+            seasonality_mode = 'additive'
+            
+            df_original, df_predition, model = sales_predition_Weather(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
 
-        df = df_predition[df_predition.ds == Final_date]
-        df = df[['ds','school_holiday','COVID_19','Weather','Inflation_euro','Inflation_dolar']]
-        df = df.rename(columns={'ds':'Data','school_holiday':'Feriado Escolar',
-                                'COVID_19':'Covid 19','Weather':'Temperatura Climática',
-                                'Inflation_euro':'Euro', 'Inflation_dolar':'Dolar'})
-        
-        df['Produto'] = produt
-        
-        Df_Table = pd.concat((Df_Table, df))
-
-    return dash_table.DataTable(Df_Table.to_dict('records'), [{"name": i, "id": i} for i in Df_Table.columns])
+            df = df_predition[df_predition.ds == Final_date]
+            df = df[['ds','school_holiday','COVID_19','Weather','Inflation_euro','Inflation_dolar','yhat']]
+            df = df.rename(columns={'ds':'Data','school_holiday':'Feriado Escolar',
+                                    'COVID_19':'Covid 19','Weather':'Temperatura Climática',
+                                    'Inflation_euro':'Euro', 'Inflation_dolar':'Dolar','yhat':'Previsão'})
+            
+            df['Produto'] = produt
+            
+            Df_Table = pd.concat((Df_Table, df))
+        (styles, legend) = discrete_background_color_bins(Df_Table)
+        columns = []
+        percentage = FormatTemplate.percentage(2)
+        for column in Df_Table:
+            if column == 'Data' or column == 'Previsão' or column == 'Produto':
+                columns.append(dict(id=column, name=column))
+            else:
+                columns.append(dict(id=column, name=column, type='numeric', format=percentage))
+            
+        return [
+            html.Div(legend, style={'float': 'right'}),
+            DataTable(
+            data=Df_Table.to_dict('records'),
+            sort_action='native',
+            columns=columns,
+            style_data_conditional=styles,
+            page_action="native",
+            page_current= 0,
+            page_size= 10,
+            )]
+    else:
+        return html.Div()
 
 def getColections(Names):
     df_PD = pd.DataFrame()
@@ -142,3 +174,56 @@ def cleanDataset(sales_df):
 
     sales_df.drop(sales_df[sales_df.Quantity > sup_qntd].index,axis =0, inplace = True)
     return sales_df
+
+
+def discrete_background_color_bins(df, n_bins=5, columns='all'):
+    import colorlover
+    bounds = [i * (1.0 / n_bins) for i in range(n_bins + 1)]
+    if columns == 'all':
+        if 'id' in df:
+            df_numeric_columns = df.select_dtypes('number').drop(['id'], axis=1)
+        else:
+            df_numeric_columns = df.select_dtypes('number')
+    else:
+        df_numeric_columns = df[columns]
+    df_max = df_numeric_columns.max().max()
+    df_min = df_numeric_columns.min().min()
+    ranges = [
+        ((df_max - df_min) * i) + df_min
+        for i in bounds
+    ]
+    styles = []
+    legend = []
+    for i in range(1, len(bounds)):
+        min_bound = ranges[i - 1]
+        max_bound = ranges[i]
+        backgroundColor = colorlover.scales[str(n_bins)]['seq']['YlGn'][i - 1]
+        color = 'white' if i > len(bounds) / 2. else 'inherit'
+
+        for column in df_numeric_columns:
+            styles.append({
+                'if': {
+                    'filter_query': (
+                        '{{{column}}} >= {min_bound}' +
+                        (' && {{{column}}} < {max_bound}' if (i < len(bounds) - 1) else '')
+                    ).format(column=column, min_bound=min_bound, max_bound=max_bound),
+                    'column_id': column
+                },
+                'backgroundColor': backgroundColor,
+                'color': color
+            })
+        legend.append(
+            html.Div(style={'display': 'inline-block', 'width': '60px'}, children=[
+                html.Div(
+                    style={
+                        'backgroundColor': backgroundColor,
+                        'borderLeft': '1px rgb(50, 50, 50) solid',
+                        'height': '10px'
+                    }
+                ),
+                html.Small(round(min_bound, 2), style={'paddingLeft': '2px'})
+            ])
+        )
+
+    return (styles, html.Div(legend, style={'padding': '5px 0 5px 0'}))
+

@@ -17,3 +17,4 @@ build
 wheel
 xhtml2pdf
 kaleido
+colorlover
