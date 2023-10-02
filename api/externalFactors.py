@@ -5,7 +5,6 @@ from meteostat import Point, Daily
 import pandas_datareader.data as web
 import eurostat
 import requests
-import datetime
 
 
 us_holidays = holidays.AO()
@@ -39,6 +38,7 @@ def GetWeatherByYear(Year):
     data['Date'] = data.index
     data.rename(columns={'Temperatura média': 'Weather'}, inplace=True)
     return data, df_reduzido.copy()
+
 
 def GetWeatherByDay(_start, _end):
     start = pd.to_datetime(_start)

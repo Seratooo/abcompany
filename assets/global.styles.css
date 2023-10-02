@@ -591,6 +591,6 @@ label.mantine-InputWrapper-label{
 
 
 /*Tabela factores zIndex*/
-.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner.dash-freeze-left .cell-0-1, .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner.dash-freeze-top .cell-0-1, .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner.dash-virtualized .cell-0-1{
+.dash-table-container .dash-spreadsheet-container{
   z-index: 0;
 }

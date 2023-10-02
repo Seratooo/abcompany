@@ -258,7 +258,7 @@ def select_value_weather(value):
     value = WeatherMultiSelectOptions
     WeatherPD = pd.DataFrame()
     for year in value:
-        WeatherPD =pd.concat((WeatherPD, GetWeatherByYear(int(year))[1]))
+        WeatherPD = pd.concat((WeatherPD, GetWeatherByYear(int(year))[1]))
     
     WeatherPD['Data'] = WeatherPD.index
 
