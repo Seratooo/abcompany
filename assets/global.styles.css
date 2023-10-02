@@ -316,14 +316,14 @@
 #forecast-btn, #Consult-btn {
   font-size: 3.2rem;
   font-family: 'Nunito';
-  background-color: #f5f5f6;
+  background-color: #449854;
   padding: 0 3rem;
-  color: #2B454E;
+  color: #ffffff;
   transition: .3s;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 #forecast-btn:hover, #Consult-btn:hover{
-  background-color: white;
+  background-color: #4BC564;
 }
 
 input.mantine-Input-input{
@@ -591,6 +591,6 @@ label.mantine-InputWrapper-label{
 
 
 /*Tabela factores zIndex*/
-.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner.dash-freeze-left .cell-0-1, .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner.dash-freeze-top .cell-0-1, .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner.dash-virtualized .cell-0-1{
+.dash-table-container .dash-spreadsheet-container{
   z-index: 0;
 }
