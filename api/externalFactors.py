@@ -5,7 +5,7 @@ from meteostat import Point, Daily
 import pandas_datareader.data as web
 import eurostat
 import requests
-
+import os
 
 us_holidays = holidays.AO()
 LuandaPoint = Point(-8.838333, 13.234444, 70)
@@ -99,7 +99,7 @@ def GetInflationByYear_V2(ds):
 def future_weather(ds):
     date = pd.to_datetime(ds).strftime('%Y-%m-%d')
     df_weather = pd.read_csv('data/df_weather.csv')
-    data_atual = datetime.date.today()
+    data_atual = date.today()
     data_formatada = data_atual.strftime('%Y-%m-%d')
 
     if not df_weather[df_weather.Date == data_formatada]['Weather'].values:
@@ -122,22 +122,17 @@ def future_weather(ds):
 
 def future_euro_inflation(ds):
     ds = pd.to_datetime(ds).strftime('%Y-%m-%d')
-    base="EUR"
-    out_curr="AOA"
-    data_atual = datetime.date.today()
+    data_atual = date.today()
     data_formatada = data_atual.strftime('%Y-%m-%d')
     df_eur = pd.read_csv('data/df_eur.csv')
 
     if not df_eur[df_eur.ds == data_formatada]['Valor'].values:
-        url = f'https://api.exchangerate.host/timeseries?base={base}&start_date={data_formatada}&end_date={data_formatada}&symbols={out_curr}'
-        response = requests.get(url)
-        data = response.json()
-        if float(data["rates"][data_formatada][out_curr])>0:             
+        currency = float(getCurrency('EUR','EURAOA',data_formatada))
+        if currency>0:             
             new_element = {
                 'ds': data_formatada,
-                'Valor': float(data["rates"][data_formatada][out_curr]),
+                'Valor': currency,
             }
-            #df_eur = df_eur.append(new_element, ignore_index=True)
             df_eur = pd.concat([df_eur, pd.DataFrame([new_element])], ignore_index=True)
             df_eur = df_eur.drop('Unnamed: 0', axis=1)
             df_eur.to_csv('data/df_eur.csv')
@@ -149,23 +144,18 @@ def future_euro_inflation(ds):
 
 def future_usd_inflation(ds):
     ds = pd.to_datetime(ds).strftime('%Y-%m-%d')
-    base="USD"
-    out_curr="AOA"
-    data_atual = datetime.date.today()
+    data_atual = date.today()
     data_formatada = data_atual.strftime('%Y-%m-%d')
     df_usd = pd.read_csv('data/df_usd.csv')
     
 
     if not df_usd[df_usd.ds == data_formatada]['Valor'].values:
-        url = f'https://api.exchangerate.host/timeseries?base={base}&start_date={data_formatada}&end_date={data_formatada}&symbols={out_curr}'
-        response = requests.get(url)
-        data = response.json()
-        if float(data["rates"][data_formatada][out_curr])>0:             
+        currency = float(getCurrency('USD','USDAOA',data_formatada))
+        if currency>0:             
             new_element = {
                 'ds': data_formatada,
-                'Valor': float(data["rates"][data_formatada][out_curr]),
+                'Valor': currency,
             }
-            #df_usd = df_usd.append(new_element, ignore_index=True)
             df_usd = pd.concat([df_usd, pd.DataFrame([new_element])], ignore_index=True)
             df_usd = df_usd.drop('Unnamed: 0', axis=1)
             df_usd.to_csv('data/df_usd.csv')
@@ -174,4 +164,20 @@ def future_usd_inflation(ds):
     except:
         return 0.0
     
+
+def getCurrency(Base,Code,Date):
+    import requests
+
+    url = f"https://api.apilayer.com/currency_data/historical?date={Date}&source={Base}&cies=AOA"
+
+    payload = {}
+    headers= {
+    "apikey": f"{os.getenv('PYTHON_CURRENCY_APIKEY')}"
+    }
+
+    response = requests.request("GET", url, headers=headers, data = payload)
+
+    status_code = response.status_code
+    result = response.json()
+    return result['quotes'][Code]
 

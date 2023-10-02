@@ -94,7 +94,7 @@ forecast = html.Div([
                 max=30,
                 step=5,
                 icon=DashIconify(icon="fa6-solid:weight-scale"),
-                style={"width": 115},
+                style={"width": 120},
             ),
             dmc.NumberInput(
                 id='fourier-month-number',
@@ -104,7 +104,7 @@ forecast = html.Div([
                 max=10,
                 step=1,
                 icon=DashIconify(icon="fa6-solid:weight-scale"),
-                style={"width": 115},
+                style={"width": 120},
             ),
             dmc.Select(
             description="Tipo de Sazonalidade",
