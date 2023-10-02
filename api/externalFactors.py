@@ -97,7 +97,7 @@ def GetInflationByYear_V2(ds):
     return df_Dol, df_Eur, df
 
 def future_weather(ds):
-    date = pd.to_datetime(ds).strftime('%Y-%m-%d')
+    _date = pd.to_datetime(ds).strftime('%Y-%m-%d')
     df_weather = pd.read_csv('data/df_weather.csv')
     data_atual = date.today()
     data_formatada = data_atual.strftime('%Y-%m-%d')
@@ -116,7 +116,7 @@ def future_weather(ds):
                 df_weather = pd.concat([df_weather, pd.DataFrame([new_element])], ignore_index=True)
                 df_weather.to_csv('data/df_weather.csv')
     try:
-        return df_weather[df_weather.Date == date]['Weather'].values[0]
+        return df_weather[df_weather.Date == _date]['Weather'].values[0]
     except:
         return 0.0
 
