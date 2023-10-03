@@ -151,7 +151,7 @@ forecast = html.Div([
      dcc.Loading(children=[
         html.Div(
             [
-                html.Div(id='predition-results'),
+                html.Div(id='predition-results',style={"display":"flex","flexDirection":"column","gap":"15px"}),
                 html.Div(id='holidays-results'),
             ], style={"background":"#F5F5F6", "padding":"10px 0", "height":"55vh"},),
         ], color="#2B454E", type="dot", fullscreen=False,),
@@ -163,6 +163,7 @@ forecast = html.Div([
 @callback(Output('panelForecast-dataset-multi-select', component_property='value'),
           Output('panelForecast-dataset-multi-select', component_property='data'),
                 Input('interval_db', component_property='n_intervals'),
+                #Input('panelForecast-dataset-multi-select','id')
               )
 def SetDataValuesOnCompont(interval_db):
     value = PanelMultiSelectOptions
@@ -171,6 +172,7 @@ def SetDataValuesOnCompont(interval_db):
 
 def DatasetValues():
     data = []
+    DatasetsNames = GetAllCollectionNames() 
     for name in DatasetsNames:
         data.append({"value": f"{name}", "label": f"{name.split('-')[0]}"})
     return DatasetsNames, data
@@ -326,7 +328,7 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
             html.Div(id='tabs-content-holiday-graph')
         ]
 
-        fig3 = px.line(df_predition, x='ds', y='trend', color='trend', symbol="trend")
+        fig3 = px.line(df_predition, x='ds', y='trend', color='trend', symbol="trend", title='Tendência')
         fig3_graph = dcc.Graph(
             id='graph13',
             figure=fig3

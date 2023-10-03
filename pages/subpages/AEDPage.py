@@ -8,6 +8,7 @@ import pandas as pd
 import json
 import re
 from report.reports import convert_html_to_pdf
+import os
 # from translate import Translator
 # translator= Translator(from_lang='english',to_lang="portuguese")
 
@@ -86,6 +87,7 @@ def SetDataValuesOnCompont(interval_db):
 
 def DatasetValues():
     data = []
+    DatasetsNames = GetAllCollectionNames()
     for name in DatasetsNames:
         data.append({"value": f"{name}", "label": f"{name.split('-')[0]}"})
     return DatasetsNames, data
@@ -332,6 +334,15 @@ def variables_output(variable, value):
 ### --- Funções Auxiliares --- ####
 def getJson(name):
     caminho_arquivo = f'json/{name.replace(":","")}.json'
+    if not os.path.exists(caminho_arquivo):
+        for dfName in DatasetsNames:
+            if not os.path.exists(f"json/{dfName.replace(':','')}.json"):
+                df = getColections([dfName])
+                df.drop('_id', axis=1, inplace=True)
+                df.drop('Unnamed: 0', axis=1, inplace=True)
+                profile = ProfileReport(df, title=f"Relatório: {dfName}")
+                profile.to_json()
+                profile.to_file(f"json/{dfName.replace(':','')}.json")
     with open(caminho_arquivo) as arquivo_json:
         dados_json = json.load(arquivo_json)
     return dados_json
