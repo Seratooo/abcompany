@@ -138,9 +138,12 @@ def loadPopUp(n_clicks):
         return ''
 
 @callback(Output('data-output2', 'children'),
-          Input('save-button','n_clicks'))
+          Output('lb_dataset','value'),
+          Output('output-data-upload', 'children', allow_duplicate=True),
+          Input('save-button','n_clicks'),
+          prevent_initial_call=True)
 def saveDataSet(n_clicks):
-    global LIST_CSV
+    global LIST_CSV, PD_CSV, D_NAME
     if n_clicks:
         if((PD_CSV.empty == False) and D_NAME):
             if all(col in PD_CSV.columns for col in ['Date', 'Sales','Product', 'Quantity', 'Price', 'DayOfWeek', 'Year', 'Month', 'Day']):
@@ -149,12 +152,14 @@ def saveDataSet(n_clicks):
                 for index, df_csv in enumerate(LIST_CSV):
                     clientApp.CreateCollection(f'{name}-{index}', df_csv)
                 LIST_CSV = []
-                return [html.P(f"Dados {name} carregados na base de dados!", className="desc-popup"),  html.Button('OK', id='btn-popup')]
+                PD_CSV = pd.DataFrame()
+                D_NAME = ''
+                return [html.P(f"Dados {name} carregados na base de dados!", className="desc-popup"),  html.Button('OK', id='btn-popup')],'',''
             return [html.P(f"Seu conjunto de dados precisa conter tabelas específicar com os seguintes nome: Date, Sales, Quantity, Price, DayOfWeek, Year, Month, Day", className="desc-popup"),  html.Button('OK', id='btn-popup')]
         elif(PD_CSV.empty == True):
-            return [ html.P('Selecione um conjunto de dados!', className="desc-popup"), html.Button('OK', id='btn-popup')]
+            return [ html.P('Selecione um conjunto de dados!', className="desc-popup"), html.Button('OK', id='btn-popup')],'',''
         else:
-            return [ html.P('Digite um nome para de dados!', className="desc-popup"), html.Button('OK', id='btn-popup')]
+            return [ html.P('Digite um nome para de dados!', className="desc-popup"), html.Button('OK', id='btn-popup')],'',''
     
 
 @callback(Output('data-output2', 'className', allow_duplicate=True),
