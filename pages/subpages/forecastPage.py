@@ -172,7 +172,7 @@ def SetDataValuesOnCompont(interval_db):
 
 def DatasetValues():
     data = []
-    DatasetsNames = GetAllCollectionNames()
+    DatasetsNames = GetAllCollectionNames() 
     for name in DatasetsNames:
         data.append({"value": f"{name}", "label": f"{name.split('-')[0]}"})
     return DatasetsNames, data
