@@ -41,7 +41,8 @@ def CreateCollection(Name, pd_csv):
 
 
 def GetAllCollectionNames():
-   return db.list_collection_names()
+   _db = getConnection()
+   return _db.list_collection_names()
 
 def GetCollectionByName(Name):
    name = Name.split('-')[0]
