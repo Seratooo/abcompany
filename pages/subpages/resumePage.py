@@ -71,7 +71,6 @@ resume = html.Div([
           Input("panel-dataset-multi-select", "value")
           )
 def select_value(value):
-    print(value)
     if value != []:
         global figures, Best_sales, TargetValues
         figures = []
@@ -176,6 +175,7 @@ def SetDataValuesOnCompont(interval_db):
 
 def DatasetValues():
     data = []
+    DatasetsNames = GetAllCollectionNames()
     for name in DatasetsNames:
         data.append({"value": f"{name}", "label": f"{name.split('-')[0]}"})
     return DatasetsNames, data
