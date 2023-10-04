@@ -80,6 +80,9 @@ forecast = html.Div([
                         {"value": "covid_19", "label": "Covid-19"},
                         {"value": "inflation_eur", "label": "Euro (Taxa de câmbio)"},
                         {"value": "inflation_usd", "label": "Dólar (Taxa de câmbio)"},
+                        {"value": "tasks", "label": "Tarefas Realizadas"},
+                        {"value": "promo", "label": "Promoções Realizadas"},
+
 
                     ],
                     style={"width": 325},
@@ -219,11 +222,21 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
         global df_predition
         
         for sFactor in factorsSeleted:
-            if(sFactor == 'schoolholiday' or sFactor == 'covid_19'):
+            if(sFactor == 'schoolholiday' or sFactor == 'covid_19' or sFactor == 'tasks' or sFactor == 'promo'):
                 if(sFactor == 'schoolholiday'):
-                    Holidays = pd.concat((Holidays, pd.read_csv('data/school_holiday.csv'))) 
+                    Holidays = pd.concat((Holidays, pd.read_csv('data/school_holiday.csv')))
+                    Holidays = Holidays.drop('Unnamed: 0', axis=1)
                 if(sFactor == 'covid_19'):
-                    Holidays = pd.concat((Holidays, pd.read_csv('data/covid_19.csv'))) 
+                    Holidays = pd.concat((Holidays, pd.read_csv('data/covid_19.csv')))
+                    Holidays = Holidays.drop('Unnamed: 0', axis=1)
+                if(sFactor == 'tasks'):
+                    df_task = pd.read_csv('data/df_task.csv')
+                    df_task = df_task[['Date', 'Name']].rename(columns = {'Date': 'ds', 'Name':'holiday'})
+                    Holidays = pd.concat((Holidays, df_task))
+                if(sFactor == 'promo'):
+                    df_promo = pd.read_csv('data/df_promo.csv')
+                    df_promo = df_promo[['Date', 'Name']].rename(columns = {'Date': 'ds', 'Name':'holiday'})
+                    Holidays = pd.concat((Holidays, df_promo))
 
             elif(sFactor == 'weather'):
                 Dataset.loc[:, 'Weather'] = Dataset['Date'].apply(future_weather)
