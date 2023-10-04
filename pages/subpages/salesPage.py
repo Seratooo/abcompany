@@ -103,16 +103,16 @@ def select_value(value):
     d7 = sales_train_all_df[sales_train_all_df['Quantity']>0]
     fig7 = go.Figure()
     fig7.add_trace(go.Indicator(
-            title = {"text": f"<span style='font-size:1.8rem'>Quantidade vendida </span><br><span style='font-size:1.2rem'>entre o ano de: </span><span style='font-size:1.2rem'>{d7['Year'].min()} - {d7['Year'].max()}</span>"},
-            value = (d7['Quantity'].sum()),
+            title = {"text": f"<span style='font-size:1.8rem'>Produtos vendidos </span><br><span style='font-size:1.2rem'>entre o ano de: </span><span style='font-size:1.2rem'>{d7['Year'].min()} - {d7['Year'].max()}</span>"},
+            value = (d7["Product"].nunique()),
             number = {'suffix': ""}
     ))
 
     d8 = sales_train_all_df
     fig8 = go.Figure()
     fig8.add_trace(go.Indicator(
-            title = {"text": f"<span style='font-size:1.8rem'>Receitas arrecadadas</span><br><span style='font-size:1.2rem'>entre o ano de: </span><span style='font-size:1.2rem'>{d8['Year'].min()} - {d8['Year'].max()}</span>"},
-            value = (d8['Sales'].sum()),
+            title = {"text": f"<span style='font-size:1.8rem'>Vendas registadas </span><br><span style='font-size:1.2rem'>entre o ano de: </span><span style='font-size:1.2rem'>{d8['Year'].min()} - {d8['Year'].max()}</span>"},
+            value = (d8.shape[0]),
             number = {'prefix': ""}
     ))
 
@@ -267,10 +267,10 @@ def generate_report(n_clicks):
     captionData = []
 
     descriptionData.insert(0, total_clientes(TargetValues))
-    captionData.insert(0, 'Clientes Alcançados')
+    captionData.insert(0, 'Produtos vendidos')
 
     descriptionData.insert(1, total_vendas(TargetValues))
-    captionData.insert(1, 'Receitas vendidas')
+    captionData.insert(1, 'Vendas registadas')
 
     # descriptionData.insert(2, 'this is a description of data in graph number 2')
     # captionData.insert(2, 'Média de Vendas por dia')

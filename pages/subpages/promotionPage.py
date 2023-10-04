@@ -22,7 +22,7 @@ PromotionTab = html.Div([
             ),
             dmc.DateRangePicker(
             id="promo-date",
-            label="Perido de Promoção",
+            label="Periodo de Promoção",
             description="",
             minDate=date(2019, 12, 8),
             value=[datetime.now().date(), datetime.now().date() + timedelta(days=5)],

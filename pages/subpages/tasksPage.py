@@ -34,7 +34,7 @@ TaskTab = html.Div([
        html.Div([
           dmc.DateRangePicker(
             id="date-range-picker",
-            label="Perido de Execução",
+            label="Periodo de Execução",
             description="",
             minDate=date(2019, 12, 8),
             value=[datetime.now().date(), datetime.now().date() + timedelta(days=5)],
