@@ -21,7 +21,7 @@ sidebar = html.Div(
     [
         
         html.Div([
-            html.H2("ABCompany", style={'fontSize':'1.8rem','fontFamily':'Nunito','color':'#2B454E', 'fontWeight':'700', 'marginTop':'5px'}),
+            html.H2("ABCompany", style={'fontSize':'1.8rem','fontFamily':'Nunito','color':'var(--primary)', 'fontWeight':'700', 'marginTop':'5px'}),
             dmc.Burger(id="burger-button", opened=False, color='#000'),
         ], style={
                   'padding':'1rem', 
@@ -30,7 +30,7 @@ sidebar = html.Div(
                    'boxShadow': 'rgba(0, 0, 0, 0.05) -3px 3px 5px',
                    "paddingLeft":"17px",
                    "paddingTop":"15px",
-                   "borderBottom":"1px solid #2B454E",
+                   "borderBottom":"1px solid var(--primary)",
         }),
         html.P(
             "Menu", style={'fontFamily':'Nunito','fontWeight':'700', 'fontSize':'1.2rem', 'padding':'17px'}

@@ -68,7 +68,7 @@ promotion = html.Div([
                     ])
                 ])
             )
-        ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
+        ], style={"display":"flex","background":"var(--primary)", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
       
     html.Div([
       dmc.Tabs(
@@ -82,7 +82,7 @@ promotion = html.Div([
               dmc.TabsPanel(PromotionTab, value="promotions"),
               dmc.TabsPanel(PromoBoard, value="board"),
           ],
-          color="#2B454E",
+          color="var(--primary)",
           orientation="vertical",
           value="promotions",
       ),

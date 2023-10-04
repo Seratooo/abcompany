@@ -13,8 +13,8 @@ TasksTab = [
                         dmc.Tab("Gráficos", value="task_graph")
                     ]
                 ),
-                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="task-board", style={"height":"55vh"})], color="#2B454E", type="dot", fullscreen=False,), value="task_board"),
-                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="task-graph", style={"height":"55vh"}),], color="#2B454E", type="dot", fullscreen=False,), value="task_graph"),
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="task-board", style={"height":"55vh"})], color="var(--primary)", type="dot", fullscreen=False,), value="task_board"),
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="task-graph", style={"height":"55vh"}),], color="var(--primary)", type="dot", fullscreen=False,), value="task_graph"),
             ],
             color="green",
             orientation="horizontal",
@@ -32,8 +32,8 @@ PromotionTab = [
                         dmc.Tab("Gráficos", value="graph_promotion")
                     ]
                 ),
-                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="promotion-board", style={"height":"55vh"})], color="#2B454E", type="dot", fullscreen=False,), value="data_promotion"),
-                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="promotion-graph", style={"height":"55vh"})], color="#2B454E", type="dot", fullscreen=False,), value="graph_promotion")
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="promotion-board", style={"height":"55vh"})], color="var(--primary)", type="dot", fullscreen=False,), value="data_promotion"),
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="promotion-graph", style={"height":"55vh"})], color="var(--primary)", type="dot", fullscreen=False,), value="graph_promotion")
             ],
             color="green",
             orientation="horizontal",
@@ -52,7 +52,7 @@ internalFactorsPage = html.Div([
                     ])
                 ])
             )
-        ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
+        ], style={"display":"flex","background":"var(--primary)", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
     html.Div([
     
         dmc.Tabs(

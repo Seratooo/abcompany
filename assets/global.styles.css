@@ -1,4 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;700&display=swap');
+:root {
+  --primary: #2B454E;
+  --white: #ffffff;
+}
 
 *{
   font-size: 62.5%;
@@ -16,7 +20,7 @@
 }
 
 #save-button{
-  background-color: #2B454E;
+  background-color: var(--primary);
 }
 
 #data-output2{
@@ -352,7 +356,7 @@ padding: 0 10px !important;
   align-items: center;
 }
 #holidays-results #tabs-holiday .tab--selected{
-  border-top: 5px solid #2B454E;
+  border-top: 5px solid var(--primary);
 }
 #holidays-results #tabs-holiday > div > span{
   font-size: 1.2rem;
@@ -473,14 +477,14 @@ label.mantine-InputWrapper-label{
   width: 500px;
 }
 #Wrapper-popup{
-  background: #2B454E;
+  background: var(--primary);
   padding: 20px;
   border-radius: 10px;
   /* border: 1px solid #d2d2d2; */
 }
 
 #data-output2.on #btn-popup, #validate-login.on #btn-popup, #data-output-header.active #btn-popup1, #btn-sair-popup1{
-  background: #2B454E;
+  background: var(--primary);
   padding: 17px 30px;
   border: none;
   font-size: 1.2rem;
@@ -494,7 +498,7 @@ label.mantine-InputWrapper-label{
 
 #data-output2.on #btn-popup:hover, #validate-login.on #btn-popup:hover, #data-output-header.active #btn-popup1:hover, #btn-sair-popup1:hover{
   background: #d2d2d2;
-  color: #2B454E;
+  color: var(--primary);
 }
 
 #upload-elements + div{
@@ -545,7 +549,7 @@ label.mantine-InputWrapper-label{
   border-radius: 4px;
 }
 #dowload-report:hover, #close-report:hover{
-  background-color: #2B454E;
+  background-color: var(--primary);
 }
 
 
@@ -581,7 +585,7 @@ label.mantine-InputWrapper-label{
   width: 330px;
   font-size: 4.2rem;
   font-size: 'Nunito';
-  background-color: #2B454E;
+  background-color: var(--primary);
 }
 
 #tabs-wrapprer{
@@ -617,7 +621,7 @@ label.mantine-InputWrapper-label{
 }  
 
 .popup-output .btn-popup{
-  background: #2B454E;
+  background: var(--primary);
   padding: 17px 30px;
   border: none;
   font-size: 1.2rem;
@@ -630,7 +634,7 @@ label.mantine-InputWrapper-label{
 }
 .popup-output .btn-popup:hover{
   background: #d2d2d2;
-  color: #2B454E;
+  color: var(--primary);
 }
 
 

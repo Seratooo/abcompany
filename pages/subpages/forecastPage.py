@@ -157,7 +157,7 @@ forecast = html.Div([
                 html.Div(id='predition-results',style={"display":"flex","flexDirection":"column","gap":"15px"}),
                 html.Div(id='holidays-results'),
             ], style={"background":"#F5F5F6", "padding":"10px 0", "height":"55vh"},),
-        ], color="#2B454E", type="dot", fullscreen=False,),
+        ], color="var(--primary)", type="dot", fullscreen=False,),
        
 ])
 

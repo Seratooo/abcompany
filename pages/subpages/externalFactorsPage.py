@@ -41,8 +41,8 @@ HolidayTab = [
                         dmc.Tab("Gráficos", value="graph_holiday")
                     ]
                 ),
-                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="holiday-multi-selected-value", style={"height":"55vh"})], color="#2B454E", type="dot", fullscreen=False,), value="data_holiday"),
-                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="holiday-graph", style={"height":"55vh"}),], color="#2B454E", type="dot", fullscreen=False,), value="graph_holiday"),
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="holiday-multi-selected-value", style={"height":"55vh"})], color="var(--primary)", type="dot", fullscreen=False,), value="data_holiday"),
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="holiday-graph", style={"height":"55vh"}),], color="var(--primary)", type="dot", fullscreen=False,), value="graph_holiday"),
             ],
             color="green",
             orientation="horizontal",
@@ -84,8 +84,8 @@ WeatherTab = [
                         dmc.Tab("Gráficos", value="graph_weather")
                     ]
                 ),
-                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="weather-multi-selected-value", style={"height":"55vh"})], color="#2B454E", type="dot", fullscreen=False,), value="data_weather"),
-                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="weather-graph", style={"height":"55vh"})], color="#2B454E", type="dot", fullscreen=False,), value="graph_weather")
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="weather-multi-selected-value", style={"height":"55vh"})], color="var(--primary)", type="dot", fullscreen=False,), value="data_weather"),
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="weather-graph", style={"height":"55vh"})], color="var(--primary)", type="dot", fullscreen=False,), value="graph_weather")
             ],
             color="green",
             orientation="horizontal",
@@ -128,8 +128,8 @@ InflationTab = [
                         dmc.Tab("Gráficos", value="graph_inflation")
                     ]
                 ),
-                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="inflation-multi-selected-value", style={"height":"55vh"})], color="#2B454E", type="dot", fullscreen=False,), value="data_inflation"),
-                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="inflation-graph", style={"height":"55vh"}),], color="#2B454E", type="dot", fullscreen=False,), value="graph_inflation")
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="inflation-multi-selected-value", style={"height":"55vh"})], color="var(--primary)", type="dot", fullscreen=False,), value="data_inflation"),
+                dmc.TabsPanel(dcc.Loading(children=[html.Div(id="inflation-graph", style={"height":"55vh"}),], color="var(--primary)", type="dot", fullscreen=False,), value="graph_inflation")
             ],
             color="green",
             orientation="horizontal",
@@ -150,7 +150,7 @@ externalFactorsPage = html.Div([
                     ])
                 ])
             )
-        ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
+        ], style={"display":"flex","background":"var(--primary)", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
     html.Div([
     
         dmc.Tabs(

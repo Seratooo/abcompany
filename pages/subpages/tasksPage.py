@@ -68,7 +68,7 @@ tasks = html.Div([
                     ])
                 ])
             )
-        ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
+        ], style={"display":"flex","background":"var(--primary)", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
       
     html.Div([
       dmc.Tabs(
@@ -82,7 +82,7 @@ tasks = html.Div([
               dmc.TabsPanel(TaskTab, value="tasks"),
               dmc.TabsPanel(TaskBoard, value="board"),
           ],
-          color="#2B454E",
+          color="var(--primary)",
           orientation="vertical",
           value="tasks",
       ),

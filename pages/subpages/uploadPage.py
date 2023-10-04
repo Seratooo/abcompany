@@ -20,7 +20,7 @@ upload = html.Div([
                     ])
                 ])
             )
-        ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
+        ], style={"display":"flex","background":"var(--primary)", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
          
         html.Div([
         dmc.TextInput(label="Nome do conjunto de dados:", id="lb_dataset"),
@@ -55,7 +55,7 @@ upload = html.Div([
         html.Div(id='output-data-upload'), 
         html.Div(id='data-output'), 
         ], id="upload-elements", style={"position":"absolute"}),
-        dcc.Loading(children=(html.Div(id='data-output2')), color="#2B454E", type="dot", fullscreen=False,),   
+        dcc.Loading(children=(html.Div(id='data-output2')), color="var(--primary)", type="dot", fullscreen=False,),   
          
 ], style={"width":"100%","height":"100vh","position":"relative","zIndex":"2"})
 

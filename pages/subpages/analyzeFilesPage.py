@@ -19,7 +19,7 @@ analyzeFiles = html.Div([
                     ])
                 ])
             )
-        ], style={"display":"flex","background":"#2B454E", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
+        ], style={"display":"flex","background":"var(--primary)", "justifyContent":"space-between", "alignItems":"center", "padding":"2rem"}),
         html.Div([
             dmc.Select(
                         label="",
@@ -31,7 +31,7 @@ analyzeFiles = html.Div([
                     ),
             dcc.Loading(children=[
                 html.Div( id="dataset-display", style={"width":"100%","minHeight":"55vh"}),
-            ], color="#2B454E", type="dot", fullscreen=False,),
+            ], color="var(--primary)", type="dot", fullscreen=False,),
         ], style={"padding":"20px"}),
 ])
 

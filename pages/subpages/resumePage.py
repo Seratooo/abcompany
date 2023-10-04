@@ -59,7 +59,7 @@ resume = html.Div([
                     ], style={"display":"flex","gap":"5px","justifyContent":"center", "padding":"6px 0"}),
                 ]
                 , style={"width":"100%","height":"98vh"})
-            ], color="#2B454E", type="dot", fullscreen=False,),
+            ], color="var(--primary)", type="dot", fullscreen=False,),
 ])
 
 

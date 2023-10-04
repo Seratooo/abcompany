@@ -50,7 +50,7 @@ sales = html.Div([
                 html.Div([dcc.Graph(id='graph7', className='dbc')], style={"width":"49%"}),
                 html.Div([dcc.Graph(id='graph8', className='dbc')], style={"width":"49%"}),
             ], style={"display":"flex","gap":"5px","justifyContent":"center", "padding":"6px 0"}),
-        ], color="#2B454E", type="dot", fullscreen=False,),
+        ], color="var(--primary)", type="dot", fullscreen=False,),
         html.Div([
             html.Div([
                 dmc.Select(
@@ -66,7 +66,7 @@ sales = html.Div([
                     ],
                     style={"width": 200, "marginBottom": 10},
                 ),
-                dcc.Loading(children=[dcc.Graph(id='graph9', className='dbc'),], color="#2B454E", type="dot", fullscreen=False,),
+                dcc.Loading(children=[dcc.Graph(id='graph9', className='dbc'),], color="var(--primary)", type="dot", fullscreen=False,),
             ], style={"width":"49%"}),
             html.Div([
                  dmc.Select(
@@ -82,7 +82,7 @@ sales = html.Div([
                     ],
                     style={"width": 200, "marginBottom": 10},
                 ),
-                dcc.Loading(children=[dcc.Graph(id='graph10', className='dbc'),], color="#2B454E", type="dot", fullscreen=False,),
+                dcc.Loading(children=[dcc.Graph(id='graph10', className='dbc'),], color="var(--primary)", type="dot", fullscreen=False,),
             ], style={"width":"49%"}),
         ], style={"display":"flex","gap":"10px","justifyContent":"center", "padding":"6px 0"}),
         ])

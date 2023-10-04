@@ -68,7 +68,7 @@ AED = html.Div([
                 html.Div(id='variables-output'),
             ],id='variables-container')
             ], id="report", style={"height":"55vh"})
-        ], color="#2B454E", type="dot", fullscreen=False,),
+        ], color="var(--primary)", type="dot", fullscreen=False,),
 
 ], id='aed-container')
 
@@ -375,7 +375,7 @@ def generate_report(n_clicks, value):
                     #html.Div('Download', id="dowload-report"),
                     html.Div('Fechar', id='close-report'),
                 ], className="wrapper-btn-report"),
-                html.Iframe(srcDoc=report_aed.replace('#377eb8','#2B454E').replace('#337ab7','#2B454E'), width='100%', height='100%')
+                html.Iframe(srcDoc=report_aed.replace('#377eb8','var(--primary)').replace('#337ab7','var(--primary)'), width='100%', height='100%')
                 ], {'display': 'block'}
     else:
         return '', {'display': 'none'}

@@ -13,7 +13,7 @@ const st = {
     fontFamily: 'Nunito', 
     fontSize: '1.6rem', 
     padding:'1.5rem 6rem', 
-    background: '#2B454E', 
+    background: 'var(--primary)', 
     color:'white', border:'none', 
     borderRadius:'4px 0 0 4px',
     cursor: 'pointer',
@@ -44,7 +44,7 @@ const LoginComponent = (props: Props) => {
       fontSize:'2rem', 
       fontWeight: '700', 
       fontFamily: 'Nunito',
-      color: '#2B454E'
+      color: 'var(--primary)'
       }}>
         ABCompany
       </p>
@@ -59,7 +59,7 @@ const LoginComponent = (props: Props) => {
             <span style={{
               fontSize:'1.6rem', 
               fontFamily: 'Nunito', 
-              color: '#2B454E',
+              color: 'var(--primary)',
               fontWeight: '500'
             }}
             > Entrar

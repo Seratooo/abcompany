@@ -9,7 +9,7 @@ dash.register_page(__name__)
 
 layout = html.Div([
         html.Div(id='validate-login'),
-        dcc.Loading(children=[dcc.Location(id='url')], color="#2B454E", type="dot", fullscreen=True,),
+        dcc.Loading(children=[dcc.Location(id='url')], color="var(--primary)", type="dot", fullscreen=True,),
         html.Section([
             html.P('ABCompany'),
             html.Section([

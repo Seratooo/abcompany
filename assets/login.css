@@ -1,3 +1,8 @@
+:root {
+  --primary: #2B454E;
+  --white: #ffffff;
+}
+
 #loginPage{
   background: white;
    height: 100vh;
@@ -12,7 +17,7 @@
   font-size:2rem;
   font-weight: 700;
   font-family: 'Nunito';
-  color: #2B454E;
+  color: var(--primary);
 }
 #loginPage #first-section > section > div > p{
   font-size: 1.6rem;
@@ -22,7 +27,7 @@
 #loginPage #first-section > section > div > div{
   font-size: 1.6rem; 
   font-family: 'Nunito';
-  color: #2B454E;
+  color: var(--primary);
   font-weight: 500;
 }
 
@@ -79,7 +84,7 @@
     font-family: 'Nunito'; 
     font-size: 1.6rem;
     padding:1.5rem 6rem; 
-    background: #2B454E; 
+    background: var(--primary); 
     color:white; 
     border: none; 
     border-radius: 4px 0 0 4px;

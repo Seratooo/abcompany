@@ -45,7 +45,7 @@ pastPredictions = html.Div([
                 html.Div("",style={"font":"1.8rem Nunito"}, id='wrapper-result')
             ], style={"background":"#F5F5F6","width":"100%","height":"100vh","marginTop":"24vh"})
         ], style={"display":"flex", "gap":"10px", "justifyContent":"space-between","alignItems":"center", "height":"76vh", "background":"#F0F0F0"})
-    ], color="#2B454E", type="dot", fullscreen=False,),
+    ], color="var(--primary)", type="dot", fullscreen=False,),
 ])
 
 

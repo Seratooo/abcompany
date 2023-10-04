@@ -1,3 +1,8 @@
+:root {
+  --primary: #2B454E;
+  --white: #ffffff;
+}
+
 .PainelStyle{
  font-size: 1.4rem;
  font-family: 'Nunito';
@@ -7,7 +12,7 @@
 }
 .WrapperPainel{
  display: flex;
- background: #2B454E;
+ background: var(--primary);
  justify-content: space-between;
  align-items: center;
  padding: 10px;
