@@ -594,3 +594,44 @@ label.mantine-InputWrapper-label{
 .dash-table-container .dash-spreadsheet-container{
   z-index: 0;
 }
+
+/* taskPage */
+
+.popup-output{
+  background-color: rgba(0, 0, 0, 0.84);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.popup-output .desc-popup{
+  font-size: 1.8rem;
+  font-family: 'Nunito';
+  color: #f2f2f2;
+  padding: 5px 0;
+}  
+
+.popup-output .btn-popup{
+  background: #2B454E;
+  padding: 17px 30px;
+  border: none;
+  font-size: 1.2rem;
+  font-family: 'Nunito';
+  color: white;
+  border-radius: 7px;
+  width: 200px;
+  cursor: pointer;
+  transition: background .7s;
+}
+.popup-output .btn-popup:hover{
+  background: #d2d2d2;
+  color: #2B454E;
+}
+
+
+/* taskPage */

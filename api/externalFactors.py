@@ -126,16 +126,16 @@ def future_euro_inflation(ds):
     data_formatada = data_atual.strftime('%Y-%m-%d')
     df_eur = pd.read_csv('data/df_eur.csv')
 
-    if not df_eur[df_eur.ds == data_formatada]['Valor'].values:
-        currency = float(getCurrency('EUR','EURAOA',data_formatada))
-        if currency>0:             
-            new_element = {
-                'ds': data_formatada,
-                'Valor': currency,
-            }
-            df_eur = pd.concat([df_eur, pd.DataFrame([new_element])], ignore_index=True)
-            df_eur = df_eur.drop('Unnamed: 0', axis=1)
-            df_eur.to_csv('data/df_eur.csv')
+    # if not df_eur[df_eur.ds == data_formatada]['Valor'].values:
+    #     currency = float(getCurrency('EUR','EURAOA',data_formatada))
+    #     if currency>0:             
+    #         new_element = {
+    #             'ds': data_formatada,
+    #             'Valor': currency,
+    #         }
+    #         df_eur = pd.concat([df_eur, pd.DataFrame([new_element])], ignore_index=True)
+    #         df_eur = df_eur.drop('Unnamed: 0', axis=1)
+    #         df_eur.to_csv('data/df_eur.csv')
     try:
         return df_eur[df_eur.ds == ds]['Valor'].values[0]
     except:
@@ -149,16 +149,16 @@ def future_usd_inflation(ds):
     df_usd = pd.read_csv('data/df_usd.csv')
     
 
-    if not df_usd[df_usd.ds == data_formatada]['Valor'].values:
-        currency = float(getCurrency('USD','USDAOA',data_formatada))
-        if currency>0:             
-            new_element = {
-                'ds': data_formatada,
-                'Valor': currency,
-            }
-            df_usd = pd.concat([df_usd, pd.DataFrame([new_element])], ignore_index=True)
-            df_usd = df_usd.drop('Unnamed: 0', axis=1)
-            df_usd.to_csv('data/df_usd.csv')
+    # if not df_usd[df_usd.ds == data_formatada]['Valor'].values:
+    #     currency = float(getCurrency('USD','USDAOA',data_formatada))
+    #     if currency>0:             
+    #         new_element = {
+    #             'ds': data_formatada,
+    #             'Valor': currency,
+    #         }
+    #         df_usd = pd.concat([df_usd, pd.DataFrame([new_element])], ignore_index=True)
+    #         df_usd = df_usd.drop('Unnamed: 0', axis=1)
+    #         df_usd.to_csv('data/df_usd.csv')
     try:
         return df_usd[df_usd.ds == ds]['Valor'].values[0]
     except:

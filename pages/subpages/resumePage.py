@@ -209,6 +209,7 @@ def getColections(Names):
 def generate_report(n_clicks):
     descriptionData = []
     captionData = []
+    global TargetValues
     
     descriptionData.insert(0, periodo_de_analise())
     captionData.insert(0, 'Período de Análise dos Dados')

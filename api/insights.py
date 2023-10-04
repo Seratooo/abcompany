@@ -28,10 +28,10 @@ def amostra_dataset(df):
 
 
 def total_clientes(df):
-    return f'Ao longo do período analisado, foi possível comercializar uma quantidade total de {df["Product"].unique()} produtos.'
+    return f'Ao longo do período analisado, foi possível comercializar um total de {df["Product"].nunique()} produtos distintos.'
 
 def total_vendas(df):
-    return f'Ao longo do período analisado, foi possível realizar um total de {df["Sales"].sum()} vendas.'
+    return f'Ao longo do período analisado, foi possível registar um total de {df.shape[0]} vendas.'
 
 def receitas_mes(df):
     text = f'{semestre_tendencia_crescimento(df)}. {tendencia_crescimento_inicial(df, [1,2,3,4])}'

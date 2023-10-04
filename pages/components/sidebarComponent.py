@@ -76,7 +76,7 @@ sidebar = html.Div(
                     variant="subtle",
                     children=[
                         dmc.NavLink(label="Externos", style={'color':'rgb(98 98 98)'}, href="/dashboard?externalFactors"),
-                        dmc.NavLink(label="Internos", style={'color':'rgb(98 98 98)'},)
+                        dmc.NavLink(label="Internos", style={'color':'rgb(98 98 98)'}, href="/dashboard?internalFactors")
                     ],
                 ),
                 dmc.NavLink(
