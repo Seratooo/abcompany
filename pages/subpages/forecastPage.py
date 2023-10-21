@@ -125,12 +125,12 @@ forecast = html.Div([
             id="product-select",
             value="Peixe Carapau",
             data=[
-                {"value": "Água Pura 5L", "label": "Água Pura 5L"},
+                #{"value": "Água Pura 5L", "label": "Água Pura 5L"},
                 {"value": "Abacate Nacional", "label": "Abacate Nacional"},
                 {"value": "Asa de Frango 10Kg", "label": "Asa de Frango 10Kg"},
                 {"value": "Peixe Carapau", "label": "Peixe Carapau"},
-                {"value": "Peixe Corvina", "label": "Peixe Corvina"},
-                {"value": "Peixe Pescada", "label": "Peixe Pescada"},
+                #{"value": "Peixe Corvina", "label": "Peixe Corvina"},
+                #{"value": "Peixe Pescada", "label": "Peixe Pescada"},
                 {"value": "Batata Rena Nacional", "label": "Batata Rena Nacional"},
                 {"value": "Batata Doce Nacional", "label": "Batata Doce Nacional"},
                 {"value": "Cebola Nacional", "label": "Cebola Nacional"},
@@ -139,11 +139,11 @@ forecast = html.Div([
                 {"value": "Chouriço Corrente 155", "label": "Chouriço Corrente"},
                 {"value": "Entrecosto Especial", "label": "Entrecosto Especial"},
                 {"value": "ENTRECOSTO DE PORCO (PERDIX) ", "label": "Entrecosto de porco (PERDIX)"},
-                {"value": "Figado de Vaca", "label": "Figado de Vaca"},
+                #{"value": "Figado de Vaca", "label": "Figado de Vaca"},
                 {"value": "Frango 1.200g", "label": "Frango 1.200g"},
                 {"value": "Tomate Maduro Nacional", "label": "Tomate Maduro Nacional"},
-                {"value": "Óleo Fula Soja", "label": "Óleo Fula Soja"},
-                {"value": "VINAGRE PRIMAVERA 500ML", "label": "VINAGRE PRIMAVERA 500ML"},
+                #{"value": "Óleo Fula Soja", "label": "Óleo Fula Soja"},
+                #{"value": "VINAGRE PRIMAVERA 500ML", "label": "VINAGRE PRIMAVERA 500ML"},
                 # banana pão
             ],
             style={"width": 150},
@@ -219,6 +219,8 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
         Selected_date = datetime.strptime(date, '%Y-%m-%d')
         Last_df_date = datetime.strptime(Dataset['Date'].max(), '%Y-%m-%d')
         Lenght = abs((Selected_date - Last_df_date).days)
+        df_ProductInterest = pd.read_csv(f'data/trends/{product}.csv')
+        
         global df_predition
         
         for sFactor in factorsSeleted:
@@ -302,6 +304,7 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
         
         
         fig = px.line(df_predition, x='ds', y='yhat', title='Previsões de Vendas')
+        figInt = px.line(df_ProductInterest, x='Semana', y=f'{product}', title='Interesse das pessoas pelo produto')
 
         # Adicionando faixa de incerteza
         fig.add_trace(
@@ -329,7 +332,87 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
             id='graph11',
             figure=fig
         )
+        Interesting_graph =  dcc.Graph(
+            id='graphInt',
+            figure=figInt
+        )
+
         
+        InterestResults = handleInterest(df_ProductInterest, df_original, 2020, product)
+        figInd = go.Figure()
+        figInd.add_trace(go.Indicator(
+                    mode = "number+delta",
+                    value = InterestResults[2],
+                    title = {"text": f"<span style='font-size:2.4rem'>Interesse de {2020}/{InterestResults[4]}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
+                    delta = {'reference': InterestResults[0], 'relative': True, 'valueformat': '.1%'},
+                    domain = {'x': [0, 0.5], 'y': [0.5, 1]}))
+        figInd.add_trace(go.Indicator(
+                    mode = "number+delta",
+                    value = InterestResults[3],
+                    title = {"text": f"<span style='font-size:2.4rem'>Vendas de {2020}/{InterestResults[4]}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
+                    delta = {'reference': InterestResults[1], 'relative': True, 'valueformat': '.1%'},
+                    domain = {'x': [0.6, 1], 'y': [0.5, 1]}))
+        Indicator_01 = dcc.Graph(
+            id='graphInd',
+            figure=figInd
+        )
+
+        InterestResults2 = handleInterest(df_ProductInterest, df_original, 2021, product)
+        figInd2 = go.Figure()
+        figInd2.add_trace(go.Indicator(
+                    mode = "number+delta",
+                    value = InterestResults2[2],
+                    title = {"text": f"<span style='font-size:2.4rem'>Interesse de {2021}/{InterestResults2[4]}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
+                    delta = {'reference': InterestResults2[0], 'relative': True, 'valueformat': '.1%'},
+                    domain = {'x': [0, 0.5], 'y': [0.5, 1]}))
+        figInd2.add_trace(go.Indicator(
+                    mode = "number+delta",
+                    value = InterestResults2[3],
+                    title = {"text": f"<span style='font-size:2.4rem'>Vendas de {2021}/{InterestResults2[4]}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
+                    delta = {'reference': InterestResults2[1], 'relative': True, 'valueformat': '.1%'},
+                    domain = {'x': [0.6, 1], 'y': [0.5, 1]}))
+        Indicator_02 = dcc.Graph(
+            id='graphInd',
+            figure=figInd2
+        )
+
+        InterestResults3 = handleInterest(df_ProductInterest, df_original, 2022, product)
+        figInd3 = go.Figure()
+        figInd3.add_trace(go.Indicator(
+                    mode = "number+delta",
+                    value = InterestResults3[2],
+                    title = {"text": f"<span style='font-size:2.4rem'>Interesse de {2022}/{InterestResults3[4]}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
+                    delta = {'reference': InterestResults3[0], 'relative': True, 'valueformat': '.1%'},
+                    domain = {'x': [0, 0.5], 'y': [0.5, 1]}))
+        figInd3.add_trace(go.Indicator(
+                    mode = "number+delta",
+                    value = InterestResults3[3],
+                    title = {"text": f"<span style='font-size:2.4rem'>Vendas de {2022}/{InterestResults3[4]}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
+                    delta = {'reference': InterestResults3[1], 'relative': True, 'valueformat': '.1%'},
+                    domain = {'x': [0.6, 1], 'y': [0.5, 1]}))
+        Indicator_03 = dcc.Graph(
+            id='graphInd',
+            figure=figInd3
+        )
+
+        IndicatorTab = dmc.Tabs(
+        [
+            dmc.TabsList(
+                [
+                    dmc.Tab("Interesse X Vendas (2020)", value="2020"),
+                    dmc.Tab("Interesse X Vendas (2021)", value="2021"),
+                    dmc.Tab("Interesse X Vendas (2022)", value="2022"),
+                ]
+            ),
+            dmc.TabsPanel(Indicator_01, value="2020"),
+            dmc.TabsPanel(Indicator_02, value="2021"),
+            dmc.TabsPanel(Indicator_03, value="2022"),
+        ],
+        color="green",
+        value='2020',
+        orientation="horizontal",
+        )
+
         
         MyHolidays = []
         MyHolidays.append(dcc.Tab(label='Feriados Nacionais', value='holiday'))
@@ -410,7 +493,7 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
         orientation="horizontal",
         )
 
-        returned_items = [Predition_graph, seasonality, fig3_graph]
+        returned_items = [Predition_graph, Interesting_graph, IndicatorTab, seasonality, fig3_graph]
         if 'Weather' in Dataset.columns:
             returned_items.insert(1, Weather_regressor)
             #return [Predition_graph, Weather_regressor, seasonality, fig3_graph], HolidaysTabs
@@ -575,3 +658,13 @@ def dowload_report(n_clicks):
         convert_html_to_pdf(report_html,'report_html.pdf')
         return dcc.send_file(
         "./report_html.pdf", "forecast_report.pdf")
+    
+
+def handleInterest(df_ProductInterest, df_vendasReais, Year, Product):
+  df_vendasReais = df_vendasReais[pd.DatetimeIndex(df_vendasReais.ds).year == Year]
+  df_byYear = df_ProductInterest[df_ProductInterest.Ano == Year]
+  
+  SemanaMaior = int(df_byYear[df_byYear[Product]==df_byYear[Product].max()]['Mes'])
+  result = df_byYear[df_byYear.Mes == SemanaMaior].mean()
+  
+  return [df_byYear[Product].mean(), df_vendasReais['y'].mean(), float(result[Product]), df_vendasReais[pd.DatetimeIndex(df_vendasReais.ds).month == SemanaMaior]['y'].mean(), SemanaMaior]
