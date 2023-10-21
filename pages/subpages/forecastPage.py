@@ -475,6 +475,8 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
             }
         )
 
+        #df_predition.to_csv('vendasReais.csv')
+
         seasonality = dmc.Tabs(
         [
             dmc.TabsList(
@@ -493,7 +495,91 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
         orientation="horizontal",
         )
 
-        returned_items = [Predition_graph, Interesting_graph, IndicatorTab, seasonality, fig3_graph]
+        SazonalityIndicators = handleSazonality(df_predition, 2020)
+        figSZ_01 = go.Figure()
+        
+        figSZ_01.add_trace(go.Indicator(
+            mode = "gauge+number",
+            value = SazonalityIndicators[1],
+            domain = {'x': [0, 0.5], 'y': [0.5, 1]},
+            title = {'text': f"Alta em {SazonalityIndicators[0]}"}
+            ))
+        figSZ_01.add_trace(go.Indicator(
+            mode = "gauge+number",
+            value = SazonalityIndicators[3],
+            domain = {'x': [0.6, 1], 'y': [0.5, 1]},
+            title = {'text': f"Baixa em {SazonalityIndicators[2]}"},
+            gauge = {'bar': {'color': 'red'}}
+            ))
+        
+        IndicatorSZ_01 = dcc.Graph(
+            id='graphInd',
+            figure=figSZ_01
+        )
+
+        SazonalityIndicators2 = handleSazonality(df_predition, 2021)
+        figSZ_02 = go.Figure()
+        
+        figSZ_02.add_trace(go.Indicator(
+            mode = "gauge+number",
+            value = SazonalityIndicators2[1],
+            domain = {'x': [0, 0.5], 'y': [0.5, 1]},
+            title = {'text': f"Alta em {SazonalityIndicators2[0]}"}
+            ))
+        figSZ_02.add_trace(go.Indicator(
+            mode = "gauge+number",
+            value = SazonalityIndicators2[3],
+            domain = {'x': [0.6, 1], 'y': [0.5, 1]},
+            title = {'text': f"Baixa em {SazonalityIndicators2[2]}"},
+            gauge = {'bar': {'color': 'red'}}
+            ))
+        
+        IndicatorSZ_02 = dcc.Graph(
+            id='graphInd',
+            figure=figSZ_02
+        )
+
+        SazonalityIndicators3 = handleSazonality(df_predition, 2022)
+        figSZ_03 = go.Figure()
+        
+        figSZ_03.add_trace(go.Indicator(
+            mode = "gauge+number",
+            value = SazonalityIndicators3[1],
+            domain = {'x': [0, 0.5], 'y': [0.5, 1]},
+            title = {'text': f"Alta em {SazonalityIndicators3[0]}"}
+            ))
+        figSZ_03.add_trace(go.Indicator(
+            mode = "gauge+number",
+            value = SazonalityIndicators3[3],
+            domain = {'x': [0.6, 1], 'y': [0.5, 1]},
+            title = {'text': f"Baixa em {SazonalityIndicators3[2]}"},
+            gauge = {'bar': {'color': 'red'}}
+            ))
+        
+        IndicatorSZ_03 = dcc.Graph(
+            id='graphInd',
+            figure=figSZ_03
+        )
+
+        SazonalityTab = dmc.Tabs(
+        [
+            dmc.TabsList(
+                [
+                    dmc.Tab("2020", value="2020"),
+                    dmc.Tab("2021", value="2021"),
+                    dmc.Tab("2022", value="2022"),
+                ]
+            ),
+            dmc.TabsPanel(IndicatorSZ_01, value="2020"),
+            dmc.TabsPanel(IndicatorSZ_02, value="2021"),
+            dmc.TabsPanel(IndicatorSZ_03, value="2022"),
+        ],
+        color="green",
+        value='2020',
+        orientation="horizontal",
+        )
+
+        returned_items = [Predition_graph, Interesting_graph, IndicatorTab, seasonality,SazonalityTab, fig3_graph]
         if 'Weather' in Dataset.columns:
             returned_items.insert(1, Weather_regressor)
             #return [Predition_graph, Weather_regressor, seasonality, fig3_graph], HolidaysTabs
@@ -664,7 +750,26 @@ def handleInterest(df_ProductInterest, df_vendasReais, Year, Product):
   df_vendasReais = df_vendasReais[pd.DatetimeIndex(df_vendasReais.ds).year == Year]
   df_byYear = df_ProductInterest[df_ProductInterest.Ano == Year]
   
-  SemanaMaior = int(df_byYear[df_byYear[Product]==df_byYear[Product].max()]['Mes'])
+  SemanaMaior = int(df_byYear[df_byYear[Product]==df_byYear[Product].max()]['Mes'].iloc[:1])
   result = df_byYear[df_byYear.Mes == SemanaMaior].mean()
   
   return [df_byYear[Product].mean(), df_vendasReais['y'].mean(), float(result[Product]), df_vendasReais[pd.DatetimeIndex(df_vendasReais.ds).month == SemanaMaior]['y'].mean(), SemanaMaior]
+
+
+def handleSazonality(df, Year):
+    df_year = df[pd.DatetimeIndex(df.ds).year == Year]
+    month_map = {
+        1: 'Janeiro', 2: 'Fevereiro', 3: 'Março', 4: 'Abril',
+        5: 'Maio', 6: 'Junho', 7: 'Julho', 8: 'Agosto',
+        9: 'Setembro', 10: 'Outubro', 11: 'Novembro', 12: 'Dezembro'
+    }
+    
+    max_date = pd.to_datetime(df_year[df_year.yearly == df_year['yearly'].max()]['ds'].values[0])
+    max_date = f"{month_map[max_date.month]}/{str(max_date.day)}"
+    max_value = float(df_year[df_year.yearly == df_year['yearly'].max()]['yearly'].values[0]) * 100
+    
+    min_date = pd.to_datetime(df_year[df_year.yearly == df_year['yearly'].min()]['ds'].values[0])
+    min_date = f"{month_map[min_date.month]}/{str(min_date.day)}"
+    min_value = float(df_year[df_year.yearly == df_year['yearly'].min()]['yearly'].values[0]) * 100
+    
+    return max_date, max_value, min_date, min_value
