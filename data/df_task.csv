@@ -1,33 +1,107 @@
 ,Name,Description,Type,Team,Date
-0,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-16
-1,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-17
-2,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-18
-3,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-19
-4,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-20
-5,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-21
-6,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-22
-7,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-23
-8,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-24
-9,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-25
-10,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-26
-11,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-27
-12,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-28
-13,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-29
-14,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos,Gestão de Produtos,Dynamic,2022-07-30
-0,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-14
-1,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-15
-2,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-16
-3,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-17
-4,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-18
-5,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-19
-6,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-20
-7,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-21
-8,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-22
-9,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-23
-10,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-24
-11,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-25
-12,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-26
-13,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-27
-14,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-28
-15,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-29
-16,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing,Marketing Digital,LaPermission,2021-05-30
+0,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-11
+1,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-12
+2,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-13
+3,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-14
+4,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-15
+5,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-16
+6,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-17
+7,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-18
+8,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-19
+9,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-20
+10,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-21
+11,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-22
+12,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-23
+13,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-24
+14,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-25
+15,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-26
+16,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-27
+17,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-02-28
+18,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-01
+19,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-02
+20,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-03
+21,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-04
+22,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-05
+23,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-06
+24,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-07
+25,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-08
+26,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-09
+27,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-10
+28,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-11
+29,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-12
+30,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-13
+31,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-14
+32,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-15
+33,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-16
+34,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-17
+35,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-18
+36,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-19
+37,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-20
+38,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-21
+39,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-22
+40,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-23
+41,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-24
+42,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-25
+43,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-26
+44,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-27
+45,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-28
+46,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-29
+47,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-30
+48,Tarefa: Organizar produtos (Team: Dynamic),Melhorar o acesso aos produtos.,Gestão de Produtos,Dynamic,2021-03-31
+0,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-05
+1,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-06
+2,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-07
+3,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-08
+4,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-09
+5,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-10
+6,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-11
+7,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-12
+8,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-13
+9,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-14
+10,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-15
+11,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-16
+12,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-17
+13,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-18
+14,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-19
+15,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-20
+16,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-21
+17,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-22
+18,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-23
+19,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-24
+20,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-25
+21,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-26
+22,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-27
+23,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-28
+24,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-29
+25,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-30
+26,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-08-31
+27,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-01
+28,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-02
+29,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-03
+30,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-04
+31,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-05
+32,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-06
+33,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-07
+34,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-08
+35,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-09
+36,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-10
+37,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-11
+38,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-12
+39,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-13
+40,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-14
+41,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-15
+42,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-16
+43,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-17
+44,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-18
+45,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-19
+46,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-20
+47,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-21
+48,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-22
+49,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-23
+50,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-24
+51,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-25
+52,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-26
+53,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-27
+54,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-28
+55,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-29
+56,Tarefa: Planear Estratégias (Team: LaPermission),Criar estratégias de marketing.,Marketing Digital,LaPermission,2021-09-30

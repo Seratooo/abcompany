@@ -53,7 +53,7 @@ forecast = html.Div([
                 ]),
                 
             ),
-            dmc.Button("Gerar relatório", id='generate-report'),
+            dmc.Button("Gerar relatório", id='generate-report', style={'display':'none'}),
         ],className='WrapperPainel'),
     html.Div([
         html.Div([
@@ -220,7 +220,9 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
         Last_df_date = datetime.strptime(Dataset['Date'].max(), '%Y-%m-%d')
         Lenght = abs((Selected_date - Last_df_date).days)
         df_ProductInterest = pd.read_csv(f'data/trends/{product}.csv')
-        
+        df_task = pd.read_csv('data/df_task.csv')
+        df_promo = pd.read_csv('data/df_promo.csv')
+        returned_items = []
         global df_predition
         
         for sFactor in factorsSeleted:
@@ -232,13 +234,11 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
                     Holidays = pd.concat((Holidays, pd.read_csv('data/covid_19.csv')))
                     Holidays = Holidays.drop('Unnamed: 0', axis=1)
                 if(sFactor == 'tasks'):
-                    df_task = pd.read_csv('data/df_task.csv')
-                    df_task = df_task[['Date', 'Name']].rename(columns = {'Date': 'ds', 'Name':'holiday'})
-                    Holidays = pd.concat((Holidays, df_task))
+                    df_task_ = df_task[['Date', 'Name']].rename(columns = {'Date': 'ds', 'Name':'holiday'})
+                    Holidays = pd.concat((Holidays, df_task_))
                 if(sFactor == 'promo'):
-                    df_promo = pd.read_csv('data/df_promo.csv')
-                    df_promo = df_promo[['Date', 'Name']].rename(columns = {'Date': 'ds', 'Name':'holiday'})
-                    Holidays = pd.concat((Holidays, df_promo))
+                    df_promo_ = df_promo[['Date', 'Name']].rename(columns = {'Date': 'ds', 'Name':'holiday'})
+                    Holidays = pd.concat((Holidays, df_promo_))
 
             elif(sFactor == 'weather'):
                 Dataset.loc[:, 'Weather'] = Dataset['Date'].apply(future_weather)
@@ -254,49 +254,118 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
 
             #mape = mean_absolute_percentage_error(df_original.head(230)['y'], df_predition.head(230)['yhat'])
             #print("MAPE: {:.2f}%".format(mape*100))
+            df_predition = df_predition.sort_values(by='ds')
             if 'Weather' in df_predition:
+                
+                figWeather = go.Figure()
+                figWeather.update_layout(
+                    title='Impacto das alterações climáticas nas Vendas',
+                )
+                
+                figWeather.add_trace(
+                    go.Scatter(
+                        x=df_predition['ds'],
+                        y=df_predition['Weather']*100,
+                        fill='tozeroy',
+                        mode='lines',
+                        name='Impacto nas vendas',
+                        line=dict(color='#636EFA')
+                    )
+                )
+
+                WeatherDataset = pd.read_csv('data/df_weather.csv')
+                WeatherDataset = WeatherDataset.sort_values(by='Date')
+                WeatherDataset['Date'] = pd.to_datetime(WeatherDataset['Date'])
+                WeatherDataset = WeatherDataset[(WeatherDataset.Date >=df_predition['ds'].min()) & (WeatherDataset.Date <=df_predition['ds'].max())]
+                
+                figWeather.add_trace(
+                    go.Scatter(
+                        x=WeatherDataset['Date'],
+                        y=WeatherDataset['Weather'],
+                        fill='tonexty',
+                        mode='lines',
+                        name='Temperatura Climática',
+                        line=dict(color='#F7AA9D')
+                    )
+                )
+
+
                 Weather_regressor = dcc.Graph(
-                id='regressors-plot',
-                figure={
-                    'data': [
-                        {'x': df_predition['ds'], 'y': df_predition[f'Weather'], 'type': 'line'}
-                    ],
-                    'layout': {
-                        'title': 'Regressores (Clima)',
-                        'xaxis': {'title': 'Data'},
-                        'yaxis': {'title': 'Clima'}
-                    }
-                }
+                id='regressors-plot-weather',
+                figure=figWeather
                 )
 
             if 'Inflation_euro' in df_predition:
-                Inflation_Euro_regressor = dcc.Graph(
-                id='regressors-plot',
-                figure={
-                    'data': [
-                        {'x': df_predition['ds'], 'y': df_predition[f'Inflation_euro'], 'type': 'line'}
-                    ],
-                    'layout': {
-                        'title': 'Regressores (Inflação - Euro)',
-                        'xaxis': {'title': 'Data'},
-                        'yaxis': {'title': 'Euro'}
-                    }
-                }
+                figEUR = go.Figure()
+                figEUR.update_layout(
+                    title='Impacto do Euro nas Vendas',
+                )
+                figEUR.add_trace(
+                    go.Scatter(
+                        x=df_predition['ds'],
+                        y=df_predition['Inflation_euro']*5000,
+                        fill='tozeroy',
+                        mode='lines',
+                        name='Impacto nas vendas',
+                        line=dict(color='#636EFA')
+                    )
+                )
+                
+                EurDataset = pd.read_csv('data/df_eur.csv')
+                EurDataset = EurDataset.sort_values(by='ds')
+                EurDataset['ds'] = pd.to_datetime(EurDataset['ds'])
+                EurDataset = EurDataset[(EurDataset.ds >=df_predition['ds'].min()) & (EurDataset.ds <=df_predition['ds'].max())]
+                figEUR.add_trace(
+                    go.Scatter(
+                        x=EurDataset['ds'],
+                        y=EurDataset['Valor'],
+                        fill='tonexty',
+                        mode='lines',
+                        name='Taxa de cambio (EURO)',
+                        line=dict(color='#F7AA9D')
+                    )
+                )
+
+                Inflation_Euro_regressor =  dcc.Graph(
+                id='regressors-plot-eur',
+                figure=figEUR
                 )
                 
             if 'Inflation_dolar' in df_predition:
+
+                figUSD = go.Figure()
+                figUSD.update_layout(
+                    title='Impacto do USD nas Vendas',
+                )
+                figUSD.add_trace(
+                    go.Scatter(
+                        x=df_predition['ds'],
+                        y=df_predition['Inflation_dolar']*5000,
+                        fill='tozeroy',
+                        mode='lines',
+                        name='Impacto nas vendas',
+                        line=dict(color='#636EFA')
+                    )
+                )
+                
+                UsdDataset = pd.read_csv('data/df_eur.csv')
+                UsdDataset = UsdDataset.sort_values(by='ds')
+                UsdDataset['ds'] = pd.to_datetime(UsdDataset['ds'])
+                UsdDataset = UsdDataset[(UsdDataset.ds >=df_predition['ds'].min()) & (UsdDataset.ds <=df_predition['ds'].max())]
+                figUSD.add_trace(
+                    go.Scatter(
+                        x=UsdDataset['ds'],
+                        y=UsdDataset['Valor'],
+                        fill='tonexty',
+                        mode='lines',
+                        name='Taxa de cambio (USD)',
+                        line=dict(color='#F7AA9D')
+                    )
+                )
+
                 Inflation_Dolar_regressor = dcc.Graph(
-                id='regressors-plot',
-                figure={
-                    'data': [
-                        {'x': df_predition['ds'], 'y': df_predition[f'Inflation_dolar'], 'type': 'line'}
-                    ],
-                    'layout': {
-                    'title': 'Regressores (Inflação - Dólar)',
-                    'xaxis': {'title': 'Data'},
-                    'yaxis': {'title': 'Dolar'}
-                    }
-                }
+                id='regressors-plot-usd',
+                figure=figUSD
                 )          
         else:
             df_original, df_predition, model = configs.sales_predition_v2(Dataset,Holidays, Lenght, country_name, fourier, fourier_monthly, seasonality_mode)
@@ -304,7 +373,48 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
         
         
         fig = px.line(df_predition, x='ds', y='yhat', title='Previsões de Vendas')
-        figInt = px.line(df_ProductInterest, x='Semana', y=f'{product}', title='Interesse das pessoas pelo produto')
+        figInt = go.Figure() #px.line(df_ProductInterest, x='Semana', y=f'{product}', title='Interesse das pessoas pelo produto')
+        figInt.update_layout(
+            title=f'Interesse das pessoas pelo produto: {product}',
+            #xaxis_title='Título do Eixo X',  # Opcional: título do eixo X
+            yaxis_title=f'{product}'   # Opcional: título do eixo Y
+        )
+        figInt.add_trace(
+                    go.Scatter(
+                        x=df_ProductInterest['Semana'],
+                        y=df_ProductInterest[f'{product}'],
+                        fill='tonexty',
+                        mode='lines',
+                        name='Interesse',
+                    )
+                )
+        
+        FigPredict = go.Figure()
+        FigPredict.add_trace(go.Indicator(
+            mode = "number+delta",
+            value = df_predition[pd.DatetimeIndex(df_predition.ds).year > 2022]['yhat'].mean(),
+            title = {"text": f"<span style='font-size:2.4rem'>Média de vendas prevista</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média anual de 2022</span>"},
+            delta = {'reference': df_predition[pd.DatetimeIndex(df_predition.ds).year == 2022]['yhat'].mean(), 'relative': True, 'valueformat': '.1%'},
+            domain = {'x': [0, 0.33], 'y': [0.5, 1]}))
+        
+        PredictIndicators = handleSazonality(df_predition, 2023)
+        FigPredict.add_trace(go.Indicator(
+            mode = "gauge+number",
+            value = PredictIndicators[1],
+            domain = {'x': [0.33, 0.66], 'y': [0.5, 1]},
+            title = {'text': f"Alta prevista em {PredictIndicators[0]}"}
+            ))
+        FigPredict.add_trace(go.Indicator(
+            mode = "gauge+number",
+            value = PredictIndicators[3],
+            domain = {'x': [0.66, 1], 'y': [0.5, 1]},
+            title = {'text': f"Baixa prevista em {PredictIndicators[2]}"},
+            gauge = {'bar': {'color': 'red'}}
+            ))
+        PredictTab = dcc.Graph(
+                id='regressors-plot-predict',
+                figure=FigPredict
+            )          
 
         # Adicionando faixa de incerteza
         fig.add_trace(
@@ -343,13 +453,13 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
         figInd.add_trace(go.Indicator(
                     mode = "number+delta",
                     value = InterestResults[2],
-                    title = {"text": f"<span style='font-size:2.4rem'>Interesse de {2020}/{InterestResults[4]}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
+                    title = {"text": f"<span style='font-size:2.4rem'>Maior interesse em {InterestResults[4]}/{2020}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
                     delta = {'reference': InterestResults[0], 'relative': True, 'valueformat': '.1%'},
                     domain = {'x': [0, 0.5], 'y': [0.5, 1]}))
         figInd.add_trace(go.Indicator(
                     mode = "number+delta",
                     value = InterestResults[3],
-                    title = {"text": f"<span style='font-size:2.4rem'>Vendas de {2020}/{InterestResults[4]}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
+                    title = {"text": f"<span style='font-size:2.4rem'>Media vendas em {InterestResults[4]}/{2020}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
                     delta = {'reference': InterestResults[1], 'relative': True, 'valueformat': '.1%'},
                     domain = {'x': [0.6, 1], 'y': [0.5, 1]}))
         Indicator_01 = dcc.Graph(
@@ -362,13 +472,13 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
         figInd2.add_trace(go.Indicator(
                     mode = "number+delta",
                     value = InterestResults2[2],
-                    title = {"text": f"<span style='font-size:2.4rem'>Interesse de {2021}/{InterestResults2[4]}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
+                    title = {"text": f"<span style='font-size:2.4rem'>Maior interesse em {InterestResults2[4]}/{2021}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
                     delta = {'reference': InterestResults2[0], 'relative': True, 'valueformat': '.1%'},
                     domain = {'x': [0, 0.5], 'y': [0.5, 1]}))
         figInd2.add_trace(go.Indicator(
                     mode = "number+delta",
                     value = InterestResults2[3],
-                    title = {"text": f"<span style='font-size:2.4rem'>Vendas de {2021}/{InterestResults2[4]}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
+                    title = {"text": f"<span style='font-size:2.4rem'>Media vendas em {InterestResults2[4]}/{2021}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
                     delta = {'reference': InterestResults2[1], 'relative': True, 'valueformat': '.1%'},
                     domain = {'x': [0.6, 1], 'y': [0.5, 1]}))
         Indicator_02 = dcc.Graph(
@@ -381,13 +491,13 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
         figInd3.add_trace(go.Indicator(
                     mode = "number+delta",
                     value = InterestResults3[2],
-                    title = {"text": f"<span style='font-size:2.4rem'>Interesse de {2022}/{InterestResults3[4]}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
+                    title = {"text": f"<span style='font-size:2.4rem'>Maior interesse em {InterestResults3[4]}/{2022}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
                     delta = {'reference': InterestResults3[0], 'relative': True, 'valueformat': '.1%'},
                     domain = {'x': [0, 0.5], 'y': [0.5, 1]}))
         figInd3.add_trace(go.Indicator(
                     mode = "number+delta",
                     value = InterestResults3[3],
-                    title = {"text": f"<span style='font-size:2.4rem'>Vendas de {2022}/{InterestResults3[4]}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
+                    title = {"text": f"<span style='font-size:2.4rem'>Media vendas em {InterestResults3[4]}/{2022}</span><br><span style='font-size:1.2rem;color:gray'>Em relação a média</span>"},
                     delta = {'reference': InterestResults3[1], 'relative': True, 'valueformat': '.1%'},
                     domain = {'x': [0.6, 1], 'y': [0.5, 1]}))
         Indicator_03 = dcc.Graph(
@@ -418,13 +528,13 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
         MyHolidays.append(dcc.Tab(label='Feriados Nacionais', value='holiday'))
         for hday in model.train_holiday_names:
             MyHolidays.append(dcc.Tab(label=hday, value=f'{hday}'))
-
+        
         HolidaysTabs = [
             dcc.Tabs(id="tabs-holiday", value='holiday', children=MyHolidays),
             html.Div(id='tabs-content-holiday-graph')
         ]
 
-        fig3 = px.line(df_predition, x='ds', y='trend', color='trend', symbol="trend", title='Tendência')
+        fig3 = px.line(df_predition, x='ds', y='trend', color='trend', symbol="trend", title=f'Tendência do produto: {product}')
         fig3_graph = dcc.Graph(
             id='graph13',
             figure=fig3
@@ -433,11 +543,11 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
         
         yearly_seasonality_fig = go.Figure(
             data=[
-                go.Scatter(x=df_predition['ds'], y=df_predition['yearly'], mode='lines')
+                go.Scatter(x=df_predition['ds'], y=df_predition['yearly'], mode='lines+markers', fill='none', line=dict(color='#636EFA'))
             ],
             layout=go.Layout(
                 title='Sazonalidade Anual',
-                xaxis={'title': 'Data'},
+                #xaxis={'title': 'Data'},
                 yaxis={'title': 'Sazonalidade'}
             )
         )
@@ -455,7 +565,7 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
                 ],
                 'layout': {
                     'title': 'Sazonalidade Mensal',
-                    'xaxis': {'title': 'Data'},
+                    #'xaxis': {'title': 'Data'},
                     'yaxis': {'title': 'Sazonalidade'}
                 }
             }
@@ -469,13 +579,11 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
                 ],
                 'layout': {
                     'title': 'Sazonalidade Semanal',
-                    'xaxis': {'title': 'Data'},
+                    #'xaxis': {'title': 'Data'},
                     'yaxis': {'title': 'Sazonalidade'}
                 }
             }
         )
-
-        #df_predition.to_csv('vendasReais.csv')
 
         seasonality = dmc.Tabs(
         [
@@ -579,18 +687,165 @@ def set_forecast(factorsSeleted, externarFactors, nclicks, country_name, fourier
         orientation="horizontal",
         )
 
-        returned_items = [Predition_graph, Interesting_graph, IndicatorTab, seasonality,SazonalityTab, fig3_graph]
+        CompetitionFig = go.Figure()
+        SociaTrend = pd.read_csv('data/trends/Socia.csv')
+        SociaTrend = SociaTrend[pd.to_datetime(SociaTrend.Semana) < df_predition['ds'].max()]
+        
+        CompetitionFig.update_layout(
+            title='Interesse pela SOCIA em relação ao interesse pela concorrência',
+            #xaxis_title='Título do Eixo X',  # Opcional: título do eixo X
+            yaxis_title='Impacto no mercado'   # Opcional: título do eixo Y
+        )
+        CompetitionFig.add_trace(
+            go.Scatter(
+                x=SociaTrend['Semana'],
+                y=SociaTrend['Socia'],
+                mode='lines+markers',
+                name='Socia',
+                fill='tonexty',
+                line=dict(color='blue'),
+            )
+        )
+        Competidor1 = pd.read_csv('data/trends/Mamboo.csv')
+        Competidor1 = Competidor1[pd.to_datetime(Competidor1.Semana) < df_predition['ds'].max()]
+        CompetitionFig.add_trace(
+            go.Scatter(
+                x=Competidor1['Semana'],
+                y=Competidor1['Mamboo'],
+                mode='none',
+                name='Competidor 1',
+                fill='tozeroy',
+            )
+        )
+
+        Competidor2 = pd.read_csv('data/trends/Tupuca.csv')
+        Competidor2 = Competidor2[pd.to_datetime(Competidor2.Semana) < df_predition['ds'].max()]
+        CompetitionFig.add_trace(
+            go.Scatter(
+                x=Competidor2['Semana'],
+                y=Competidor2['Tupuca'],
+                mode='none',
+                name='Competidor 2',
+                fill='tozeroy',
+            )
+        )
+
+        Competidor3 = pd.read_csv('data/trends/MeuMerkado.csv')
+        Competidor3 = Competidor3[pd.to_datetime(Competidor3.Semana) < df_predition['ds'].max()]
+        CompetitionFig.add_trace(
+            go.Scatter(
+                x=Competidor3['Semana'],
+                y=Competidor3['MeuMerkado'],
+                mode='none',
+                name='Competidor 3',
+                fill='tozeroy',
+            )
+        )
+
+        CompetitonElement = dcc.Graph(
+            id='graphCompetition',
+            figure=CompetitionFig
+        )
+
+        FigTasks = go.Figure()
+        FigTasks.update_layout(
+            title='Impacto dos Factores Internos nas vendas em %',
+            #xaxis_title='Título do Eixo X',  # Opcional: título do eixo X
+            #yaxis_title='Impacto no mercado'   # Opcional: título do eixo Y
+        )
+        tasks = list(df_task['Name'].unique())
+        if all(col in df_predition.columns for col in tasks):
+            for task in tasks:
+                FigTasks.add_trace(
+                go.Scatter(
+                    x=df_predition['ds'],
+                    y=df_predition[task]*100,
+                    mode='lines',
+                    fill='toself',
+                    name=f'{task}',
+                ))
+        
+        promos = list(df_promo['Name'].unique())
+        if all(col in df_predition.columns for col in promos):
+            for promo in promos:
+                FigTasks.add_trace(
+                go.Scatter(
+                    x=df_predition['ds'],
+                    y=df_predition[promo]*100,
+                    fill='toself',
+                    mode='lines',
+                    name=f'{promo}',
+                ))
+        TaskElement = dcc.Graph(
+            id='graphTask',
+            figure=FigTasks
+        )
+
+        PriceFig = go.Figure()
+        PriceFig.update_layout(
+            title='Preço praticado em relação quantidade vendida',
+            #xaxis_title='Título do Eixo X',  # Opcional: título do eixo X
+            #yaxis_title='Impacto no mercado'   # Opcional: título do eixo Y
+        )
+        PriceFig.add_trace(
+                go.Scatter(
+                    x=Dataset['Date'],
+                    y=Dataset['Price'],
+                    fill='tonexty',
+                    mode='lines',
+                    name=f'Preço Praticado',
+                    line=dict(color='#008000')
+                ))
+        PriceFig.add_trace(
+                go.Scatter(
+                    x=Dataset['Date'],
+                    y=Dataset['Quantity']*100,
+                    fill='tozeroy',
+                    mode='lines',
+                    name=f'Quantidade vendida',
+                    line=dict(color='#636EFA')
+                ))
+        
+        PriceElement = dcc.Graph(
+            id='graphPrice',
+            figure=PriceFig
+        )
+        
+    
+        
+        HolidayFig = go.Figure()
+        HolidayFig.update_layout(
+            title='Impacto dos feriados e eventos personalizados',
+            yaxis_title='Impacto do evento (%)'   # Opcional: título do eixo Y
+        )
+        for holyName in model.train_holiday_names:
+            if holyName not in promos and holyName not in tasks:
+                HolidayFig.add_trace(
+                    go.Scatter(
+                        x=df_predition['ds'],
+                        y=df_predition[f'{holyName}']*100,
+                    # fill='none',
+                        mode='lines+markers',
+                        fill='toself',
+                        name=f'{holyName}',
+                    ))
+        HolydayElement = dcc.Graph(
+            id='graphHoly',
+            figure=HolidayFig
+        )
+
+        returned_items = [Predition_graph, PredictTab, Interesting_graph, IndicatorTab, seasonality,SazonalityTab, fig3_graph, PriceElement, TaskElement, HolydayElement, CompetitonElement]
         if 'Weather' in Dataset.columns:
-            returned_items.insert(1, Weather_regressor)
+            returned_items.insert(2, Weather_regressor)
             #return [Predition_graph, Weather_regressor, seasonality, fig3_graph], HolidaysTabs
         if 'Inflation_euro' in Dataset.columns:
-            returned_items.insert(1, Inflation_Euro_regressor)
+            returned_items.insert(2, Inflation_Euro_regressor)
             #return [Predition_graph, Inflation_Euro_regressor, seasonality, fig3_graph], HolidaysTabs
         if 'Inflation_dolar' in Dataset.columns:
-            returned_items.insert(1, Inflation_Dolar_regressor)
+            returned_items.insert(2, Inflation_Dolar_regressor)
             
         
-        return returned_items, HolidaysTabs
+        return returned_items, html.Div() #HolidaysTabs
     else:
         return html.Div('Realize sua previsão aqui!', id="predition-banner"), html.Div()
 
@@ -624,7 +879,7 @@ def getInflation(data):
     return InflationPD
 
 def cleanDataset(sales_df):
-    aggregated_data = sales_df.groupby('Date')['Quantity'].sum().reset_index()
+    aggregated_data = sales_df.groupby('Date')['Quantity','Price'].sum().reset_index()
     sales_df = pd.DataFrame(aggregated_data)
 
     q1_qntd = sales_df.Quantity.quantile(.25)
@@ -749,11 +1004,17 @@ def dowload_report(n_clicks):
 def handleInterest(df_ProductInterest, df_vendasReais, Year, Product):
   df_vendasReais = df_vendasReais[pd.DatetimeIndex(df_vendasReais.ds).year == Year]
   df_byYear = df_ProductInterest[df_ProductInterest.Ano == Year]
+
+  month_map = {
+        1: 'Janeiro', 2: 'Fevereiro', 3: 'Março', 4: 'Abril',
+        5: 'Maio', 6: 'Junho', 7: 'Julho', 8: 'Agosto',
+        9: 'Setembro', 10: 'Outubro', 11: 'Novembro', 12: 'Dezembro'
+    }
   
   SemanaMaior = int(df_byYear[df_byYear[Product]==df_byYear[Product].max()]['Mes'].iloc[:1])
   result = df_byYear[df_byYear.Mes == SemanaMaior].mean()
   
-  return [df_byYear[Product].mean(), df_vendasReais['y'].mean(), float(result[Product]), df_vendasReais[pd.DatetimeIndex(df_vendasReais.ds).month == SemanaMaior]['y'].mean(), SemanaMaior]
+  return [df_byYear[Product].mean(), df_vendasReais['y'].mean(), float(result[Product]), df_vendasReais[pd.DatetimeIndex(df_vendasReais.ds).month == SemanaMaior]['y'].mean(), month_map[SemanaMaior]]
 
 
 def handleSazonality(df, Year):

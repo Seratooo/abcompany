@@ -43,12 +43,13 @@ def sales_predition_v2( sales_df, holidays, periods, country_name, fourier, four
 def sales_predition_Weather(sales_df, holidays, periods,country_name, fourier, fourier_monthly, seasonality_mode):
 
     paramters = ['Date','Quantity']
-    if 'Inflation_euro' in sales_df.columns:
-        paramters.append('Inflation_euro')
     
     if 'Weather' in sales_df.columns:
         paramters.append('Weather')
-    
+
+    if 'Inflation_euro' in sales_df.columns:
+        paramters.append('Inflation_euro')
+
     if 'Inflation_dolar' in sales_df.columns:
         paramters.append('Inflation_dolar')
 
@@ -67,13 +68,13 @@ def sales_predition_Weather(sales_df, holidays, periods,country_name, fourier, f
     model.add_seasonality(name='monthly', period=30.5, fourier_order=fourier_monthly)
     
     if 'Weather' in sales_df.columns:
-        model.add_regressor('Weather', mode=seasonality_mode)
+        model.add_regressor('Weather')# , mode=seasonality_mode)
     
     if 'Inflation_euro' in sales_df.columns:
-         model.add_regressor('Inflation_euro', mode=seasonality_mode)
+         model.add_regressor('Inflation_euro')#, mode=seasonality_mode)
     
     if 'Inflation_dolar' in sales_df.columns:
-        model.add_regressor('Inflation_dolar', mode=seasonality_mode)
+        model.add_regressor('Inflation_dolar')#, mode=seasonality_mode)
 
     model.fit(sales_df)
     

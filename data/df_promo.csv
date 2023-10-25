@@ -1,39 +1,100 @@
 ,Name,Description,Type,Date
-0,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-08
-1,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-09
-2,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-10
-3,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-11
-4,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-12
-5,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-13
-6,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-14
-7,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-15
-8,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-16
-9,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-17
-10,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-18
-11,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-19
-12,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-20
-13,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-21
-14,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-22
-15,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-23
-16,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-24
-17,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-25
-18,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-26
-19,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-27
-20,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-28
-21,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-29
-22,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-30
-23,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2019-12-31
-0,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos,Demonstrações grátis,2020-07-10
-1,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos,Demonstrações grátis,2020-07-11
-2,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos,Demonstrações grátis,2020-07-12
-3,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos,Demonstrações grátis,2020-07-13
-4,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos,Demonstrações grátis,2020-07-14
-5,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos,Demonstrações grátis,2020-07-15
-6,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos,Demonstrações grátis,2020-07-16
-7,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos,Demonstrações grátis,2020-07-17
-8,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos,Demonstrações grátis,2020-07-18
-9,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos,Demonstrações grátis,2020-07-19
-10,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos,Demonstrações grátis,2020-07-20
-11,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos,Demonstrações grátis,2020-07-21
-12,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos,Demonstrações grátis,2020-07-22
-13,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos,Demonstrações grátis,2020-07-23
+0,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-01
+1,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-02
+2,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-03
+3,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-04
+4,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-05
+5,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-06
+6,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-07
+7,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-08
+8,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-09
+9,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-10
+10,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-11
+11,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-12
+12,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-13
+13,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-14
+14,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-15
+15,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-16
+16,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-17
+17,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-18
+18,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-19
+19,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-20
+20,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-21
+21,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-22
+22,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-23
+23,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-24
+24,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-25
+25,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-26
+26,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-27
+27,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-28
+28,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-29
+29,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-30
+30,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-05-31
+31,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-06-01
+32,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-06-02
+33,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-06-03
+34,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-06-04
+35,Promoção (Frete grátis),Frete grátis para todos os produtos,Frete grátis,2020-06-05
+36,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-01
+37,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-02
+38,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-03
+39,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-04
+40,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-05
+41,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-06
+42,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-07
+43,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-08
+44,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-09
+45,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-10
+46,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-11
+47,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-12
+48,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-13
+49,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-14
+50,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-15
+51,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-16
+52,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-17
+53,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-18
+54,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-19
+55,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-20
+56,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-21
+57,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-22
+58,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-23
+59,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-24
+60,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-25
+61,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-26
+62,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-27
+63,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-28
+64,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-29
+65,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-30
+66,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-01-31
+67,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-02-01
+68,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-02-02
+69,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-02-03
+70,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-02-04
+71,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-02-05
+72,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-02-06
+73,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-02-07
+74,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-02-08
+75,Promoção (Demonstrações grátis),Demonstrações grátis para os produtos mais vendidos.,Demonstrações grátis,2022-02-09
+0,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-06-24
+1,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-06-25
+2,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-06-26
+3,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-06-27
+4,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-06-28
+5,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-06-29
+6,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-06-30
+7,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-01
+8,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-02
+9,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-03
+10,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-04
+11,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-05
+12,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-06
+13,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-07
+14,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-08
+15,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-09
+16,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-10
+17,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-11
+18,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-12
+19,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-13
+20,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-14
+21,"Promoção (Compre um, ganhe outro)",Aproveite a campanha e leve dois em vez de um.,"Compre um, ganhe outro",2022-07-15
+
